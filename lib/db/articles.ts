@@ -12,14 +12,15 @@ export class ArticlesRepository {
       .from('articles')
       .select('*')
       .order('used_count', { ascending: true })
-      .order('RANDOM()')
-      .limit(count)
+      .limit(count * 3) // Get more results to randomize from
     
     if (error) {
       throw new Error(`Failed to fetch random articles: ${error.message}`)
     }
     
-    return data || []
+    // Shuffle and limit on the client side
+    const shuffled = (data || []).sort(() => Math.random() - 0.5)
+    return shuffled.slice(0, count)
   }
 
   async incrementUsageCount(articleIds: number[]): Promise<void> {

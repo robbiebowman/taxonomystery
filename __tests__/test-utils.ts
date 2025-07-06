@@ -6,10 +6,10 @@ export const testSupabase = createClient(
 );
 
 export async function cleanupDatabase() {
-  await testSupabase.from('score_distributions').delete().neq('puzzle_date', '');
-  await testSupabase.from('user_scores').delete().neq('id', -1);
-  await testSupabase.from('daily_puzzles').delete().neq('id', -1);
-  await testSupabase.from('articles').delete().neq('id', -1);
+  await testSupabase.from('score_distributions').delete().gte('puzzle_date', '1900-01-01');
+  await testSupabase.from('user_scores').delete().gte('id', 0);
+  await testSupabase.from('daily_puzzles').delete().gte('id', 0);
+  await testSupabase.from('articles').delete().gte('id', 0);
 }
 
 export async function insertTestArticles() {

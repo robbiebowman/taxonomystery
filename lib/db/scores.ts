@@ -15,6 +15,8 @@ export class ScoresRepository {
         puzzle_date: data.puzzle_date,
         score: data.score,
         answers: data.answers
+      }, {
+        onConflict: 'user_id,puzzle_date'
       })
       .select()
       .single()
@@ -55,16 +57,10 @@ export class ScoresRepository {
   }
 
   async updateDistribution(date: string, score: number): Promise<void> {
-    const { error } = await supabase
-      .from('score_distributions')
-      .upsert({
-        puzzle_date: date,
-        score: score,
-        count: 1
-      }, {
-        onConflict: 'puzzle_date,score'
-      })
-      .select()
+    const { error } = await supabase.rpc('upsert_score_distribution', {
+      p_date: date,
+      p_score: score
+    })
     
     if (error) {
       throw new Error(`Failed to update score distribution: ${error.message}`)
