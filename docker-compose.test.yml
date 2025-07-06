@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+  test-db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: taxonomystery_test
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - test_db_data:/var/lib/postgresql/data
+
+volumes:
+  test_db_data:

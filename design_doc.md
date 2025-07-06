@@ -62,7 +62,7 @@ CREATE TABLE score_distributions (
 CREATE INDEX idx_daily_puzzles_date ON daily_puzzles(date);
 CREATE INDEX idx_user_scores_user_date ON user_scores(user_id, puzzle_date);
 CREATE INDEX idx_user_scores_date ON user_scores(puzzle_date);
-CREATE GIN INDEX idx_daily_puzzles_articles ON daily_puzzles USING GIN (articles);
+CREATE INDEX idx_daily_puzzles_articles ON daily_puzzles (articles);
 ```
 
 ## API Endpoints
