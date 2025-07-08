@@ -12,7 +12,9 @@
     "test:setup": "node scripts/test-setup.js",
     "test:db:start": "npx supabase start",
     "test:db:stop": "npx supabase stop",
-    "seed:articles": "node scripts/seed-articles.js"
+    "seed:articles": "node scripts/seed-articles.js",
+    "test:puzzle": "tsx --env-file=.env.local scripts/test-puzzle-generation.ts",
+    "test:api": "node scripts/test-api-endpoints.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.50.3",
@@ -38,6 +40,7 @@
     "supabase": "^1.200.3",
     "tailwindcss": "^4",
     "ts-jest": "^29.1.2",
+    "tsx": "^4.20.3",
     "typescript": "^5"
   }
 }

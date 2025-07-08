@@ -8,37 +8,73 @@ const supabase = createClient(
 
 export class PuzzlesRepository {
   async create(puzzle: CreatePuzzleData): Promise<DailyPuzzle> {
-    const { data, error } = await supabase
-      .from('daily_puzzles')
-      .insert({
-        date: puzzle.date,
-        articles: puzzle.articles
-      })
-      .select()
-      .single()
+    // Try using the new normalized structure with SQL function
+    const { data: result, error } = await supabase.rpc('create_puzzle_with_articles', {
+      puzzle_date: puzzle.date,
+      puzzle_articles_data: puzzle.articles
+    });
     
     if (error) {
-      throw new Error(`Failed to create puzzle: ${error.message}`)
+      // Since we're removing the articles column, fallback method should fail gracefully
+      console.log('⚠️  New function not available. Migration required.');
+      throw new Error('Normalized structure not available. Please apply the latest migration.');
     }
     
-    return data
+    // If the function succeeded, get the created puzzle
+    const createdPuzzle = await this.getByDate(puzzle.date);
+    if (!createdPuzzle) {
+      throw new Error('Failed to retrieve created puzzle');
+    }
+    
+    return createdPuzzle;
   }
 
   async getByDate(date: string): Promise<DailyPuzzle | null> {
-    const { data, error } = await supabase
-      .from('daily_puzzles')
-      .select('*')
-      .eq('date', date)
-      .single()
+    // Try using the new normalized structure function first
+    const { data: normalizedData, error: normalizedError } = await supabase.rpc('get_puzzle_with_articles', {
+      puzzle_date: date
+    });
     
-    if (error) {
-      if (error.code === 'PGRST116') {
-        return null
+    if (normalizedError) {
+      console.log('⚠️  Get function error:', normalizedError.message);
+      // For now, let's check if puzzle exists without the function
+      const { data: basicPuzzle, error: basicError } = await supabase
+        .from('daily_puzzles')
+        .select('id, date, article_count, created_at')
+        .eq('date', date)
+        .single();
+        
+      if (basicError) {
+        if (basicError.code === 'PGRST116') {
+          return null; // Puzzle doesn't exist
+        }
+        throw new Error(`Failed to fetch puzzle: ${basicError.message}`);
       }
-      throw new Error(`Failed to fetch puzzle: ${error.message}`)
+      
+      // Get articles separately 
+      const { data: articles, error: articlesError } = await supabase
+        .from('puzzle_articles')
+        .select('article_id, title, categories, aliases')
+        .eq('puzzle_id', basicPuzzle.id);
+        
+      if (articlesError) {
+        throw new Error(`Failed to fetch puzzle articles: ${articlesError.message}`);
+      }
+      
+      return {
+        id: basicPuzzle.id,
+        date: basicPuzzle.date,
+        article_count: basicPuzzle.article_count,
+        created_at: basicPuzzle.created_at,
+        articles: articles
+      };
     }
     
-    return data
+    if (normalizedData && normalizedData.length > 0) {
+      return normalizedData[0];
+    }
+    
+    return null;
   }
 
   async exists(date: string): Promise<boolean> {
