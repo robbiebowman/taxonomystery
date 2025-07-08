@@ -11,7 +11,8 @@
     "test:watch": "npm run test:db:start && jest --watch",
     "test:setup": "node scripts/test-setup.js",
     "test:db:start": "npx supabase start",
-    "test:db:stop": "npx supabase stop"
+    "test:db:stop": "npx supabase stop",
+    "seed:articles": "node scripts/seed-articles.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.50.3",
