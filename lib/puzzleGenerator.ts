@@ -28,36 +28,10 @@ export class PuzzleGenerator {
         };
       }
 
-      // 2. Select unused articles
-      console.log(`📖 Selecting 10 unused articles...`);
-      const selectedArticles = await this.articleSelector.selectUnusedArticles(10);
-      console.log(`✅ Selected ${selectedArticles.length} unused articles`);
-
-      // 3. Enrich articles with metadata
-      console.log(`🌐 Fetching metadata from Wikipedia...`);
-      const enrichedArticles = await this.enrichArticlesWithMetadata(selectedArticles);
-      console.log(`✅ Enriched ${enrichedArticles.length} articles with metadata`);
-
-      // 4. Filter articles with insufficient categories, but be flexible
-      let validArticles = enrichedArticles.filter(article => article.categories.length >= 3);
-      
-      // If we don't have enough with 3+ categories, try 2+ categories
-      if (validArticles.length < 10) {
-        console.log(`⚠️  Only ${validArticles.length} articles with 3+ categories, trying 2+ categories...`);
-        validArticles = enrichedArticles.filter(article => article.categories.length >= 2);
-      }
-      
-      // If still not enough, try 1+ categories
-      if (validArticles.length < 10) {
-        console.log(`⚠️  Only ${validArticles.length} articles with 2+ categories, trying 1+ categories...`);
-        validArticles = enrichedArticles.filter(article => article.categories.length >= 1);
-      }
-      
-      if (validArticles.length < 10) {
-        throw new Error(`Insufficient articles with adequate categories after filtering. Got ${validArticles.length}, need 10.`);
-      }
-
-      const finalArticles = validArticles.slice(0, 10);
+      // 2. Select articles with minimum category requirement
+      console.log(`📖 Selecting 10 articles with at least 3 categories...`);
+      const finalArticles = await this.selectArticlesWithMinimumCategories(10);
+      console.log(`✅ Selected ${finalArticles.length} articles with adequate categories`);
 
       // 5. Store puzzle and update usage counts
       console.log(`💾 Storing puzzle in database...`);
@@ -79,6 +53,54 @@ export class PuzzleGenerator {
         message: `Failed to generate puzzle: ${error instanceof Error ? error.message : 'Unknown error'}`
       };
     }
+  }
+
+  private async selectArticlesWithMinimumCategories(count: number): Promise<PuzzleArticle[]> {
+    const validArticles: PuzzleArticle[] = [];
+    const rejectedArticleIds: number[] = [];
+    let attempts = 0;
+    const maxAttempts = 50; // Prevent infinite loops
+
+    while (validArticles.length < count && attempts < maxAttempts) {
+      attempts++;
+      
+      // Select more articles than needed to account for rejections
+      const batchSize = Math.max(count - validArticles.length, 5);
+      console.log(`  📖 Selecting batch of ${batchSize} articles (attempt ${attempts})...`);
+      
+      const selectedArticles = await this.articleSelector.selectUnusedArticles(batchSize);
+      if (selectedArticles.length === 0) {
+        throw new Error('No more unused articles available');
+      }
+
+      console.log(`  🌐 Fetching metadata for ${selectedArticles.length} articles...`);
+      const enrichedArticles = await this.enrichArticlesWithMetadata(selectedArticles);
+
+      for (const article of enrichedArticles) {
+        if (article.categories.length >= 3) {
+          validArticles.push(article);
+          console.log(`    ✅ ${article.title}: ${article.categories.length} categories (accepted)`);
+          
+          if (validArticles.length >= count) break;
+        } else {
+          // Mark article as used even though we're rejecting it
+          rejectedArticleIds.push(article.article_id);
+          console.log(`    ❌ ${article.title}: only ${article.categories.length} categories (rejected, marking as used)`);
+        }
+      }
+    }
+
+    if (validArticles.length < count) {
+      throw new Error(`Could not find ${count} articles with minimum 3 categories after ${attempts} attempts. Found ${validArticles.length}.`);
+    }
+
+    // Mark rejected articles as used so they won't be selected again
+    if (rejectedArticleIds.length > 0) {
+      console.log(`  🚫 Marking ${rejectedArticleIds.length} rejected articles as used...`);
+      await this.articlesRepo.incrementUsageCount(rejectedArticleIds);
+    }
+
+    return validArticles.slice(0, count);
   }
 
   private async enrichArticlesWithMetadata(articles: Article[]): Promise<PuzzleArticle[]> {
@@ -105,8 +127,8 @@ export class PuzzleGenerator {
         return {
           article_id: article.id,
           title: article.title,
-          categories: filteredCategories, // No need to limit with normalized structure
-          aliases: aliases.filter(alias => alias !== article.title) // No need to limit aliases
+          categories: filteredCategories,
+          aliases: aliases.filter(alias => alias !== article.title)
         };
 
       } catch (error) {
