@@ -32,7 +32,8 @@ export class WikipediaClient {
     url.searchParams.set('format', 'json');
     url.searchParams.set('titles', title);
     url.searchParams.set('prop', 'categories');
-    url.searchParams.set('cllimit', '500'); // Get up to 500 categories
+    url.searchParams.set('clshow', '!hidden'); // Show non-hidden categories (gets more categories)
+    url.searchParams.set('cllimit', 'max'); // Get maximum categories available
     url.searchParams.set('origin', '*'); // CORS support
 
     try {
