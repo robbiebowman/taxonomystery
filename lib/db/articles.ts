@@ -22,38 +22,9 @@ export class ArticlesRepository {
 
   async incrementUsageCount(articleIds: number[]): Promise<void> {
     // Try using the SQL function first
-    const { error: rpcError } = await supabase.rpc('increment_usage_count', {
+    await supabase.rpc('increment_usage_count', {
       article_ids: articleIds
     })
-    
-    if (!rpcError) {
-      return; // Function worked
-    }
-    
-    // Fallback: Get current counts and update
-    console.log('⚠️  SQL function not available, using fallback method...');
-    
-    // Get current articles
-    const { data: articles, error: fetchError } = await supabase
-      .from('articles')
-      .select('id, used_count')
-      .in('id', articleIds);
-      
-    if (fetchError) {
-      throw new Error(`Failed to fetch current usage counts: ${fetchError.message}`);
-    }
-    
-    // Update each article
-    for (const article of articles || []) {
-      const { error } = await supabase
-        .from('articles')
-        .update({ used_count: article.used_count + 1 })
-        .eq('id', article.id);
-        
-      if (error) {
-        throw new Error(`Failed to increment usage count for article ${article.id}: ${error.message}`);
-      }
-    }
   }
 
   async createBulk(articles: Omit<Article, 'id' | 'used_count' | 'created_at'>[]): Promise<void> {
