@@ -8,19 +8,16 @@ const supabase = createClient(
 
 export class ArticlesRepository {
   async getRandomUnusedArticles(count: number): Promise<Article[]> {
-    const { data, error } = await supabase
-      .from('articles')
-      .select('*')
-      .order('used_count', { ascending: true })
-      .limit(count * 3) // Get more results to randomize from
+    // Use database function for efficient random selection of totally unused articles
+    const { data, error } = await supabase.rpc('get_random_unused_articles', {
+      article_count: count
+    })
     
     if (error) {
       throw new Error(`Failed to fetch random articles: ${error.message}`)
     }
     
-    // Shuffle and limit on the client side
-    const shuffled = (data || []).sort(() => Math.random() - 0.5)
-    return shuffled.slice(0, count)
+    return data || []
   }
 
   async incrementUsageCount(articleIds: number[]): Promise<void> {
