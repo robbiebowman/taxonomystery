@@ -1,11 +1,11 @@
 import { ArticlesRepository } from './db/articles';
 import { Article } from './db/types';
 
-interface ArticleCandidate {
-  id: number;
-  title: string;
-  used_count: number;
-}
+// interface ArticleCandidate {
+//   id: number;
+//   title: string;
+//   used_count: number;
+// }
 
 export class ArticleSelector {
   private articlesRepo = new ArticlesRepository();

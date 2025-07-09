@@ -1,15 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PuzzlesRepository } from '../../../../../lib/db/puzzles';
 
-interface RouteParams {
-  params: {
-    date: string;
-  };
-}
-
-export async function GET(request: NextRequest, { params }: RouteParams) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ date: string }> }
+) {
   try {
-    const { date } = params;
+    const { date } = await params;
 
     // Validate date format (YYYY-MM-DD)
     const dateRegex = /^\d{4}-\d{2}-\d{2}$/;

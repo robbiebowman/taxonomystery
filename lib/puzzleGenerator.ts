@@ -104,8 +104,6 @@ export class PuzzleGenerator {
   }
 
   private async enrichArticlesWithMetadata(articles: Article[]): Promise<PuzzleArticle[]> {
-    const enrichedArticles: PuzzleArticle[] = [];
-    
     // Process in parallel but respect rate limits
     const semaphore = new Semaphore(5); // Max 5 concurrent requests
 

@@ -9,7 +9,7 @@ const supabase = createClient(
 export class PuzzlesRepository {
   async create(puzzle: CreatePuzzleData): Promise<DailyPuzzle> {
     // Try using the new normalized structure with SQL function
-    const { data: result, error } = await supabase.rpc('create_puzzle_with_articles', {
+    const { error } = await supabase.rpc('create_puzzle_with_articles', {
       puzzle_date: puzzle.date,
       puzzle_articles_data: puzzle.articles
     });
@@ -64,7 +64,6 @@ export class PuzzlesRepository {
       return {
         id: basicPuzzle.id,
         date: basicPuzzle.date,
-        article_count: basicPuzzle.article_count,
         created_at: basicPuzzle.created_at,
         articles: articles
       };
