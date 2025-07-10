@@ -100,16 +100,65 @@ export default function GamePage() {
 
     const guess = currentGuess.trim()
     
-    // Check if guess matches the article title or any of its aliases
-    const correctTitle = currentArticle.article.title.toLowerCase()
-    const aliases = currentArticle.article.aliases.map(alias => alias.toLowerCase())
-    const guessLower = guess.toLowerCase()
+    // Normalize text by removing articles and extra whitespace
+    const normalizeText = (text: string): string => {
+      return text
+        .toLowerCase()
+        .replace(/\b(the|a|an)\b/g, '') // Remove articles
+        .replace(/\s+/g, ' ') // Normalize whitespace
+        .trim()
+    }
     
-    const isCorrect = guessLower === correctTitle || 
-                     aliases.some(alias => alias === guessLower) ||
-                     // More flexible matching - contains check
-                     correctTitle.includes(guessLower) || 
-                     aliases.some(alias => alias.includes(guessLower))
+    // Levenshtein distance function
+    const levenshteinDistance = (str1: string, str2: string): number => {
+      const matrix = []
+      
+      for (let i = 0; i <= str2.length; i++) {
+        matrix[i] = [i]
+      }
+      
+      for (let j = 0; j <= str1.length; j++) {
+        matrix[0][j] = j
+      }
+      
+      for (let i = 1; i <= str2.length; i++) {
+        for (let j = 1; j <= str1.length; j++) {
+          if (str2.charAt(i - 1) === str1.charAt(j - 1)) {
+            matrix[i][j] = matrix[i - 1][j - 1]
+          } else {
+            matrix[i][j] = Math.min(
+              matrix[i - 1][j - 1] + 1, // substitution
+              matrix[i][j - 1] + 1,     // insertion
+              matrix[i - 1][j] + 1      // deletion
+            )
+          }
+        }
+      }
+      
+      return matrix[str2.length][str1.length]
+    }
+    
+    // Check if guess is close enough to target
+    const isCloseMatch = (guess: string, target: string): boolean => {
+      const normalizedGuess = normalizeText(guess)
+      const normalizedTarget = normalizeText(target)
+      
+      // Exact match after normalization
+      if (normalizedGuess === normalizedTarget) return true
+      
+      // Levenshtein distance within 20% of target length
+      const distance = levenshteinDistance(normalizedGuess, normalizedTarget)
+      const maxDistance = Math.floor(normalizedTarget.length * 0.2)
+      
+      return distance <= maxDistance
+    }
+    
+    // Check against title and all aliases
+    const correctTitle = currentArticle.article.title
+    const aliases = currentArticle.article.aliases
+    const targets = [correctTitle, ...aliases]
+    
+    const isCorrect = targets.some(target => isCloseMatch(guess, target))
     
     // Update the article state with the guess and result
     const newArticleStates = [...articleStates]
@@ -131,20 +180,6 @@ export default function GamePage() {
     }
   }
 
-  const handleResetGame = () => {
-    setCurrentGuess('')
-    setCurrentArticleIndex(0)
-    setGameCompleted(false)
-    if (puzzle) {
-      const initialStates: ArticleState[] = puzzle.articles.map(article => ({
-        article,
-        userGuess: '',
-        isRevealed: false,
-        wasCorrect: false
-      }))
-      setArticleStates(initialStates)
-    }
-  }
 
   const calculateScore = () => {
     return articleStates.filter(state => state.wasCorrect).length
