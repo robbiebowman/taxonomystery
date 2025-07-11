@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react'
 import Link from 'next/link'
+import { saveScore, savePartialProgress, getStoredScore, type StoredScore, type StoredAnswer } from '../../../lib/localStorage'
 
 interface PuzzleArticle {
   article_id: number
@@ -62,6 +63,8 @@ export default function GamePage() {
   const [currentArticleIndex, setCurrentArticleIndex] = useState(0)
   const [articleStates, setArticleStates] = useState<ArticleState[]>([])
   const [gameCompleted, setGameCompleted] = useState(false)
+  const [isReplayMode, setIsReplayMode] = useState(false)
+  const [storedScore, setStoredScore] = useState<StoredScore | null>(null)
   const guessInputRef = useRef<HTMLInputElement>(null)
   
   // Load puzzle on component mount
@@ -78,14 +81,52 @@ export default function GamePage() {
           setError(`No puzzle available for ${todayDate}. Check back later!`)
         } else {
           setPuzzle(puzzleData)
-          // Initialize article states
-          const initialStates: ArticleState[] = puzzleData.articles.map(article => ({
-            article,
-            userGuess: '',
-            isRevealed: false,
-            wasCorrect: false
-          }))
-          setArticleStates(initialStates)
+          
+          // Check for existing stored score
+          const existingScore = getStoredScore(todayDate)
+          setStoredScore(existingScore)
+          
+          if (existingScore) {
+            if (existingScore.isCompleted) {
+              // Replay mode: restore completed game state
+              setIsReplayMode(true)
+              const restoredStates: ArticleState[] = puzzleData.articles.map((article, index) => {
+                const storedAnswer = existingScore.answers[index]
+                return {
+                  article,
+                  userGuess: storedAnswer?.guess || '',
+                  isRevealed: !!storedAnswer,
+                  wasCorrect: storedAnswer?.correct || false
+                }
+              })
+              setArticleStates(restoredStates)
+              setGameCompleted(true)
+            } else {
+              // Resume mode: restore partial progress
+              const restoredStates: ArticleState[] = puzzleData.articles.map((article, index) => {
+                const storedAnswer = existingScore.answers[index]
+                // Only mark as revealed if there's actually a guess (not just empty answer object)
+                const hasGuess = !!(storedAnswer && storedAnswer.guess && storedAnswer.guess.trim() !== '')
+                return {
+                  article,
+                  userGuess: storedAnswer?.guess || '',
+                  isRevealed: hasGuess,
+                  wasCorrect: storedAnswer?.correct || false
+                }
+              })
+              setArticleStates(restoredStates)
+              setCurrentArticleIndex(existingScore.currentQuestionIndex)
+            }
+          } else {
+            // First time playing: initialize fresh game state
+            const initialStates: ArticleState[] = puzzleData.articles.map(article => ({
+              article,
+              userGuess: '',
+              isRevealed: false,
+              wasCorrect: false
+            }))
+            setArticleStates(initialStates)
+          }
         }
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to load puzzle')
@@ -97,13 +138,47 @@ export default function GamePage() {
     loadPuzzle()
   }, [])
 
+  const calculateScore = useCallback(() => {
+    return articleStates.filter(state => state.wasCorrect).length
+  }, [articleStates])
+
+  const saveGameScore = useCallback(() => {
+    if (!puzzle || isReplayMode) return // Don't save scores for replays
+    
+    const score = calculateScore()
+    const storedAnswers: StoredAnswer[] = articleStates.map(state => ({
+      guess: state.userGuess,
+      correct: state.wasCorrect,
+      article_title: state.article.title
+    }))
+    
+    const scoreData: StoredScore = {
+      date: puzzle.date,
+      score,
+      totalQuestions: puzzle.articles.length,
+      completedAt: new Date().toISOString(),
+      answers: storedAnswers,
+      isCompleted: true,
+      currentQuestionIndex: puzzle.articles.length - 1
+    }
+    
+    const saved = saveScore(scoreData)
+    if (saved) {
+      setStoredScore(scoreData)
+    }
+  }, [puzzle, articleStates, isReplayMode, calculateScore])
+
   const handleNextArticle = useCallback(() => {
     if (currentArticleIndex < articleStates.length - 1) {
       setCurrentArticleIndex(currentArticleIndex + 1)
     } else {
       setGameCompleted(true)
+      // Save score when game completes (only for first-time plays)
+      if (!isReplayMode) {
+        saveGameScore()
+      }
     }
-  }, [currentArticleIndex, articleStates.length])
+  }, [currentArticleIndex, articleStates.length, isReplayMode, saveGameScore])
 
   // Auto-focus input when user starts typing and handle Enter key for navigation
   useEffect(() => {
@@ -213,10 +288,31 @@ export default function GamePage() {
     }
     setArticleStates(newArticleStates)
     setCurrentGuess('')
-  }
-
-  const calculateScore = () => {
-    return articleStates.filter(state => state.wasCorrect).length
+    
+    // Save partial progress immediately with the new state
+    if (!isReplayMode && puzzle) {
+      const score = newArticleStates.filter(state => state.wasCorrect).length
+      const storedAnswers: StoredAnswer[] = newArticleStates.map(state => ({
+        guess: state.isRevealed ? state.userGuess : '', // Only save guess if revealed
+        correct: state.wasCorrect,
+        article_title: state.article.title
+      }))
+      
+      const scoreData: StoredScore = {
+        date: puzzle.date,
+        score,
+        totalQuestions: puzzle.articles.length,
+        completedAt: new Date().toISOString(),
+        answers: storedAnswers,
+        isCompleted: false,
+        currentQuestionIndex: currentArticleIndex
+      }
+      
+      const saved = savePartialProgress(scoreData)
+      if (saved) {
+        setStoredScore(scoreData)
+      }
+    }
   }
 
   // Loading state
@@ -263,6 +359,26 @@ export default function GamePage() {
             <h1>Today&apos;s Puzzle</h1>
             <p>Date: {puzzle.date}</p>
             <p>Article {currentArticleIndex + 1} of {puzzle.articles.length}</p>
+            {isReplayMode && storedScore && (
+              <p style={{ 
+                color: '#6c757d', 
+                fontStyle: 'italic',
+                fontSize: '14px',
+                marginTop: '5px'
+              }}>
+                🔄 Replay Mode - Previous score: {storedScore.score}/{storedScore.totalQuestions}
+              </p>
+            )}
+            {!isReplayMode && storedScore && !storedScore.isCompleted && (
+              <p style={{ 
+                color: '#007bff', 
+                fontStyle: 'italic',
+                fontSize: '14px',
+                marginTop: '5px'
+              }}>
+                ▶️ Resuming puzzle - {storedScore.answers.filter(a => a.guess && a.guess.trim() !== '').length}/{storedScore.totalQuestions} answered
+              </p>
+            )}
           </div>
           <Link href="/archive" style={{
             padding: '8px 16px',
@@ -424,12 +540,52 @@ export default function GamePage() {
             ))}
           </div>
 
-          <button onClick={() => navigator.share?.({ 
-            title: 'Taxonomy Mystery', 
-            text: `I scored ${calculateScore()}/${puzzle.articles.length} on today's Taxonomy Mystery puzzle!` 
-          })}>
-            Share Results
-          </button>
+          <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+            <button 
+              onClick={() => navigator.share?.({ 
+                title: 'Taxonomy Mystery', 
+                text: `I scored ${calculateScore()}/${puzzle.articles.length} on today's Taxonomy Mystery puzzle!` 
+              })}
+              style={{
+                padding: '10px 20px',
+                backgroundColor: '#28a745',
+                color: 'white',
+                border: 'none',
+                borderRadius: '4px',
+                cursor: 'pointer'
+              }}
+            >
+              Share Results
+            </button>
+            
+            {isReplayMode && (
+              <button 
+                onClick={() => {
+                  // Reset to play again
+                  setIsReplayMode(false)
+                  setGameCompleted(false)
+                  setCurrentArticleIndex(0)
+                  const freshStates: ArticleState[] = puzzle.articles.map(article => ({
+                    article,
+                    userGuess: '',
+                    isRevealed: false,
+                    wasCorrect: false
+                  }))
+                  setArticleStates(freshStates)
+                }}
+                style={{
+                  padding: '10px 20px',
+                  backgroundColor: '#007bff',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '4px',
+                  cursor: 'pointer'
+                }}
+              >
+                🔄 Play Again
+              </button>
+            )}
+          </div>
         </section>
       )}
 

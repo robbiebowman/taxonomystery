@@ -12,15 +12,17 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### Testing
 - `npm run test` - Run full test suite (starts test DB, runs Jest, stops test DB)
-- `npm run test:watch` - Run tests in watch mode
+- `npm run test:watch` - Run tests in watch mode (requires manual DB start/stop)
 - `npm run test:setup` - Initialize test environment
-- `npm run test:db:start` - Start Supabase local instance for testing
+- `npm run test:db:start` - Start Supabase local instance for testing (port 54321)
 - `npm run test:db:stop` - Stop Supabase local instance
+- Jest config: `__tests__/**/*.test.ts` pattern, Node.js environment
 
 ### Database & Scripts
 - `npm run seed:articles` - Populate articles table with Wikipedia data
-- `npm run test:puzzle` - Test puzzle generation functionality
+- `npm run test:puzzle` - Test puzzle generation functionality (uses tsx)
 - `npm run test:api` - Test API endpoints
+- Supabase Studio available at http://127.0.0.1:54323 when local DB running
 
 ## Architecture Overview
 
@@ -29,8 +31,12 @@ This is a **Next.js 15** application that creates daily Wikipedia category puzzl
 ### Core System Components
 
 **Frontend (Next.js App Router)**
-- `src/app/` - Next.js App Router pages and API routes
+- `src/app/` - App Router with pages: game, archive
 - `src/app/api/puzzle/` - Puzzle generation and retrieval endpoints
+- `src/app/api/cron/daily-puzzle/` - Scheduled puzzle generation
+- `src/components/` - Shared React components (ScoreBadge)
+- Uses Turbopack for development, TailwindCSS for styling
+- Browser localStorage for persistent user score tracking
 
 **Business Logic Layer (`lib/`)**
 - `puzzleGenerator.ts` - Core puzzle generation orchestrator
@@ -38,6 +44,7 @@ This is a **Next.js 15** application that creates daily Wikipedia category puzzl
 - `categoryFilter.ts` - Filters Wikipedia categories for game appropriateness
 - `wikipedia.ts` - Wikipedia/Wikidata API client with rate limiting
 - `semaphore.ts` - Concurrency control utility
+- `localStorage.ts` - Browser storage utilities for persisting user puzzle scores with incremental saving
 
 **Database Layer (`lib/db/`)**
 - `types.ts` - TypeScript interfaces for all data models
@@ -69,9 +76,10 @@ This is a **Next.js 15** application that creates daily Wikipedia category puzzl
 ## Development Guidelines
 
 ### Testing Strategy
-- Unit tests in `__tests__/` directory using Jest
-- Database tests require Supabase local instance
+- Unit tests in `__tests__/` directory using Jest with ts-jest preset
+- Database tests require Supabase local instance (auto-started by `npm run test`)
 - Test files follow `*.test.ts` naming convention
+- Test environment configured with local Supabase URLs in jest.setup.js
 
 ### Database Development
 - Migrations stored in both `migrations/` (custom) and `supabase/migrations/` (Supabase CLI)
@@ -83,5 +91,7 @@ This is a **Next.js 15** application that creates daily Wikipedia category puzzl
 
 ### Code Organization
 - Business logic separated from Next.js framework code
-- Repository pattern used for database operations
+- Repository pattern used for database operations (`lib/db/`)
 - Dependency injection used in `PuzzleGenerator` for testability
+- TypeScript path mapping: `@/*` maps to `./src/*`
+- Strict TypeScript configuration with ES2017 target
