@@ -17,15 +17,6 @@ interface Puzzle {
   created_at: string
 }
 
-// Function to get today's date in YYYY-MM-DD format (local time for user experience)
-function getTodayDate(): string {
-  const now = new Date()
-  const year = now.getFullYear()
-  const month = String(now.getMonth() + 1).padStart(2, '0')
-  const day = String(now.getDate()).padStart(2, '0')
-  return `${year}-${month}-${day}`
-}
-
 // Function to fetch puzzle data
 async function fetchPuzzle(date: string): Promise<Puzzle | null> {
   try {
@@ -47,6 +38,22 @@ async function fetchPuzzle(date: string): Promise<Puzzle | null> {
   }
 }
 
+// Function to format date for display
+function formatDateForDisplay(dateStr: string): string {
+  try {
+    // Parse as local date to display the same calendar date everywhere
+    const [year, month, day] = dateStr.split('-').map(Number)
+    const date = new Date(year, month - 1, day) // month is 0-indexed
+    return date.toLocaleDateString('en-US', { 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    })
+  } catch {
+    return dateStr
+  }
+}
+
 interface ArticleState {
   article: PuzzleArticle
   userGuess: string
@@ -54,7 +61,12 @@ interface ArticleState {
   wasCorrect: boolean
 }
 
-export default function GamePage() {
+interface ArchiveGamePageProps {
+  params: Promise<{ date: string }>
+}
+
+export default function ArchiveGamePage({ params }: ArchiveGamePageProps) {
+  const [date, setDate] = useState<string>('')
   const [puzzle, setPuzzle] = useState<Puzzle | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -64,18 +76,29 @@ export default function GamePage() {
   const [gameCompleted, setGameCompleted] = useState(false)
   const guessInputRef = useRef<HTMLInputElement>(null)
   
-  // Load puzzle on component mount
+  // Load date from params and puzzle on component mount
   useEffect(() => {
     async function loadPuzzle() {
       try {
         setLoading(true)
         setError(null)
         
-        const todayDate = getTodayDate()
-        const puzzleData = await fetchPuzzle(todayDate)
+        // Get date from params
+        const resolvedParams = await params
+        const puzzleDate = resolvedParams.date
+        setDate(puzzleDate)
+        
+        // Validate date format
+        const dateRegex = /^\d{4}-\d{2}-\d{2}$/
+        if (!dateRegex.test(puzzleDate)) {
+          setError('Invalid date format. Please use YYYY-MM-DD.')
+          return
+        }
+        
+        const puzzleData = await fetchPuzzle(puzzleDate)
         
         if (!puzzleData) {
-          setError(`No puzzle available for ${todayDate}. Check back later!`)
+          setError(`No puzzle available for ${formatDateForDisplay(puzzleDate)}. This puzzle may not have been created yet.`)
         } else {
           setPuzzle(puzzleData)
           // Initialize article states
@@ -95,7 +118,7 @@ export default function GamePage() {
     }
     
     loadPuzzle()
-  }, [])
+  }, [params])
 
   const handleNextArticle = useCallback(() => {
     if (currentArticleIndex < articleStates.length - 1) {
@@ -223,8 +246,8 @@ export default function GamePage() {
   if (loading) {
     return (
       <div>
-        <h1>Loading today&apos;s puzzle...</h1>
-        <p>Please wait while we fetch the latest puzzle.</p>
+        <h1>Loading puzzle...</h1>
+        <p>Please wait while we fetch the puzzle.</p>
       </div>
     )
   }
@@ -235,9 +258,29 @@ export default function GamePage() {
       <div>
         <h1>Oops!</h1>
         <p>{error}</p>
-        <button onClick={() => window.location.reload()}>
-          Try Again
-        </button>
+        <div style={{ marginTop: '20px' }}>
+          <Link href="/archive" style={{ 
+            display: 'inline-block',
+            padding: '10px 20px', 
+            backgroundColor: '#007bff', 
+            color: 'white', 
+            textDecoration: 'none',
+            borderRadius: '4px',
+            marginRight: '10px'
+          }}>
+            ← Back to Archive
+          </Link>
+          <button onClick={() => window.location.reload()} style={{
+            padding: '10px 20px',
+            backgroundColor: '#6c757d',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer'
+          }}>
+            Try Again
+          </button>
+        </div>
       </div>
     )
   }
@@ -247,7 +290,17 @@ export default function GamePage() {
     return (
       <div>
         <h1>No puzzle available</h1>
-        <p>Please check back later for today&apos;s puzzle!</p>
+        <p>No puzzle found for {date ? formatDateForDisplay(date) : 'this date'}.</p>
+        <Link href="/archive" style={{ 
+          display: 'inline-block',
+          padding: '10px 20px', 
+          backgroundColor: '#007bff', 
+          color: 'white', 
+          textDecoration: 'none',
+          borderRadius: '4px'
+        }}>
+          ← Back to Archive
+        </Link>
       </div>
     )
   }
@@ -258,23 +311,17 @@ export default function GamePage() {
     <div>
       {/* Header */}
       <header>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-          <div>
-            <h1>Today&apos;s Puzzle</h1>
-            <p>Date: {puzzle.date}</p>
-            <p>Article {currentArticleIndex + 1} of {puzzle.articles.length}</p>
-          </div>
-          <Link href="/archive" style={{
-            padding: '8px 16px',
-            backgroundColor: '#6c757d',
-            color: 'white',
-            textDecoration: 'none',
-            borderRadius: '4px',
-            fontSize: '14px'
-          }}>
-            View Archive
-          </Link>
-        </div>
+        <Link href="/archive" style={{ 
+          display: 'inline-block',
+          marginBottom: '15px',
+          color: '#007bff',
+          textDecoration: 'none'
+        }}>
+          ← Back to Archive
+        </Link>
+        <h1>Puzzle from {formatDateForDisplay(puzzle.date)}</h1>
+        <p>Archive Date: {puzzle.date}</p>
+        <p>Article {currentArticleIndex + 1} of {puzzle.articles.length}</p>
       </header>
 
       {/* Game Progress */}
@@ -424,15 +471,37 @@ export default function GamePage() {
             ))}
           </div>
 
-          <button onClick={() => navigator.share?.({ 
-            title: 'Taxonomy Mystery', 
-            text: `I scored ${calculateScore()}/${puzzle.articles.length} on today's Taxonomy Mystery puzzle!` 
-          })}>
-            Share Results
-          </button>
+          <div style={{ marginTop: '20px' }}>
+            <button 
+              onClick={() => navigator.share?.({ 
+                title: 'Taxonomy Mystery', 
+                text: `I scored ${calculateScore()}/${puzzle.articles.length} on the ${formatDateForDisplay(puzzle.date)} Taxonomy Mystery puzzle!` 
+              })}
+              style={{
+                padding: '10px 20px',
+                backgroundColor: '#28a745',
+                color: 'white',
+                border: 'none',
+                borderRadius: '4px',
+                cursor: 'pointer',
+                marginRight: '10px'
+              }}
+            >
+              Share Results
+            </button>
+            <Link href="/archive" style={{ 
+              display: 'inline-block',
+              padding: '10px 20px', 
+              backgroundColor: '#007bff', 
+              color: 'white', 
+              textDecoration: 'none',
+              borderRadius: '4px'
+            }}>
+              ← Back to Archive
+            </Link>
+          </div>
         </section>
       )}
-
 
       {/* Debug Info (remove later) */}
       <details>
