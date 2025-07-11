@@ -92,4 +92,30 @@ export class PuzzlesRepository {
     
     return !!data
   }
+
+  async getAllDates(): Promise<string[]> {
+    const { data, error } = await supabase
+      .from('daily_puzzles')
+      .select('date')
+      .order('date', { ascending: false })
+    
+    if (error) {
+      throw new Error(`Failed to fetch puzzle dates: ${error.message}`)
+    }
+    
+    return data.map(row => row.date)
+  }
+
+  async list(): Promise<{ date: string; article_count: number; created_at: string }[]> {
+    const { data, error } = await supabase
+      .from('daily_puzzles')
+      .select('date, article_count, created_at')
+      .order('date', { ascending: false })
+
+    if (error) {
+      throw new Error(`Failed to fetch puzzle list: ${error.message}`)
+    }
+
+    return data || []
+  }
 }

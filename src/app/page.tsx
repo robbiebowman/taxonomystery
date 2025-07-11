@@ -16,6 +16,12 @@ export default function Home() {
           >
             Play Today&apos;s Puzzle
           </Link>
+          <Link
+            className="rounded-full border border-solid border-gray-300 dark:border-gray-600 transition-colors flex items-center justify-center bg-transparent text-foreground gap-2 hover:bg-gray-100 dark:hover:bg-gray-800 font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
+            href="/archive"
+          >
+            Previous Puzzles
+          </Link>
         </div>
       </main>
     </div>
