@@ -362,7 +362,7 @@ export default function GamePage() {
           textTransform: 'uppercase',
           letterSpacing: '-0.01em'
         }}>
-          The Daily Taxonomy Mystery
+          The Daily Taxonomystery
         </h1>
         <div style={{ 
           display: 'flex', 
@@ -426,13 +426,13 @@ export default function GamePage() {
                 padding: '0.5rem 1rem',
                 border: '2px solid var(--border-gray)',
                 backgroundColor: 
-                  state.wasCorrect ? 'var(--newsprint-gray)' : 
-                  state.isRevealed && !state.wasCorrect ? '#f8f8f8' : 
-                  index === currentArticleIndex ? 'var(--paper-white)' : 'var(--newsprint-gray)',
+                  state.wasCorrect ? 'var(--pastel-green)' : 
+                  state.isRevealed && !state.wasCorrect ? 'var(--pastel-red)' : 
+                  index === currentArticleIndex ? 'var(--pastel-yellow)' : 'var(--newsprint-gray)',
                 borderColor:
-                  state.wasCorrect ? 'var(--ink-black)' :
-                  state.isRevealed && !state.wasCorrect ? 'var(--text-gray)' :
-                  index === currentArticleIndex ? 'var(--accent-red)' : 'var(--border-gray)',
+                  state.wasCorrect ? 'var(--pastel-green-border)' :
+                  state.isRevealed && !state.wasCorrect ? 'var(--pastel-red-border)' :
+                  index === currentArticleIndex ? 'var(--pastel-yellow-border)' : 'var(--border-gray)',
                 fontWeight: index === currentArticleIndex ? 'bold' : 'normal',
                 fontFamily: 'var(--font-mono)'
               }}
@@ -497,8 +497,8 @@ export default function GamePage() {
                   <div style={{ 
                     marginBottom: '1.5rem', 
                     padding: '1.5rem', 
-                    backgroundColor: currentArticle.wasCorrect ? 'var(--newsprint-gray)' : 'var(--paper-white)', 
-                    border: `3px solid ${currentArticle.wasCorrect ? 'var(--ink-black)' : 'var(--text-gray)'}`,
+                    backgroundColor: currentArticle.wasCorrect ? 'var(--pastel-green)' : 'var(--pastel-red)', 
+                    border: `3px solid ${currentArticle.wasCorrect ? 'var(--pastel-green-border)' : 'var(--pastel-red-border)'}`,
                     textAlign: 'center'
                   }}>
                     {currentArticle.wasCorrect ? (
@@ -712,7 +712,7 @@ export default function GamePage() {
             <div style={{ 
               fontSize: '1.4rem',
               fontWeight: 'bold',
-              color: 'var(--accent-red)'
+              color: 'var(--gold-highlight)'
             }}>
               Final Score: {calculateScore()} out of {puzzle.articles.length} correct
             </div>
@@ -733,8 +733,8 @@ export default function GamePage() {
               <div key={state.article.article_id} style={{ 
                 marginBottom: '1.5rem', 
                 padding: '1.5rem', 
-                border: `2px solid ${state.wasCorrect ? 'var(--ink-black)' : 'var(--text-gray)'}`,
-                backgroundColor: state.wasCorrect ? 'var(--newsprint-gray)' : 'var(--paper-white)'
+                border: `2px solid ${state.wasCorrect ? 'var(--pastel-green-border)' : 'var(--pastel-red-border)'}`,
+                backgroundColor: state.wasCorrect ? 'var(--pastel-green)' : 'var(--pastel-red)'
               }}>
                 <div style={{ 
                   display: 'flex', 
@@ -782,8 +782,8 @@ export default function GamePage() {
           }}>
             <button 
               onClick={() => navigator.share?.({ 
-                title: 'The Daily Taxonomy Mystery', 
-                text: `I scored ${calculateScore()}/${puzzle.articles.length} on today's Taxonomy Mystery puzzle!` 
+                title: 'The Daily Taxonomystery', 
+                text: `I scored ${calculateScore()}/${puzzle.articles.length} on today's Taxonomystery puzzle!` 
               })}
               className="button"
               style={{

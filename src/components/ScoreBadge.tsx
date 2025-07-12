@@ -39,11 +39,11 @@ export default function ScoreBadge({ score, totalQuestions, isAttempted, isCompl
         alignItems: 'center',
         gap: '0.25rem',
         padding: '0.25rem 0.5rem',
-        backgroundColor: 'var(--paper-white)',
-        border: '2px solid var(--accent-red)',
+        backgroundColor: 'var(--pastel-yellow)',
+        border: '2px solid var(--pastel-yellow-border)',
         fontSize: '0.75rem',
         fontWeight: 'bold',
-        color: 'var(--accent-red)',
+        color: 'var(--ink-black)',
         fontFamily: 'var(--font-mono)',
         textTransform: 'uppercase',
         letterSpacing: '0.05em',
@@ -70,13 +70,13 @@ export default function ScoreBadge({ score, totalQuestions, isAttempted, isCompl
 
   if (percentage >= 80) {
     backgroundColor = 'var(--newsprint-gray)'
-    textColor = 'var(--ink-black)'
-    borderColor = 'var(--ink-black)'
+    textColor = 'var(--gold-highlight)'
+    borderColor = 'var(--gold-highlight)'
     symbol = '★'
   } else if (percentage >= 60) {
     backgroundColor = 'var(--paper-white)'
-    textColor = 'var(--ink-black)'
-    borderColor = 'var(--ink-black)'
+    textColor = 'var(--newspaper-blue)'
+    borderColor = 'var(--newspaper-blue)'
     symbol = '✓'
   } else if (percentage >= 40) {
     backgroundColor = 'var(--paper-white)'

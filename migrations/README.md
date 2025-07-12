@@ -1,6 +1,6 @@
-# TaxonomyMystery Database Migrations
+# Taxonomystery Database Migrations
 
-This directory contains all SQL migrations for the TaxonomyMystery project, organized chronologically with descriptive naming.
+This directory contains all SQL migrations for the Taxonomystery project, organized chronologically with descriptive naming.
 
 ## Migration Naming Convention
 

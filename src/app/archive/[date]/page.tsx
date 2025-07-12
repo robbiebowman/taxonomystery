@@ -343,9 +343,9 @@ export default function ArchiveGamePage({ params }: ArchiveGamePageProps) {
   // Loading state
   if (loading) {
     return (
-      <div>
-        <h1>Loading puzzle...</h1>
-        <p>Please wait while we fetch the puzzle.</p>
+      <div className="newspaper-section" style={{ margin: '2rem auto', maxWidth: '800px' }}>
+        <h1>Loading Archive Edition...</h1>
+        <p>Please wait while we retrieve this historical edition.</p>
       </div>
     )
   }
@@ -353,30 +353,15 @@ export default function ArchiveGamePage({ params }: ArchiveGamePageProps) {
   // Error state
   if (error) {
     return (
-      <div>
-        <h1>Oops!</h1>
+      <div className="newspaper-section" style={{ margin: '2rem auto', maxWidth: '800px' }}>
+        <h1>📰 Archive Issue!</h1>
         <p>{error}</p>
-        <div style={{ marginTop: '20px' }}>
-          <Link href="/archive" style={{ 
-            display: 'inline-block',
-            padding: '10px 20px', 
-            backgroundColor: '#007bff', 
-            color: 'white', 
-            textDecoration: 'none',
-            borderRadius: '4px',
-            marginRight: '10px'
-          }}>
-            ← Back to Archive
+        <div style={{ marginTop: '1.5rem', display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+          <Link href="/archive" className="button">
+            ← Return to Archive
           </Link>
-          <button onClick={() => window.location.reload()} style={{
-            padding: '10px 20px',
-            backgroundColor: '#6c757d',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer'
-          }}>
-            Try Again
+          <button onClick={() => window.location.reload()} className="button">
+            Refresh Edition
           </button>
         </div>
       </div>
@@ -386,18 +371,11 @@ export default function ArchiveGamePage({ params }: ArchiveGamePageProps) {
   // No puzzle found
   if (!puzzle) {
     return (
-      <div>
-        <h1>No puzzle available</h1>
-        <p>No puzzle found for {date ? formatDateForDisplay(date) : 'this date'}.</p>
-        <Link href="/archive" style={{ 
-          display: 'inline-block',
-          padding: '10px 20px', 
-          backgroundColor: '#007bff', 
-          color: 'white', 
-          textDecoration: 'none',
-          borderRadius: '4px'
-        }}>
-          ← Back to Archive
+      <div className="newspaper-section" style={{ margin: '2rem auto', maxWidth: '800px' }}>
+        <h1>Edition Not Found</h1>
+        <p>No edition found for {date ? formatDateForDisplay(date) : 'this date'}.</p>
+        <Link href="/archive" className="button" style={{ marginTop: '1rem' }}>
+          ← Return to Archive
         </Link>
       </div>
     )
@@ -406,61 +384,95 @@ export default function ArchiveGamePage({ params }: ArchiveGamePageProps) {
   const currentArticle = articleStates[currentArticleIndex]
 
   return (
-    <div>
-      {/* Header */}
-      <header>
-        <Link href="/archive" style={{ 
-          display: 'inline-block',
-          marginBottom: '15px',
-          color: '#007bff',
-          textDecoration: 'none'
+    <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '2rem' }}>
+      {/* Newspaper Header */}
+      <header className="newspaper-header" style={{ marginBottom: '2rem' }}>
+        <Link href="/archive" className="button" style={{ 
+          fontSize: '0.9rem',
+          marginBottom: '1rem',
+          display: 'inline-block'
         }}>
-          ← Back to Archive
+          ← Return to Archive
         </Link>
-        <h1>Puzzle from {formatDateForDisplay(puzzle.date)}</h1>
-        <p>Archive Date: {puzzle.date}</p>
-        <p>Article {currentArticleIndex + 1} of {puzzle.articles.length}</p>
+        <h1 style={{ 
+          fontSize: '2.5rem',
+          margin: '0 0 0.5rem 0',
+          textTransform: 'uppercase',
+          letterSpacing: '-0.01em'
+        }}>
+          The Daily Taxonomystery
+        </h1>
+        <div style={{
+          fontSize: '1.2rem',
+          fontStyle: 'italic',
+          color: 'var(--text-gray)',
+          margin: '0 0 1rem 0'
+        }}>
+          ARCHIVE EDITION: {formatDateForDisplay(puzzle.date).toUpperCase()}
+        </div>
+        <div style={{ 
+          fontSize: '1.1rem',
+          fontWeight: 'bold',
+          color: 'var(--text-gray)',
+          fontFamily: 'var(--font-mono)'
+        }}>
+          {puzzle.date} • ARTICLE {currentArticleIndex + 1} OF {puzzle.articles.length}
+        </div>
         {isReplayMode && storedScore && (
-          <p style={{ 
-            color: '#6c757d', 
+          <div style={{ 
+            color: 'var(--text-gray)', 
             fontStyle: 'italic',
-            fontSize: '14px',
-            marginTop: '5px'
+            fontSize: '0.9rem',
+            marginTop: '0.5rem'
           }}>
-            🔄 Replay Mode - Previous score: {storedScore.score}/{storedScore.totalQuestions}
-          </p>
+            🔄 REPLAY EDITION - Previous score: {storedScore.score}/{storedScore.totalQuestions}
+          </div>
         )}
         {!isReplayMode && storedScore && !storedScore.isCompleted && (
-          <p style={{ 
-            color: '#007bff', 
+          <div style={{ 
+            color: 'var(--accent-red)', 
             fontStyle: 'italic',
-            fontSize: '14px',
-            marginTop: '5px'
+            fontSize: '0.9rem',
+            marginTop: '0.5rem',
+            fontWeight: 'bold'
           }}>
-            ▶️ Resuming puzzle - {storedScore.answers.filter(a => a.guess && a.guess.trim() !== '').length}/{storedScore.totalQuestions} answered
-          </p>
+            ▶️ CONTINUING EDITION - {storedScore.answers.filter(a => a.guess && a.guess.trim() !== '').length}/{storedScore.totalQuestions} answered
+          </div>
         )}
       </header>
 
       {/* Game Progress */}
-      <section>
-        <h3>Progress:</h3>
-        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+      <section className="newspaper-section">
+        <h3 style={{ 
+          fontSize: '1.3rem',
+          marginBottom: '1rem',
+          textTransform: 'uppercase',
+          letterSpacing: '0.05em'
+        }}>
+          Edition Progress
+        </h3>
+        <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
           {articleStates.map((state, index) => (
             <div 
               key={state.article.article_id}
               style={{
-                padding: '5px 10px',
-                border: '1px solid #ccc',
+                padding: '0.5rem 1rem',
+                border: '2px solid var(--border-gray)',
                 backgroundColor: 
-                  state.wasCorrect ? '#d4edda' : 
-                  state.isRevealed && !state.wasCorrect ? '#f8d7da' : 
-                  index === currentArticleIndex ? '#fff3cd' : '#f8f9fa'
+                  state.wasCorrect ? 'var(--pastel-green)' : 
+                  state.isRevealed && !state.wasCorrect ? 'var(--pastel-red)' : 
+                  index === currentArticleIndex ? 'var(--pastel-yellow)' : 'var(--newsprint-gray)',
+                borderColor:
+                  state.wasCorrect ? 'var(--pastel-green-border)' :
+                  state.isRevealed && !state.wasCorrect ? 'var(--pastel-red-border)' :
+                  index === currentArticleIndex ? 'var(--pastel-yellow-border)' : 'var(--border-gray)',
+                fontWeight: index === currentArticleIndex ? 'bold' : 'normal',
+                fontFamily: 'var(--font-mono)'
               }}
             >
               {index + 1}
-              {state.wasCorrect && ' ✅'}
-              {state.isRevealed && !state.wasCorrect && ' ❌'}
+              {state.wasCorrect && ' ✓'}
+              {state.isRevealed && !state.wasCorrect && ' ✗'}
             </div>
           ))}
         </div>
@@ -469,40 +481,96 @@ export default function ArchiveGamePage({ params }: ArchiveGamePageProps) {
       {!gameCompleted && currentArticle && (
         <>
           {/* Current Article */}
-          <section>
-            <h2>What Wikipedia article has these categories?</h2>
+          <section className="newspaper-section">
+            <h2 style={{ 
+              textAlign: 'center',
+              fontSize: '1.8rem',
+              marginBottom: '1.5rem',
+              textTransform: 'uppercase',
+              letterSpacing: '0.02em'
+            }}>
+              Featured Article Classification
+            </h2>
             <div style={{ 
-              padding: '20px', 
-              border: '2px solid #007bff', 
-              borderRadius: '8px',
-              backgroundColor: '#f8f9fa'
+              padding: '2rem', 
+              border: '3px solid var(--ink-black)', 
+              backgroundColor: 'var(--paper-white)',
+              borderStyle: 'double'
             }}>
               {!currentArticle.isRevealed ? (
                 <>
-                  <h3>Categories:</h3>
-                  <ul>
+                  <h3 style={{ 
+                    textAlign: 'center',
+                    fontSize: '1.4rem',
+                    marginBottom: '1.5rem',
+                    fontStyle: 'italic',
+                    color: 'var(--text-gray)'
+                  }}>
+                    What Wikipedia article belongs to these categories?
+                  </h3>
+                  <div style={{ 
+                    columns: currentArticle.article.categories.length > 6 ? '2' : '1',
+                    columnGap: '2rem'
+                  }}>
                     {currentArticle.article.categories.map((category, idx) => (
-                      <li key={idx}><strong>{category}</strong></li>
+                      <div key={idx} style={{ 
+                        marginBottom: '0.75rem',
+                        breakInside: 'avoid',
+                        fontSize: '1.1rem',
+                        borderBottom: '1px dotted var(--border-gray)',
+                        paddingBottom: '0.25rem'
+                      }}>
+                        <strong>• {category}</strong>
+                      </div>
                     ))}
-                  </ul>
+                  </div>
                 </>
               ) : (
                 <div>
                   <div style={{ 
-                    marginTop: '15px', 
-                    padding: '10px', 
-                    backgroundColor: currentArticle.wasCorrect ? '#d4edda' : '#f8d7da', 
-                    borderRadius: '4px' 
+                    marginBottom: '1.5rem', 
+                    padding: '1.5rem', 
+                    backgroundColor: currentArticle.wasCorrect ? 'var(--pastel-green)' : 'var(--pastel-red)', 
+                    border: `3px solid ${currentArticle.wasCorrect ? 'var(--pastel-green-border)' : 'var(--pastel-red-border)'}`,
+                    textAlign: 'center'
                   }}>
                     {currentArticle.wasCorrect ? (
                       <div>
-                        <strong>✅ Correct!</strong>
-                        <p>Your guess: <em>&quot;{currentArticle.userGuess}&quot;</em></p>
+                        <h3 style={{ 
+                          fontSize: '1.5rem',
+                          margin: '0 0 1rem 0',
+                          color: 'var(--ink-black)',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.1em'
+                        }}>
+                          ✓ CORRECT IDENTIFICATION
+                        </h3>
+                        <p style={{ 
+                          fontSize: '1.1rem',
+                          fontStyle: 'italic',
+                          margin: 0
+                        }}>
+                          Your answer: &quot;<strong>{currentArticle.userGuess}</strong>&quot;
+                        </p>
                       </div>
                     ) : (
                       <div>
-                        <strong>❌ Incorrect</strong>
-                        <p>Your guess: <em>&quot;{currentArticle.userGuess}&quot;</em></p>
+                        <h3 style={{ 
+                          fontSize: '1.5rem',
+                          margin: '0 0 1rem 0',
+                          color: 'var(--text-gray)',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.1em'
+                        }}>
+                          ✗ MISIDENTIFICATION
+                        </h3>
+                        <p style={{ 
+                          fontSize: '1.1rem',
+                          fontStyle: 'italic',
+                          margin: 0
+                        }}>
+                          Your answer: &quot;<strong>{currentArticle.userGuess}</strong>&quot;
+                        </p>
                       </div>
                     )}
                   </div>
@@ -510,15 +578,14 @@ export default function ArchiveGamePage({ params }: ArchiveGamePageProps) {
                   {/* Article snippet and image */}
                   {(currentArticle.article.snippet || currentArticle.article.image_url) && (
                     <div style={{ 
-                      marginTop: '20px', 
-                      padding: '15px', 
-                      backgroundColor: '#ffffff', 
-                      borderRadius: '8px',
-                      border: '1px solid #dee2e6'
+                      marginTop: '1.5rem', 
+                      padding: '1.5rem', 
+                      backgroundColor: 'var(--paper-white)', 
+                      border: '2px solid var(--border-gray)'
                     }}>
                       <div style={{ 
                         display: 'flex', 
-                        gap: '15px', 
+                        gap: '1.5rem', 
                         alignItems: 'flex-start',
                         flexWrap: 'wrap'
                       }}>
@@ -530,7 +597,7 @@ export default function ArchiveGamePage({ params }: ArchiveGamePageProps) {
                               style={{ 
                                 maxWidth: '200px', 
                                 maxHeight: '200px', 
-                                borderRadius: '4px',
+                                border: '2px solid var(--border-gray)',
                                 objectFit: 'cover'
                               }}
                               onError={(e) => {
@@ -542,14 +609,23 @@ export default function ArchiveGamePage({ params }: ArchiveGamePageProps) {
                         <div style={{ flex: 1, minWidth: '250px' }}>
                           {currentArticle.article.snippet && (
                             <div>
-                              <h4 style={{ marginTop: 0, marginBottom: '10px', color: '#333', fontSize: '18px', fontWeight: 'bold' }}>
+                              <h4 style={{ 
+                                marginTop: 0, 
+                                marginBottom: '1rem', 
+                                color: 'var(--ink-black)', 
+                                fontSize: '1.4rem', 
+                                fontWeight: 'bold',
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.02em'
+                              }}>
                                 {currentArticle.article.title}
                               </h4>
                               <p style={{ 
-                                lineHeight: '1.5', 
-                                color: '#555',
-                                margin: '0 0 10px 0',
-                                fontSize: '16px'
+                                lineHeight: '1.7', 
+                                color: 'var(--text-gray)',
+                                margin: '0 0 1rem 0',
+                                fontSize: '1rem',
+                                textAlign: 'justify'
                               }}>
                                 {currentArticle.article.snippet}
                               </p>
@@ -560,13 +636,14 @@ export default function ArchiveGamePage({ params }: ArchiveGamePageProps) {
                             target="_blank"
                             rel="noopener noreferrer"
                             style={{ 
-                              color: '#007bff', 
-                              textDecoration: 'none',
-                              fontSize: '14px',
-                              fontWeight: '500'
+                              display: 'inline-block',
+                              fontSize: '0.9rem',
+                              fontWeight: 'bold',
+                              textTransform: 'uppercase',
+                              letterSpacing: '0.05em'
                             }}
                           >
-                            📖 Read more on Wikipedia →
+                            📖 Read Full Article →
                           </a>
                         </div>
                       </div>
@@ -579,9 +656,18 @@ export default function ArchiveGamePage({ params }: ArchiveGamePageProps) {
 
           {!currentArticle.isRevealed ? (
             /* Guess Input */
-            <section>
-              <form onSubmit={handleSubmitGuess}>
-                <label htmlFor="guess">Your guess:</label>
+            <section className="newspaper-section">
+              <form onSubmit={handleSubmitGuess} style={{ textAlign: 'center' }}>
+                <label htmlFor="guess" style={{ 
+                  display: 'block',
+                  fontSize: '1.2rem',
+                  fontWeight: 'bold',
+                  marginBottom: '1rem',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em'
+                }}>
+                  Your Identification:
+                </label>
                 <input
                   ref={guessInputRef}
                   id="guess"
@@ -589,18 +675,55 @@ export default function ArchiveGamePage({ params }: ArchiveGamePageProps) {
                   value={currentGuess}
                   onChange={(e) => setCurrentGuess(e.target.value)}
                   placeholder="Enter the Wikipedia article name..."
+                  style={{
+                    width: '100%',
+                    maxWidth: '500px',
+                    marginBottom: '1.5rem',
+                    fontSize: '1.1rem',
+                    textAlign: 'center'
+                  }}
                 />
-                <button type="submit" disabled={!currentGuess.trim()}>
-                  Submit Guess
-                </button>
+                <div>
+                  <button 
+                    type="submit" 
+                    disabled={!currentGuess.trim()}
+                    className="button"
+                    style={{
+                      fontSize: '1.1rem',
+                      fontWeight: 'bold',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.05em',
+                      minWidth: '200px'
+                    }}
+                  >
+                    Submit Answer
+                  </button>
+                </div>
               </form>
-              <p><small>Tip: Try the exact article name or a close variant!</small></p>
+              <p style={{ 
+                textAlign: 'center',
+                fontStyle: 'italic',
+                color: 'var(--text-gray)',
+                marginTop: '1rem'
+              }}>
+                <small>Try the exact article name or a close variant!</small>
+              </p>
             </section>
           ) : (
             /* Next Article Button */
-            <section>
-              <button onClick={handleNextArticle} style={{ padding: '10px 20px', fontSize: '16px' }}>
-                {currentArticleIndex < puzzle.articles.length - 1 ? 'Next Article →' : 'Finish Puzzle'}
+            <section className="newspaper-section" style={{ textAlign: 'center' }}>
+              <button 
+                onClick={handleNextArticle} 
+                className="button"
+                style={{ 
+                  fontSize: '1.2rem',
+                  fontWeight: 'bold',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em',
+                  minWidth: '250px'
+                }}
+              >
+                {currentArticleIndex < puzzle.articles.length - 1 ? 'Next Article →' : 'Complete Edition'}
               </button>
             </section>
           )}
@@ -609,33 +732,71 @@ export default function ArchiveGamePage({ params }: ArchiveGamePageProps) {
 
       {/* Game Completed */}
       {gameCompleted && (
-        <section>
-          <h2>Puzzle Complete!</h2>
-          <p>Final Score: {calculateScore()} out of {puzzle.articles.length} correct</p>
+        <section className="newspaper-section">
+          <div className="newspaper-header" style={{ marginBottom: '2rem' }}>
+            <h2 style={{ 
+              fontSize: '2.2rem',
+              margin: '0 0 1rem 0',
+              textTransform: 'uppercase',
+              letterSpacing: '0.02em'
+            }}>
+              Archive Edition Complete!
+            </h2>
+            <div style={{ 
+              fontSize: '1.4rem',
+              fontWeight: 'bold',
+              color: 'var(--gold-highlight)'
+            }}>
+              Final Score: {calculateScore()} out of {puzzle.articles.length} correct
+            </div>
+          </div>
           
           {/* Show all results */}
-          <h3>Results Summary:</h3>
+          <h3 style={{ 
+            fontSize: '1.5rem',
+            marginBottom: '1.5rem',
+            textTransform: 'uppercase',
+            letterSpacing: '0.05em',
+            textAlign: 'center'
+          }}>
+            Complete Results Summary
+          </h3>
           <div>
             {articleStates.map((state, index) => (
               <div key={state.article.article_id} style={{ 
-                marginBottom: '15px', 
-                padding: '15px', 
-                border: '1px solid #ccc',
-                borderRadius: '8px',
-                backgroundColor: state.wasCorrect ? '#d4edda' : '#f8d7da'
+                marginBottom: '1.5rem', 
+                padding: '1.5rem', 
+                border: `2px solid ${state.wasCorrect ? 'var(--pastel-green-border)' : 'var(--pastel-red-border)'}`,
+                backgroundColor: state.wasCorrect ? 'var(--pastel-green)' : 'var(--pastel-red)'
               }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-                  <strong>{index + 1}. {state.article.title}</strong>
-                  <span style={{ fontSize: '24px' }}>
-                    {state.wasCorrect ? '✅' : '❌'}
+                <div style={{ 
+                  display: 'flex', 
+                  justifyContent: 'space-between', 
+                  alignItems: 'center', 
+                  marginBottom: '1rem',
+                  flexWrap: 'wrap',
+                  gap: '0.5rem'
+                }}>
+                  <strong style={{ fontSize: '1.2rem' }}>{index + 1}. {state.article.title}</strong>
+                  <span style={{ fontSize: '1.5rem' }}>
+                    {state.wasCorrect ? '✓' : '✗'}
                   </span>
                 </div>
                 
-                <div><strong>Your guess:</strong> &quot;{state.userGuess}&quot;</div>
+                <div style={{ marginBottom: '0.5rem' }}>
+                  <strong>Your identification:</strong> &quot;{state.userGuess}&quot;
+                </div>
                 
                 {!state.wasCorrect && (
-                  <div style={{ marginTop: '8px' }}>
-                    <strong>Categories were:</strong> {state.article.categories.join(', ')}
+                  <div style={{ 
+                    marginTop: '1rem',
+                    padding: '1rem',
+                    backgroundColor: 'var(--paper-white)',
+                    border: '1px solid var(--border-gray)'
+                  }}>
+                    <div style={{ marginBottom: '0.5rem' }}>
+                      <strong>Categories were:</strong> {state.article.categories.join(', ')}
+                    </div>
                     {state.article.aliases.length > 0 && (
                       <div><strong>Also known as:</strong> {state.article.aliases.join(', ')}</div>
                     )}
@@ -645,22 +806,30 @@ export default function ArchiveGamePage({ params }: ArchiveGamePageProps) {
             ))}
           </div>
 
-          <div style={{ marginTop: '20px', display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+          <div style={{ 
+            display: 'flex', 
+            gap: '1rem', 
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            marginTop: '2rem'
+          }}>
             <button 
               onClick={() => navigator.share?.({ 
-                title: 'Taxonomy Mystery', 
-                text: `I scored ${calculateScore()}/${puzzle.articles.length} on the ${formatDateForDisplay(puzzle.date)} Taxonomy Mystery puzzle!` 
+                title: 'The Daily Taxonomystery', 
+                text: `I scored ${calculateScore()}/${puzzle.articles.length} on the ${formatDateForDisplay(puzzle.date)} Taxonomy Mystery archive edition!` 
               })}
+              className="button"
               style={{
-                padding: '10px 20px',
-                backgroundColor: '#28a745',
-                color: 'white',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer'
+                fontSize: '1rem',
+                fontWeight: 'bold',
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+                background: 'var(--ink-black)',
+                color: 'var(--paper-white)',
+                borderColor: 'var(--ink-black)'
               }}
             >
-              Share Results
+              📰 Share Results
             </button>
             
             {isReplayMode && (
@@ -678,28 +847,25 @@ export default function ArchiveGamePage({ params }: ArchiveGamePageProps) {
                   }))
                   setArticleStates(freshStates)
                 }}
+                className="button"
                 style={{
-                  padding: '10px 20px',
-                  backgroundColor: '#007bff',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '4px',
-                  cursor: 'pointer'
+                  fontSize: '1rem',
+                  fontWeight: 'bold',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em'
                 }}
               >
                 🔄 Play Again
               </button>
             )}
             
-            <Link href="/archive" style={{ 
-              display: 'inline-block',
-              padding: '10px 20px', 
-              backgroundColor: '#6c757d', 
-              color: 'white', 
-              textDecoration: 'none',
-              borderRadius: '4px'
+            <Link href="/archive" className="button" style={{
+              fontSize: '1rem',
+              fontWeight: 'bold',
+              textTransform: 'uppercase',
+              letterSpacing: '0.05em'
             }}>
-              ← Back to Archive
+              ← Return to Archive
             </Link>
           </div>
         </section>

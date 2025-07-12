@@ -153,35 +153,297 @@ export default function ArchivePage() {
   return (
     <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '2rem' }}>
       {/* Newspaper Header */}
-      <header className="newspaper-header" style={{ marginBottom: '2rem' }}>
-        <h1 style={{ 
-          fontSize: '2.8rem',
-          margin: '0 0 0.5rem 0',
-          textTransform: 'uppercase',
-          letterSpacing: '-0.01em'
-        }}>
-          The Daily Taxonomy Mystery
-        </h1>
-        <div style={{
-          fontSize: '1.2rem',
-          fontStyle: 'italic',
-          color: 'var(--text-gray)',
-          margin: '0 0 1rem 0'
-        }}>
-          ARCHIVE VAULT
+      <header style={{ marginBottom: '2rem', textAlign: 'center' }}>
+        <div style={{ position: 'relative', textAlign: 'center' }}>
+          <h1 style={{ 
+            fontSize: '2.8rem',
+            margin: '0',
+            textTransform: 'uppercase',
+            letterSpacing: '-0.01em'
+          }}>
+            The Daily Taxonomystery
+          </h1>
+          <Link 
+            href="/game" 
+            className="button" 
+            style={{ 
+              fontSize: '0.7rem',
+              padding: '0.4rem 0.8rem',
+              position: 'absolute',
+              right: '0',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              opacity: '0.6',
+              background: 'var(--newsprint-gray)',
+              color: 'var(--text-gray)',
+              borderColor: 'var(--border-gray)',
+              transition: 'opacity 0.2s ease'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.opacity = '1'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.opacity = '0.6'
+            }}
+          >
+            ← Today
+          </Link>
         </div>
-        <p style={{ 
-          fontSize: '1rem',
-          color: 'var(--text-gray)',
-          margin: '0 0 1.5rem 0',
-          fontStyle: 'italic'
-        }}>
-          Browse and replay previous editions of our daily classification challenge
-        </p>
-        <Link href="/game" className="button" style={{ fontSize: '0.9rem' }}>
-          ← Return to Today&apos;s Edition
-        </Link>
       </header>
+
+
+      {/* Filter Controls */}
+      <section className="newspaper-section">
+        <h3 style={{ 
+          fontSize: '1.2rem',
+          margin: '0 0 1rem 0',
+          textTransform: 'uppercase',
+          letterSpacing: '0.05em'
+        }}>
+          Filter Editions:
+        </h3>
+        <div style={{ 
+          display: 'flex', 
+          gap: '0.75rem', 
+          alignItems: 'center', 
+          flexWrap: 'wrap'
+        }}>
+          <button
+            onClick={() => setFilter('all')}
+            className="button"
+            style={{
+              fontSize: '0.85rem',
+              background: filter === 'all' ? 'var(--ink-black)' : 'var(--paper-white)',
+              color: filter === 'all' ? 'var(--paper-white)' : 'var(--ink-black)',
+              borderColor: 'var(--ink-black)',
+              textTransform: 'uppercase',
+              letterSpacing: '0.05em'
+            }}
+          >
+            All ({puzzles.length})
+          </button>
+          <button
+            onClick={() => setFilter('completed')}
+            className="button"
+            style={{
+              fontSize: '0.85rem',
+              background: filter === 'completed' ? 'var(--ink-black)' : 'var(--paper-white)',
+              color: filter === 'completed' ? 'var(--paper-white)' : 'var(--ink-black)',
+              borderColor: 'var(--ink-black)',
+              textTransform: 'uppercase',
+              letterSpacing: '0.05em'
+            }}
+          >
+            Completed ({puzzles.filter(p => hasCompletedPuzzle(p.date)).length})
+          </button>
+          <button
+            onClick={() => setFilter('partial')}
+            className="button"
+            style={{
+              fontSize: '0.85rem',
+              background: filter === 'partial' ? 'var(--ink-black)' : 'var(--paper-white)',
+              color: filter === 'partial' ? 'var(--paper-white)' : 'var(--ink-black)',
+              borderColor: 'var(--ink-black)',
+              textTransform: 'uppercase',
+              letterSpacing: '0.05em'
+            }}
+          >
+            Partial ({puzzles.filter(p => hasPartialAttempt(p.date)).length})
+          </button>
+          <button
+            onClick={() => setFilter('not-attempted')}
+            className="button"
+            style={{
+              fontSize: '0.85rem',
+              background: filter === 'not-attempted' ? 'var(--ink-black)' : 'var(--paper-white)',
+              color: filter === 'not-attempted' ? 'var(--paper-white)' : 'var(--ink-black)',
+              borderColor: 'var(--ink-black)',
+              textTransform: 'uppercase',
+              letterSpacing: '0.05em'
+            }}
+          >
+            Not Attempted ({puzzles.filter(p => !hasAttemptedPuzzle(p.date)).length})
+          </button>
+        </div>
+      </section>
+
+      {/* Puzzle Grid */}
+      <section className="newspaper-section">
+        <h2 style={{ 
+          fontSize: '1.6rem',
+          margin: '0 0 1.5rem 0',
+          textTransform: 'uppercase',
+          letterSpacing: '0.05em',
+          textAlign: 'center'
+        }}>
+          {filter === 'all' ? 'Available Editions' : 
+           filter === 'completed' ? 'Completed Editions' : 
+           filter === 'partial' ? 'Partially Completed Editions' :
+           'Not Attempted Editions'} 
+           ({filteredPuzzles.length})
+        </h2>
+        <div style={{ 
+          display: 'grid', 
+          gap: '1.5rem', 
+          gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))'
+        }}>
+          {filteredPuzzles.map((puzzle) => {
+            const userScore = userScores[puzzle.date]
+            const isAttempted = hasAttemptedPuzzle(puzzle.date)
+            const isCompleted = hasCompletedPuzzle(puzzle.date)
+            const isPartial = hasPartialAttempt(puzzle.date)
+            
+            return (
+              <Link 
+                key={puzzle.date}
+                href={`/archive/${puzzle.date}`}
+                style={{ textDecoration: 'none', color: 'inherit' }}
+              >
+                <article style={{
+                  border: `2px solid ${
+                    isCompleted ? 'var(--pastel-green-border)' :
+                    isPartial ? 'var(--pastel-yellow-border)' :
+                    'var(--border-gray)'
+                  }`,
+                  padding: '1.5rem',
+                  backgroundColor: 
+                    isCompleted ? 'var(--pastel-green)' :
+                    isPartial ? 'var(--pastel-yellow)' :
+                    'var(--paper-white)',
+                  transition: 'all 0.2s ease',
+                  cursor: 'pointer',
+                  position: 'relative'
+                }}
+                onMouseEnter={(e) => {
+                  const hoverBg = isCompleted ? 'var(--pastel-green)' :
+                                 isPartial ? 'var(--pastel-yellow)' :
+                                 'var(--newsprint-gray)';
+                  e.currentTarget.style.backgroundColor = hoverBg;
+                  e.currentTarget.style.borderColor = 'var(--ink-black)';
+                }}
+                onMouseLeave={(e) => {
+                  const defaultBg = isCompleted ? 'var(--pastel-green)' :
+                                   isPartial ? 'var(--pastel-yellow)' :
+                                   'var(--paper-white)';
+                  const defaultBorder = isCompleted ? 'var(--pastel-green-border)' :
+                                       isPartial ? 'var(--pastel-yellow-border)' :
+                                       'var(--border-gray)';
+                  e.currentTarget.style.backgroundColor = defaultBg;
+                  e.currentTarget.style.borderColor = defaultBorder;
+                }}
+                >
+                  <div style={{ 
+                    display: 'flex', 
+                    justifyContent: 'space-between', 
+                    alignItems: 'flex-start',
+                    marginBottom: '1rem',
+                    borderBottom: '1px solid var(--border-gray)',
+                    paddingBottom: '0.75rem'
+                  }}>
+                    <h3 style={{ 
+                      margin: 0, 
+                      color: 'var(--ink-black)',
+                      fontSize: '1.2rem',
+                      fontWeight: 'bold'
+                    }}>
+                      {formatDate(puzzle.date)}
+                    </h3>
+                    <span style={{ 
+                      fontSize: '0.8rem', 
+                      color: 'var(--text-gray)',
+                      fontWeight: 'normal',
+                      fontFamily: 'var(--font-mono)',
+                      textTransform: 'uppercase'
+                    }}>
+                      {getRelativeTime(puzzle.date)}
+                    </span>
+                  </div>
+                  
+                  {/* Score Badge */}
+                  <div style={{ marginBottom: '1rem' }}>
+                    <ScoreBadge
+                      score={userScore?.score}
+                      totalQuestions={userScore?.totalQuestions}
+                      isAttempted={isAttempted}
+                      isCompleted={userScore?.isCompleted}
+                      answeredCount={userScore?.answers.filter(a => a.guess && a.guess.trim() !== '').length}
+                    />
+                  </div>
+                  
+                  <div style={{ 
+                    fontSize: '0.9rem', 
+                    color: 'var(--text-gray)',
+                    marginBottom: '1rem'
+                  }}>
+                    <p style={{ margin: '0.25rem 0' }}>
+                      <strong>Classification Count:</strong> {puzzle.article_count}
+                    </p>
+                    <p style={{ margin: '0.25rem 0' }}>
+                      <strong>Publication Date:</strong> {puzzle.date}
+                    </p>
+                  </div>
+                  
+                  <div style={{ 
+                    marginTop: '1rem', 
+                    padding: '0.75rem',
+                    backgroundColor: 'var(--ink-black)',
+                    color: 'var(--paper-white)',
+                    textAlign: 'center',
+                    fontSize: '0.9rem',
+                    fontWeight: 'bold',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em'
+                  }}>
+                    {isCompleted ? '🔄 Replay Edition' : 
+                     isPartial ? '▶️ Resume Edition' : 
+                     'Read Edition →'}
+                  </div>
+                </article>
+              </Link>
+            )
+          })}
+        </div>
+      </section>
+
+
+      {/* Empty State */}
+      {filteredPuzzles.length === 0 && (
+        <section className="newspaper-section" style={{ textAlign: 'center' }}>
+          <h3 style={{ 
+            fontSize: '1.4rem',
+            margin: '0 0 1rem 0',
+            textTransform: 'uppercase',
+            letterSpacing: '0.05em',
+            color: 'var(--text-gray)'
+          }}>
+            No Editions Found
+          </h3>
+          <p style={{ 
+            fontSize: '1rem',
+            color: 'var(--text-gray)',
+            marginBottom: '1.5rem'
+          }}>
+            {filter === 'completed' && 'You haven\'t completed any editions yet. Start with today\'s edition!'}
+            {filter === 'partial' && 'No partially completed editions. Start an edition and you can resume it later if needed!'}
+            {filter === 'not-attempted' && 'You\'ve attempted all available editions. Excellent work!'}
+            {filter === 'all' && 'No editions are available yet.'}
+          </p>
+          {filter !== 'all' && (
+            <button
+              onClick={() => setFilter('all')}
+              className="button"
+              style={{
+                fontSize: '1rem',
+                fontWeight: 'bold',
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em'
+              }}
+            >
+              Show All Editions
+            </button>
+          )}
+        </section>
+      )}
 
       {/* User Statistics */}
       {userStats.totalPuzzlesCompleted > 0 && (
@@ -294,244 +556,6 @@ export default function ArchivePage() {
               </div>
             </div>
           </div>
-        </section>
-      )}
-
-      {/* Filter Controls */}
-      <section className="newspaper-section">
-        <h3 style={{ 
-          fontSize: '1.2rem',
-          margin: '0 0 1rem 0',
-          textTransform: 'uppercase',
-          letterSpacing: '0.05em'
-        }}>
-          Filter Editions:
-        </h3>
-        <div style={{ 
-          display: 'flex', 
-          gap: '0.75rem', 
-          alignItems: 'center', 
-          flexWrap: 'wrap'
-        }}>
-          <button
-            onClick={() => setFilter('all')}
-            className="button"
-            style={{
-              fontSize: '0.85rem',
-              background: filter === 'all' ? 'var(--ink-black)' : 'var(--paper-white)',
-              color: filter === 'all' ? 'var(--paper-white)' : 'var(--ink-black)',
-              borderColor: 'var(--ink-black)',
-              textTransform: 'uppercase',
-              letterSpacing: '0.05em'
-            }}
-          >
-            All ({puzzles.length})
-          </button>
-          <button
-            onClick={() => setFilter('completed')}
-            className="button"
-            style={{
-              fontSize: '0.85rem',
-              background: filter === 'completed' ? 'var(--ink-black)' : 'var(--paper-white)',
-              color: filter === 'completed' ? 'var(--paper-white)' : 'var(--ink-black)',
-              borderColor: 'var(--ink-black)',
-              textTransform: 'uppercase',
-              letterSpacing: '0.05em'
-            }}
-          >
-            Completed ({puzzles.filter(p => hasCompletedPuzzle(p.date)).length})
-          </button>
-          <button
-            onClick={() => setFilter('partial')}
-            className="button"
-            style={{
-              fontSize: '0.85rem',
-              background: filter === 'partial' ? 'var(--ink-black)' : 'var(--paper-white)',
-              color: filter === 'partial' ? 'var(--paper-white)' : 'var(--ink-black)',
-              borderColor: 'var(--ink-black)',
-              textTransform: 'uppercase',
-              letterSpacing: '0.05em'
-            }}
-          >
-            Partial ({puzzles.filter(p => hasPartialAttempt(p.date)).length})
-          </button>
-          <button
-            onClick={() => setFilter('not-attempted')}
-            className="button"
-            style={{
-              fontSize: '0.85rem',
-              background: filter === 'not-attempted' ? 'var(--ink-black)' : 'var(--paper-white)',
-              color: filter === 'not-attempted' ? 'var(--paper-white)' : 'var(--ink-black)',
-              borderColor: 'var(--ink-black)',
-              textTransform: 'uppercase',
-              letterSpacing: '0.05em'
-            }}
-          >
-            Not Attempted ({puzzles.filter(p => !hasAttemptedPuzzle(p.date)).length})
-          </button>
-        </div>
-      </section>
-
-      {/* Puzzle Grid */}
-      <section className="newspaper-section">
-        <h2 style={{ 
-          fontSize: '1.6rem',
-          margin: '0 0 1.5rem 0',
-          textTransform: 'uppercase',
-          letterSpacing: '0.05em',
-          textAlign: 'center'
-        }}>
-          {filter === 'all' ? 'Available Editions' : 
-           filter === 'completed' ? 'Completed Editions' : 
-           filter === 'partial' ? 'Partially Completed Editions' :
-           'Not Attempted Editions'} 
-          ({filteredPuzzles.length})
-        </h2>
-        <div style={{ 
-          display: 'grid', 
-          gap: '1.5rem', 
-          gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))'
-        }}>
-          {filteredPuzzles.map((puzzle) => {
-            const userScore = userScores[puzzle.date]
-            const isAttempted = hasAttemptedPuzzle(puzzle.date)
-            const isCompleted = hasCompletedPuzzle(puzzle.date)
-            const isPartial = hasPartialAttempt(puzzle.date)
-            
-            return (
-              <Link 
-                key={puzzle.date}
-                href={`/archive/${puzzle.date}`}
-                style={{ textDecoration: 'none', color: 'inherit' }}
-              >
-                <article style={{
-                  border: '2px solid var(--border-gray)',
-                  padding: '1.5rem',
-                  backgroundColor: 'var(--paper-white)',
-                  transition: 'all 0.2s ease',
-                  cursor: 'pointer',
-                  position: 'relative'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = 'var(--newsprint-gray)'
-                  e.currentTarget.style.borderColor = 'var(--ink-black)'
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = 'var(--paper-white)'
-                  e.currentTarget.style.borderColor = 'var(--border-gray)'
-                }}
-                >
-                  <div style={{ 
-                    display: 'flex', 
-                    justifyContent: 'space-between', 
-                    alignItems: 'flex-start',
-                    marginBottom: '1rem',
-                    borderBottom: '1px solid var(--border-gray)',
-                    paddingBottom: '0.75rem'
-                  }}>
-                    <h3 style={{ 
-                      margin: 0, 
-                      color: 'var(--ink-black)',
-                      fontSize: '1.2rem',
-                      fontWeight: 'bold'
-                    }}>
-                      {formatDate(puzzle.date)}
-                    </h3>
-                    <span style={{ 
-                      fontSize: '0.8rem', 
-                      color: 'var(--text-gray)',
-                      fontWeight: 'normal',
-                      fontFamily: 'var(--font-mono)',
-                      textTransform: 'uppercase'
-                    }}>
-                      {getRelativeTime(puzzle.date)}
-                    </span>
-                  </div>
-                  
-                  {/* Score Badge */}
-                  <div style={{ marginBottom: '1rem' }}>
-                    <ScoreBadge
-                      score={userScore?.score}
-                      totalQuestions={userScore?.totalQuestions}
-                      isAttempted={isAttempted}
-                      isCompleted={userScore?.isCompleted}
-                      answeredCount={userScore?.answers.filter(a => a.guess && a.guess.trim() !== '').length}
-                    />
-                  </div>
-                  
-                  <div style={{ 
-                    fontSize: '0.9rem', 
-                    color: 'var(--text-gray)',
-                    marginBottom: '1rem'
-                  }}>
-                    <p style={{ margin: '0.25rem 0' }}>
-                      <strong>Classification Count:</strong> {puzzle.article_count}
-                    </p>
-                    <p style={{ margin: '0.25rem 0' }}>
-                      <strong>Publication Date:</strong> {puzzle.date}
-                    </p>
-                  </div>
-                  
-                  <div style={{ 
-                    marginTop: '1rem', 
-                    padding: '0.75rem',
-                    backgroundColor: isCompleted ? 'var(--text-gray)' : 
-                                   isPartial ? 'var(--accent-red)' : 'var(--ink-black)',
-                    color: 'var(--paper-white)',
-                    textAlign: 'center',
-                    fontSize: '0.9rem',
-                    fontWeight: 'bold',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.05em'
-                  }}>
-                    {isCompleted ? '🔄 Replay Edition' : 
-                     isPartial ? '▶️ Resume Edition' : 
-                     'Read Edition →'}
-                  </div>
-                </article>
-              </Link>
-            )
-          })}
-        </div>
-      </section>
-
-
-      {/* Empty State */}
-      {filteredPuzzles.length === 0 && (
-        <section className="newspaper-section" style={{ textAlign: 'center' }}>
-          <h3 style={{ 
-            fontSize: '1.4rem',
-            margin: '0 0 1rem 0',
-            textTransform: 'uppercase',
-            letterSpacing: '0.05em',
-            color: 'var(--text-gray)'
-          }}>
-            No Editions Found
-          </h3>
-          <p style={{ 
-            fontSize: '1rem',
-            color: 'var(--text-gray)',
-            marginBottom: '1.5rem'
-          }}>
-            {filter === 'completed' && 'You haven\'t completed any editions yet. Start with today\'s edition!'}
-            {filter === 'partial' && 'No partially completed editions. Start an edition and you can resume it later if needed!'}
-            {filter === 'not-attempted' && 'You\'ve attempted all available editions. Excellent work!'}
-            {filter === 'all' && 'No editions are available yet.'}
-          </p>
-          {filter !== 'all' && (
-            <button
-              onClick={() => setFilter('all')}
-              className="button"
-              style={{
-                fontSize: '1rem',
-                fontWeight: 'bold',
-                textTransform: 'uppercase',
-                letterSpacing: '0.05em'
-              }}
-            >
-              Show All Editions
-            </button>
-          )}
         </section>
       )}
     </div>

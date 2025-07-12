@@ -1,4 +1,4 @@
--- Initial TaxonomyMystery Database Schema
+-- Initial Taxonomystery Database Schema
 -- Based on docs/design_doc.md
 
 -- Articles pool (10,000 pre-loaded articles)

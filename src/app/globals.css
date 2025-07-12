@@ -11,6 +11,18 @@
   --light-gray: #e5e5e5;
   --border-gray: #d0d0d0;
   --accent-red: #cc0000;
+  --newspaper-blue: #1a365d;
+  --gold-highlight: #b8860b;
+  
+  /* Greyish pastel colors for readability */
+  --pastel-green: #f0f4f0;
+  --pastel-green-border: #d4ddd4;
+  --pastel-red: #f4f0f0;
+  --pastel-red-border: #ddd4d4;
+  --pastel-yellow: #f4f3f0;
+  --pastel-yellow-border: #ddd9d4;
+  --pastel-blue: #f0f2f4;
+  --pastel-blue-border: #d4d9dd;
 }
 
 @theme inline {
@@ -88,7 +100,7 @@ a:hover {
 
 .newspaper-header {
   text-align: center;
-  border-bottom: 3px double var(--ink-black);
+  border-bottom: 3px solid var(--ink-black);
   padding-bottom: 1rem;
   margin-bottom: 2rem;
 }

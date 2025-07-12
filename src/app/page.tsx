@@ -36,9 +36,10 @@ export default function Home() {
           </div>
           <div style={{
             fontSize: '0.9rem',
-            color: 'var(--text-gray)',
+            color: 'var(--newspaper-blue)',
             fontFamily: 'var(--font-mono)',
-            letterSpacing: '0.1em'
+            letterSpacing: '0.1em',
+            fontWeight: 'bold'
           }}>
             ESTABLISHED 2024 • DAILY EDITION
           </div>
