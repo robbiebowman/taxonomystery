@@ -9,6 +9,8 @@ interface PuzzleArticle {
   title: string
   categories: string[]
   aliases: string[]
+  snippet?: string
+  image_url?: string
 }
 
 interface Puzzle {
@@ -486,15 +488,6 @@ export default function ArchiveGamePage({ params }: ArchiveGamePageProps) {
                 </>
               ) : (
                 <div>
-                  <h3>Answer: 
-                    <a href={`https://en.wikipedia.org/wiki/${encodeURIComponent(currentArticle.article.title)}`} 
-                       target="_blank" 
-                       rel="noopener noreferrer"
-                       style={{ marginLeft: '10px' }}>
-                      {currentArticle.article.title}
-                    </a>
-                  </h3>
-                  
                   <div style={{ 
                     marginTop: '15px', 
                     padding: '10px', 
@@ -510,10 +503,75 @@ export default function ArchiveGamePage({ params }: ArchiveGamePageProps) {
                       <div>
                         <strong>❌ Incorrect</strong>
                         <p>Your guess: <em>&quot;{currentArticle.userGuess}&quot;</em></p>
-                        <p>Correct answer: <strong>{currentArticle.article.title}</strong></p>
                       </div>
                     )}
                   </div>
+
+                  {/* Article snippet and image */}
+                  {(currentArticle.article.snippet || currentArticle.article.image_url) && (
+                    <div style={{ 
+                      marginTop: '20px', 
+                      padding: '15px', 
+                      backgroundColor: '#ffffff', 
+                      borderRadius: '8px',
+                      border: '1px solid #dee2e6'
+                    }}>
+                      <div style={{ 
+                        display: 'flex', 
+                        gap: '15px', 
+                        alignItems: 'flex-start',
+                        flexWrap: 'wrap'
+                      }}>
+                        {currentArticle.article.image_url && (
+                          <div style={{ flexShrink: 0 }}>
+                            <img 
+                              src={currentArticle.article.image_url} 
+                              alt={currentArticle.article.title}
+                              style={{ 
+                                maxWidth: '200px', 
+                                maxHeight: '200px', 
+                                borderRadius: '4px',
+                                objectFit: 'cover'
+                              }}
+                              onError={(e) => {
+                                (e.target as HTMLImageElement).style.display = 'none';
+                              }}
+                            />
+                          </div>
+                        )}
+                        <div style={{ flex: 1, minWidth: '250px' }}>
+                          {currentArticle.article.snippet && (
+                            <div>
+                              <h4 style={{ marginTop: 0, marginBottom: '10px', color: '#333', fontSize: '18px', fontWeight: 'bold' }}>
+                                {currentArticle.article.title}
+                              </h4>
+                              <p style={{ 
+                                lineHeight: '1.5', 
+                                color: '#555',
+                                margin: '0 0 10px 0',
+                                fontSize: '16px'
+                              }}>
+                                {currentArticle.article.snippet}
+                              </p>
+                            </div>
+                          )}
+                          <a 
+                            href={`https://en.wikipedia.org/wiki/${encodeURIComponent(currentArticle.article.title)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{ 
+                              color: '#007bff', 
+                              textDecoration: 'none',
+                              fontSize: '14px',
+                              fontWeight: '500'
+                            }}
+                          >
+                            📖 Read more on Wikipedia →
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
             </div>

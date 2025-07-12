@@ -113,20 +113,23 @@ export class PuzzleGenerator {
       try {
         console.log(`  📄 Processing: ${article.title}`);
         
-        const [categories, aliases] = await Promise.all([
+        const [categories, aliases, snippetAndImage] = await Promise.all([
           this.wikipediaClient.getCategories(article.title),
-          this.wikipediaClient.getAliases(article.title)
+          this.wikipediaClient.getAliases(article.title),
+          this.wikipediaClient.getSnippetAndImage(article.title)
         ]);
 
         const filteredCategories = this.categoryFilter.filterCategories(article.title, categories);
         
-        console.log(`    ✅ ${article.title}: ${filteredCategories.length} categories, ${aliases.length} aliases`);
+        console.log(`    ✅ ${article.title}: ${filteredCategories.length} categories, ${aliases.length} aliases, ${snippetAndImage.snippet ? 'snippet' : 'no snippet'}, ${snippetAndImage.imageUrl ? 'image' : 'no image'}`);
 
         return {
           article_id: article.id,
           title: article.title,
           categories: filteredCategories,
-          aliases: aliases.filter(alias => alias !== article.title)
+          aliases: aliases.filter(alias => alias !== article.title),
+          snippet: snippetAndImage.snippet,
+          image_url: snippetAndImage.imageUrl
         };
 
       } catch (error) {
@@ -136,7 +139,9 @@ export class PuzzleGenerator {
           article_id: article.id,
           title: article.title,
           categories: [],
-          aliases: []
+          aliases: [],
+          snippet: undefined,
+          image_url: undefined
         };
       } finally {
         semaphore.release();

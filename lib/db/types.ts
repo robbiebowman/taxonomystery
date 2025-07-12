@@ -18,6 +18,8 @@ export interface PuzzleArticle {
   title: string
   categories: string[]
   aliases: string[]
+  snippet?: string // Wikipedia article extract/summary
+  image_url?: string // Wikipedia image thumbnail URL
 }
 
 export interface UserScore {

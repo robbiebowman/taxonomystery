@@ -54,7 +54,7 @@ export class PuzzlesRepository {
       // Get articles separately 
       const { data: articles, error: articlesError } = await supabase
         .from('puzzle_articles')
-        .select('article_id, title, categories, aliases')
+        .select('article_id, title, categories, aliases, snippet, image_url')
         .eq('puzzle_id', basicPuzzle.id);
         
       if (articlesError) {

@@ -21,9 +21,24 @@ interface WikidataResponse {
   }>;
 }
 
+interface WikipediaSummaryResponse {
+  extract?: string;
+  thumbnail?: {
+    source: string;
+    width: number;
+    height: number;
+  };
+  originalimage?: {
+    source: string;
+    width: number;
+    height: number;
+  };
+}
+
 export class WikipediaClient {
   private readonly baseUrl = 'https://en.wikipedia.org/w/api.php';
   private readonly wikidataUrl = 'https://www.wikidata.org/w/api.php';
+  private readonly restApiUrl = 'https://en.wikipedia.org/api/rest_v1';
   private readonly userAgent = process.env.WIKIPEDIA_USER_AGENT || 'TaxonomyMystery/1.0';
 
   async getCategories(title: string): Promise<string[]> {
@@ -109,6 +124,63 @@ export class WikipediaClient {
     } catch (error) {
       console.error(`Failed to fetch aliases for "${title}":`, error);
       return [];
+    }
+  }
+
+  async getSnippetAndImage(title: string): Promise<{ snippet?: string; imageUrl?: string }> {
+    // URL encode the title for the REST API
+    const encodedTitle = encodeURIComponent(title.replace(/ /g, '_'));
+    const url = `${this.restApiUrl}/page/summary/${encodedTitle}`;
+
+    try {
+      const response = await this.retryRequest(() =>
+        fetch(url, {
+          headers: {
+            'User-Agent': this.userAgent
+          }
+        })
+      );
+
+      if (!response.ok) {
+        // If the article doesn't exist or we get a 404, return empty result
+        if (response.status === 404) {
+          console.log(`Article "${title}" not found, skipping snippet/image`);
+          return {};
+        }
+        throw new Error(`Wikipedia REST API error: ${response.status}`);
+      }
+
+      const data: WikipediaSummaryResponse = await response.json();
+      
+      return {
+        snippet: data.extract ? this.truncateSnippet(data.extract) : undefined,
+        imageUrl: data.thumbnail?.source || data.originalimage?.source
+      };
+
+    } catch (error) {
+      console.error(`Failed to fetch snippet/image for "${title}":`, error);
+      return {};
+    }
+  }
+
+  private truncateSnippet(text: string, maxLength: number = 400): string {
+    if (text.length <= maxLength) return text;
+    
+    // Find the last complete sentence within the limit
+    const truncated = text.substring(0, maxLength);
+    const lastSentenceEnd = Math.max(
+      truncated.lastIndexOf('.'),
+      truncated.lastIndexOf('!'),
+      truncated.lastIndexOf('?')
+    );
+    
+    if (lastSentenceEnd > maxLength * 0.5) {
+      // If we found a sentence ending in the latter half, use it
+      return truncated.substring(0, lastSentenceEnd + 1);
+    } else {
+      // Otherwise, truncate at word boundary and add ellipsis
+      const lastSpace = truncated.lastIndexOf(' ');
+      return lastSpace > 0 ? truncated.substring(0, lastSpace) + '...' : truncated + '...';
     }
   }
 

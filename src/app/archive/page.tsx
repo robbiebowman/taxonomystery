@@ -385,62 +385,6 @@ export default function ArchivePage() {
         </div>
       </section>
 
-      {/* Alternative List View for smaller screens */}
-      {filteredPuzzles.length > 0 && (
-        <section style={{ marginTop: '40px' }}>
-          <h3>Quick List View</h3>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            {filteredPuzzles.map((puzzle) => {
-              const userScore = userScores[puzzle.date]
-              const isAttempted = hasAttemptedPuzzle(puzzle.date)
-              
-              return (
-                <Link 
-                  key={`list-${puzzle.date}`}
-                  href={`/archive/${puzzle.date}`}
-                  style={{ 
-                    textDecoration: 'none', 
-                    color: 'inherit',
-                    display: 'block',
-                    padding: '12px',
-                    border: '1px solid #dee2e6',
-                    borderRadius: '4px',
-                    backgroundColor: '#ffffff'
-                  }}
-                >
-                  <div style={{ 
-                    display: 'flex', 
-                    justifyContent: 'space-between', 
-                    alignItems: 'center',
-                    gap: '10px'
-                  }}>
-                    <div style={{ flex: 1 }}>
-                      <div>
-                        <strong>{formatDate(puzzle.date)}</strong>
-                        <span style={{ marginLeft: '10px', color: '#6c757d' }}>
-                          ({puzzle.article_count} articles)
-                        </span>
-                      </div>
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                      <ScoreBadge
-                        score={userScore?.score}
-                        totalQuestions={userScore?.totalQuestions}
-                        isAttempted={isAttempted}
-                        isCompleted={userScore?.isCompleted}
-                        answeredCount={userScore?.answers.filter(a => a.guess && a.guess.trim() !== '').length}
-                      />
-                      <div style={{ fontSize: '12px', color: '#6c757d', minWidth: '80px', textAlign: 'right' }}>
-                        {getRelativeTime(puzzle.date)}
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              )
-            })}
-          </div>
-        </section>
-      )}
 
       {/* Empty State */}
       {filteredPuzzles.length === 0 && (
