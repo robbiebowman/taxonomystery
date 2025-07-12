@@ -24,16 +24,8 @@ export default function Home() {
             letterSpacing: '-0.02em',
             textTransform: 'uppercase'
           }}>
-            The Daily Taxonomy
+            The Daily Taxonomystery
           </h1>
-          <div style={{
-            fontSize: '1.2rem',
-            fontStyle: 'italic',
-            color: 'var(--text-gray)',
-            margin: '0 0 1rem 0'
-          }}>
-            MYSTERY
-          </div>
           <div style={{
             fontSize: '0.9rem',
             color: 'var(--newspaper-blue)',
