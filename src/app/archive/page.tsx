@@ -156,10 +156,12 @@ export default function ArchivePage() {
       <header style={{ marginBottom: '2rem', textAlign: 'center' }}>
         <div style={{ position: 'relative', textAlign: 'center' }}>
           <h1 style={{ 
-            fontSize: '2.8rem',
+            fontSize: 'clamp(2rem, 6vw, 2.8rem)',
             margin: '0',
             textTransform: 'uppercase',
-            letterSpacing: '-0.01em'
+            letterSpacing: '-0.01em',
+            wordBreak: 'break-word',
+            hyphens: 'auto'
           }}>
             The Daily Taxonomystery
           </h1>

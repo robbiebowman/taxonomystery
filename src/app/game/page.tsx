@@ -357,10 +357,12 @@ export default function GamePage() {
       {/* Newspaper Header */}
       <header className="newspaper-header" style={{ marginBottom: '2rem' }}>
         <h1 style={{ 
-          fontSize: '2.5rem',
+          fontSize: 'clamp(1.8rem, 6vw, 2.5rem)',
           margin: '0 0 0.5rem 0',
           textTransform: 'uppercase',
-          letterSpacing: '-0.01em'
+          letterSpacing: '-0.01em',
+          wordBreak: 'break-word',
+          hyphens: 'auto'
         }}>
           The Daily Taxonomystery
         </h1>
