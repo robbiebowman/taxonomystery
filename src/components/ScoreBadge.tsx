@@ -15,16 +15,18 @@ export default function ScoreBadge({ score, totalQuestions, isAttempted, isCompl
       <div style={{
         display: 'inline-flex',
         alignItems: 'center',
-        padding: '4px 8px',
-        borderRadius: '12px',
-        backgroundColor: '#f8f9fa',
-        border: '1px solid #dee2e6',
-        fontSize: '12px',
-        fontWeight: '500',
-        color: '#6c757d',
+        padding: '0.25rem 0.5rem',
+        backgroundColor: 'var(--newsprint-gray)',
+        border: '1px solid var(--border-gray)',
+        fontSize: '0.75rem',
+        fontWeight: 'bold',
+        color: 'var(--text-gray)',
+        fontFamily: 'var(--font-mono)',
+        textTransform: 'uppercase',
+        letterSpacing: '0.05em',
         ...style
       }}>
-        ⭕ Not attempted
+        ○ Not Attempted
       </div>
     )
   }
@@ -35,18 +37,20 @@ export default function ScoreBadge({ score, totalQuestions, isAttempted, isCompl
       <div style={{
         display: 'inline-flex',
         alignItems: 'center',
-        gap: '4px',
-        padding: '4px 8px',
-        borderRadius: '12px',
-        backgroundColor: '#fff3cd',
-        border: '1px solid #ffeaa7',
-        fontSize: '12px',
-        fontWeight: '600',
-        color: '#856404',
+        gap: '0.25rem',
+        padding: '0.25rem 0.5rem',
+        backgroundColor: 'var(--paper-white)',
+        border: '2px solid var(--accent-red)',
+        fontSize: '0.75rem',
+        fontWeight: 'bold',
+        color: 'var(--accent-red)',
+        fontFamily: 'var(--font-mono)',
+        textTransform: 'uppercase',
+        letterSpacing: '0.05em',
         ...style
       }}>
-        <span>⏸️</span>
-        <span>{answeredCount}/{totalQuestions} answered</span>
+        <span>▶</span>
+        <span>{answeredCount}/{totalQuestions} Done</span>
       </div>
     )
   }
@@ -61,40 +65,48 @@ export default function ScoreBadge({ score, totalQuestions, isAttempted, isCompl
   // Determine colors based on performance
   let backgroundColor: string
   let textColor: string
-  let emoji: string
+  let borderColor: string
+  let symbol: string
 
   if (percentage >= 80) {
-    backgroundColor = '#d4edda'
-    textColor = '#155724'
-    emoji = '🏆'
+    backgroundColor = 'var(--newsprint-gray)'
+    textColor = 'var(--ink-black)'
+    borderColor = 'var(--ink-black)'
+    symbol = '★'
   } else if (percentage >= 60) {
-    backgroundColor = '#d1ecf1'
-    textColor = '#0c5460'
-    emoji = '👍'
+    backgroundColor = 'var(--paper-white)'
+    textColor = 'var(--ink-black)'
+    borderColor = 'var(--ink-black)'
+    symbol = '✓'
   } else if (percentage >= 40) {
-    backgroundColor = '#fff3cd'
-    textColor = '#856404'
-    emoji = '👌'
+    backgroundColor = 'var(--paper-white)'
+    textColor = 'var(--text-gray)'
+    borderColor = 'var(--text-gray)'
+    symbol = '△'
   } else {
-    backgroundColor = '#f8d7da'
-    textColor = '#721c24'
-    emoji = '💪'
+    backgroundColor = 'var(--paper-white)'
+    textColor = 'var(--text-gray)'
+    borderColor = 'var(--border-gray)'
+    symbol = '○'
   }
 
   return (
     <div style={{
       display: 'inline-flex',
       alignItems: 'center',
-      gap: '4px',
-      padding: '4px 8px',
-      borderRadius: '12px',
+      gap: '0.25rem',
+      padding: '0.25rem 0.5rem',
       backgroundColor,
-      fontSize: '12px',
-      fontWeight: '600',
+      border: `2px solid ${borderColor}`,
+      fontSize: '0.75rem',
+      fontWeight: 'bold',
       color: textColor,
+      fontFamily: 'var(--font-mono)',
+      textTransform: 'uppercase',
+      letterSpacing: '0.05em',
       ...style
     }}>
-      <span>{emoji}</span>
+      <span>{symbol}</span>
       <span>{score}/{totalQuestions}</span>
     </div>
   )

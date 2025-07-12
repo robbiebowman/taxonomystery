@@ -2,26 +2,116 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-8 row-start-2 items-center">
-        <h1 className="text-4xl font-bold">Taxonomy Mystery</h1>
-        <p className="text-lg text-center max-w-md">
-          Daily Wikipedia category puzzle. Find what these articles have in common!
-        </p>
+    <div style={{ 
+      minHeight: '100vh', 
+      display: 'flex', 
+      flexDirection: 'column', 
+      justifyContent: 'center', 
+      alignItems: 'center',
+      padding: '2rem',
+      background: 'var(--background)'
+    }}>
+      <main style={{ 
+        textAlign: 'center',
+        maxWidth: '800px',
+        width: '100%'
+      }}>
+        <div className="newspaper-header">
+          <h1 style={{ 
+            fontSize: '3.5rem', 
+            fontWeight: 'bold',
+            margin: '0 0 0.5rem 0',
+            letterSpacing: '-0.02em',
+            textTransform: 'uppercase'
+          }}>
+            The Daily Taxonomy
+          </h1>
+          <div style={{
+            fontSize: '1.2rem',
+            fontStyle: 'italic',
+            color: 'var(--text-gray)',
+            margin: '0 0 1rem 0'
+          }}>
+            MYSTERY
+          </div>
+          <div style={{
+            fontSize: '0.9rem',
+            color: 'var(--text-gray)',
+            fontFamily: 'var(--font-mono)',
+            letterSpacing: '0.1em'
+          }}>
+            ESTABLISHED 2024 • DAILY EDITION
+          </div>
+        </div>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <Link
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="/game"
-          >
-            Play Today&apos;s Puzzle
-          </Link>
-          <Link
-            className="rounded-full border border-solid border-gray-300 dark:border-gray-600 transition-colors flex items-center justify-center bg-transparent text-foreground gap-2 hover:bg-gray-100 dark:hover:bg-gray-800 font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="/archive"
-          >
-            Previous Puzzles
-          </Link>
+        <div className="newspaper-section" style={{ 
+          textAlign: 'center',
+          margin: '2rem 0'
+        }}>
+          <h2 style={{ 
+            fontSize: '1.8rem',
+            marginBottom: '1rem',
+            fontStyle: 'italic'
+          }}>
+            Daily Wikipedia Category Puzzle
+          </h2>
+          <p style={{ 
+            fontSize: '1.1rem', 
+            lineHeight: '1.7',
+            marginBottom: '2rem',
+            maxWidth: '600px',
+            margin: '0 auto 2rem auto'
+          }}>
+            Test your knowledge with today&apos;s challenge. Can you identify what these Wikipedia articles have in common? Each puzzle features carefully selected articles with shared categories.
+          </p>
+
+          <div style={{ 
+            display: 'flex', 
+            gap: '1rem', 
+            justifyContent: 'center',
+            flexWrap: 'wrap'
+          }}>
+            <Link
+              className="button"
+              href="/game"
+              style={{
+                fontSize: '1.1rem',
+                fontWeight: 'bold',
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+                minWidth: '200px'
+              }}
+            >
+              📰 Today&apos;s Puzzle
+            </Link>
+            <Link
+              className="button"
+              href="/archive"
+              style={{
+                fontSize: '1.1rem',
+                fontWeight: 'bold',
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+                minWidth: '200px',
+                background: 'var(--newsprint-gray)',
+                borderColor: 'var(--border-gray)',
+                color: 'var(--text-gray)'
+              }}
+            >
+              📚 Archive
+            </Link>
+          </div>
+        </div>
+
+        <div style={{
+          fontSize: '0.9rem',
+          color: 'var(--text-gray)',
+          fontStyle: 'italic',
+          textAlign: 'center',
+          padding: '1rem 0',
+          borderTop: '1px solid var(--border-gray)'
+        }}>
+          &quot;All the news that&apos;s fit to categorize&quot;
         </div>
       </main>
     </div>

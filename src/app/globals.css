@@ -1,26 +1,144 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Newspaper color scheme */
+  --background: #fafafa;
+  --foreground: #1a1a1a;
+  --paper-white: #ffffff;
+  --newsprint-gray: #f5f5f5;
+  --ink-black: #000000;
+  --text-gray: #333333;
+  --light-gray: #e5e5e5;
+  --border-gray: #d0d0d0;
+  --accent-red: #cc0000;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-serif: "Times New Roman", Times, "Liberation Serif", serif;
+  --font-sans: Georgia, "Times New Roman", Times, serif;
+  --font-mono: "Courier New", Courier, monospace;
 }
 
+/* Remove dark mode for newspaper theme */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #fafafa;
+    --foreground: #1a1a1a;
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Times New Roman", Times, "Liberation Serif", serif;
+  line-height: 1.6;
+  font-size: 16px;
+}
+
+/* Newspaper typography */
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Times New Roman", Times, "Liberation Serif", serif;
+  font-weight: bold;
+  line-height: 1.2;
+  color: var(--ink-black);
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+}
+
+h1 {
+  font-size: 2.5rem;
+  border-bottom: 3px solid var(--ink-black);
+  padding-bottom: 0.25rem;
+  margin-bottom: 1rem;
+}
+
+h2 {
+  font-size: 2rem;
+  border-bottom: 2px solid var(--border-gray);
+  padding-bottom: 0.25rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+  border-bottom: 1px solid var(--light-gray);
+  padding-bottom: 0.1rem;
+}
+
+/* Newspaper-style links */
+a {
+  color: var(--ink-black);
+  text-decoration: underline;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--accent-red);
+}
+
+/* Newspaper columns and sections */
+.newspaper-section {
+  border: 1px solid var(--border-gray);
+  background: var(--paper-white);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.newspaper-header {
+  text-align: center;
+  border-bottom: 3px double var(--ink-black);
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
+}
+
+/* Button styling */
+button, .button {
+  font-family: "Times New Roman", Times, serif;
+  font-weight: bold;
+  border: 2px solid var(--ink-black);
+  background: var(--paper-white);
+  color: var(--ink-black);
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+}
+
+button:hover, .button:hover {
+  background: var(--ink-black);
+  color: var(--paper-white);
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Input styling */
+input[type="text"], input[type="email"], textarea {
+  font-family: "Times New Roman", Times, serif;
+  border: 2px solid var(--border-gray);
+  background: var(--paper-white);
+  padding: 0.75rem;
+  font-size: 1rem;
+  color: var(--ink-black);
+}
+
+input[type="text"]:focus, input[type="email"]:focus, textarea:focus {
+  outline: none;
+  border-color: var(--ink-black);
+}
+
+/* Black and white images for newspaper effect */
+img {
+  filter: grayscale(100%);
+  transition: filter 0.3s ease;
+}
+
+img:hover {
+  filter: grayscale(0%);
 }
