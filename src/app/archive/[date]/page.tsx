@@ -384,7 +384,13 @@ export default function ArchiveGamePage({ params }: ArchiveGamePageProps) {
   const currentArticle = articleStates[currentArticleIndex]
 
   return (
-    <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '2rem' }}>
+    <div style={{ 
+      maxWidth: '1000px', 
+      margin: '0 auto', 
+      padding: 'clamp(1rem, 4vw, 2rem)',
+      width: '100%',
+      boxSizing: 'border-box'
+    }}>
       {/* Newspaper Header */}
       <header className="newspaper-header" style={{ marginBottom: '2rem' }}>
         <Link href="/archive" className="button" style={{ 
@@ -539,11 +545,13 @@ export default function ArchiveGamePage({ params }: ArchiveGamePageProps) {
                     {currentArticle.wasCorrect ? (
                       <div>
                         <h3 style={{ 
-                          fontSize: '1.5rem',
+                          fontSize: 'clamp(1rem, 4vw, 1.5rem)',
                           margin: '0 0 1rem 0',
                           color: 'var(--ink-black)',
                           textTransform: 'uppercase',
-                          letterSpacing: '0.1em'
+                          letterSpacing: 'clamp(0.02em, 0.5vw, 0.1em)',
+                          wordBreak: 'break-word',
+                          hyphens: 'auto'
                         }}>
                           ✓ CORRECT IDENTIFICATION
                         </h3>
@@ -558,13 +566,15 @@ export default function ArchiveGamePage({ params }: ArchiveGamePageProps) {
                     ) : (
                       <div>
                         <h3 style={{ 
-                          fontSize: '1.5rem',
+                          fontSize: 'clamp(1rem, 4vw, 1.5rem)',
                           margin: '0 0 1rem 0',
                           color: 'var(--text-gray)',
                           textTransform: 'uppercase',
-                          letterSpacing: '0.1em'
+                          letterSpacing: 'clamp(0.02em, 0.5vw, 0.1em)',
+                          wordBreak: 'break-word',
+                          hyphens: 'auto'
                         }}>
-                          ✗ MISIDENTIFICATION
+                          ✗ MISIDEN&shy;TIFICATION
                         </h3>
                         <p style={{ 
                           fontSize: '1.1rem',
@@ -581,15 +591,21 @@ export default function ArchiveGamePage({ params }: ArchiveGamePageProps) {
                   {(currentArticle.article.snippet || currentArticle.article.image_url) && (
                     <div style={{ 
                       marginTop: '1.5rem', 
-                      padding: '1.5rem', 
+                      padding: 'clamp(0.75rem, 2.5vw, 1.5rem)', 
                       backgroundColor: 'var(--paper-white)', 
-                      border: '2px solid var(--border-gray)'
+                      border: '2px solid var(--border-gray)',
+                      width: '100%',
+                      maxWidth: '100%',
+                      boxSizing: 'border-box',
+                      overflow: 'hidden'
                     }}>
                       <div style={{ 
                         display: 'flex', 
-                        gap: '1.5rem', 
+                        gap: 'clamp(0.5rem, 2vw, 1.5rem)', 
                         alignItems: 'flex-start',
-                        flexWrap: 'wrap'
+                        flexWrap: 'wrap',
+                        width: '100%',
+                        maxWidth: '100%'
                       }}>
                         {currentArticle.article.image_url && (
                           <div style={{ flexShrink: 0 }}>
@@ -608,7 +624,11 @@ export default function ArchiveGamePage({ params }: ArchiveGamePageProps) {
                             />
                           </div>
                         )}
-                        <div style={{ flex: 1, minWidth: '250px' }}>
+                        <div style={{ 
+                          flex: 1, 
+                          minWidth: '200px',
+                          maxWidth: '100%'
+                        }}>
                           {currentArticle.article.snippet && (
                             <div>
                               <h4 style={{ 
@@ -623,11 +643,13 @@ export default function ArchiveGamePage({ params }: ArchiveGamePageProps) {
                                 {currentArticle.article.title}
                               </h4>
                               <p style={{ 
-                                lineHeight: '1.7', 
+                                lineHeight: '1.6', 
                                 color: 'var(--text-gray)',
                                 margin: '0 0 1rem 0',
-                                fontSize: '1rem',
-                                textAlign: 'justify'
+                                fontSize: 'clamp(0.9rem, 2.5vw, 1rem)',
+                                textAlign: 'left',
+                                wordWrap: 'break-word',
+                                hyphens: 'auto'
                               }}>
                                 {currentArticle.article.snippet}
                               </p>

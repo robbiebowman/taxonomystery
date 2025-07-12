@@ -151,7 +151,13 @@ export default function ArchivePage() {
   }
 
   return (
-    <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '2rem' }}>
+    <div style={{ 
+      maxWidth: '1200px', 
+      margin: '0 auto', 
+      padding: 'clamp(1rem, 4vw, 2rem)',
+      width: '100%',
+      boxSizing: 'border-box'
+    }}>
       {/* Newspaper Header */}
       <header style={{ marginBottom: '2rem', textAlign: 'center' }}>
         <div style={{ position: 'relative', textAlign: 'center' }}>
@@ -307,7 +313,7 @@ export default function ArchivePage() {
                     isPartial ? 'var(--pastel-yellow-border)' :
                     'var(--border-gray)'
                   }`,
-                  padding: '1.5rem',
+                  padding: 'clamp(1rem, 3vw, 1.5rem)',
                   backgroundColor: 
                     isCompleted ? 'var(--pastel-green)' :
                     isPartial ? 'var(--pastel-yellow)' :

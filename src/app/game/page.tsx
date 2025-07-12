@@ -353,7 +353,13 @@ export default function GamePage() {
   const currentArticle = articleStates[currentArticleIndex]
 
   return (
-    <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '2rem' }}>
+    <div style={{ 
+      maxWidth: '1000px', 
+      margin: '0 auto', 
+      padding: 'clamp(1rem, 4vw, 2rem)',
+      width: '100%',
+      boxSizing: 'border-box'
+    }}>
       {/* Newspaper Header */}
       <header className="newspaper-header" style={{ marginBottom: '2rem' }}>
         <h1 style={{ 
@@ -461,7 +467,7 @@ export default function GamePage() {
               Featured Article Classification
             </h2>
             <div style={{ 
-              padding: '2rem', 
+              padding: 'clamp(1rem, 4vw, 2rem)', 
               border: '3px solid var(--ink-black)', 
               backgroundColor: 'var(--paper-white)',
               borderStyle: 'double'
@@ -498,7 +504,7 @@ export default function GamePage() {
                 <div>
                   <div style={{ 
                     marginBottom: '1.5rem', 
-                    padding: '1.5rem', 
+                    padding: 'clamp(1rem, 3vw, 1.5rem)', 
                     backgroundColor: currentArticle.wasCorrect ? 'var(--pastel-green)' : 'var(--pastel-red)', 
                     border: `3px solid ${currentArticle.wasCorrect ? 'var(--pastel-green-border)' : 'var(--pastel-red-border)'}`,
                     textAlign: 'center'
@@ -506,11 +512,13 @@ export default function GamePage() {
                     {currentArticle.wasCorrect ? (
                       <div>
                         <h3 style={{ 
-                          fontSize: '1.5rem',
+                          fontSize: 'clamp(1rem, 4vw, 1.5rem)',
                           margin: '0 0 1rem 0',
                           color: 'var(--ink-black)',
                           textTransform: 'uppercase',
-                          letterSpacing: '0.1em'
+                          letterSpacing: 'clamp(0.02em, 0.5vw, 0.1em)',
+                          wordBreak: 'break-word',
+                          hyphens: 'auto'
                         }}>
                           ✓ CORRECT IDENTIFICATION
                         </h3>
@@ -525,13 +533,15 @@ export default function GamePage() {
                     ) : (
                       <div>
                         <h3 style={{ 
-                          fontSize: '1.5rem',
+                          fontSize: 'clamp(1rem, 4vw, 1.5rem)',
                           margin: '0 0 1rem 0',
                           color: 'var(--text-gray)',
                           textTransform: 'uppercase',
-                          letterSpacing: '0.1em'
+                          letterSpacing: 'clamp(0.02em, 0.5vw, 0.1em)',
+                          wordBreak: 'break-word',
+                          hyphens: 'auto'
                         }}>
-                          ✗ MISIDENTIFICATION
+                          ✗ MISIDEN&shy;TIFICATION
                         </h3>
                         <p style={{ 
                           fontSize: '1.1rem',
@@ -548,24 +558,34 @@ export default function GamePage() {
                   {(currentArticle.article.snippet || currentArticle.article.image_url) && (
                     <div style={{ 
                       marginTop: '1.5rem', 
-                      padding: '1.5rem', 
+                      padding: 'clamp(0.75rem, 2.5vw, 1.5rem)', 
                       backgroundColor: 'var(--paper-white)', 
-                      border: '2px solid var(--border-gray)'
+                      border: '2px solid var(--border-gray)',
+                      width: '100%',
+                      maxWidth: '100%',
+                      boxSizing: 'border-box',
+                      overflow: 'hidden'
                     }}>
                       <div style={{ 
                         display: 'flex', 
-                        gap: '1.5rem', 
+                        gap: 'clamp(0.5rem, 2vw, 1.5rem)', 
                         alignItems: 'flex-start',
-                        flexWrap: 'wrap'
+                        flexWrap: 'wrap',
+                        width: '100%',
+                        maxWidth: '100%'
                       }}>
                         {currentArticle.article.image_url && (
-                          <div style={{ flexShrink: 0 }}>
+                          <div style={{ 
+                            flexShrink: 0,
+                            maxWidth: 'clamp(120px, 30vw, 200px)'
+                          }}>
                             <img 
                               src={currentArticle.article.image_url} 
                               alt={currentArticle.article.title}
                               style={{ 
-                                maxWidth: '200px', 
-                                maxHeight: '200px', 
+                                width: '100%',
+                                height: 'auto',
+                                maxWidth: '100%',
                                 border: '2px solid var(--border-gray)',
                                 objectFit: 'cover'
                               }}
@@ -575,26 +595,34 @@ export default function GamePage() {
                             />
                           </div>
                         )}
-                        <div style={{ flex: 1, minWidth: '250px' }}>
+                        <div style={{ 
+                          flex: 1, 
+                          minWidth: '200px',
+                          maxWidth: '100%'
+                        }}>
                           {currentArticle.article.snippet && (
                             <div>
                               <h4 style={{ 
                                 marginTop: 0, 
                                 marginBottom: '1rem', 
                                 color: 'var(--ink-black)', 
-                                fontSize: '1.4rem', 
+                                fontSize: 'clamp(1rem, 4vw, 1.4rem)', 
                                 fontWeight: 'bold',
                                 textTransform: 'uppercase',
-                                letterSpacing: '0.02em'
+                                letterSpacing: 'clamp(0.01em, 0.5vw, 0.02em)',
+                                wordBreak: 'break-word',
+                                hyphens: 'auto'
                               }}>
                                 {currentArticle.article.title}
                               </h4>
                               <p style={{ 
-                                lineHeight: '1.7', 
+                                lineHeight: '1.6', 
                                 color: 'var(--text-gray)',
                                 margin: '0 0 1rem 0',
-                                fontSize: '1rem',
-                                textAlign: 'justify'
+                                fontSize: 'clamp(0.9rem, 2.5vw, 1rem)',
+                                textAlign: 'left',
+                                wordWrap: 'break-word',
+                                hyphens: 'auto'
                               }}>
                                 {currentArticle.article.snippet}
                               </p>
