@@ -13,7 +13,7 @@ export default function Home() {
     }}>
       <main style={{ 
         textAlign: 'center',
-        maxWidth: '800px',
+        maxWidth: '1000px',
         width: '100%'
       }}>
         <div className="newspaper-header">
