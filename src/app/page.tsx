@@ -35,7 +35,7 @@ export default function Home() {
             letterSpacing: '0.1em',
             fontWeight: 'bold'
           }}>
-            ESTABLISHED 2024 • DAILY EDITION
+            ESTABLISHED 2025 • DAILY EDITION
           </div>
         </div>
 
