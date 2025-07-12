@@ -18,11 +18,13 @@ export default function Home() {
       }}>
         <div className="newspaper-header">
           <h1 style={{ 
-            fontSize: '3.5rem', 
+            fontSize: 'clamp(2rem, 8vw, 3.5rem)', 
             fontWeight: 'bold',
             margin: '0 0 0.5rem 0',
             letterSpacing: '-0.02em',
-            textTransform: 'uppercase'
+            textTransform: 'uppercase',
+            wordBreak: 'break-word',
+            hyphens: 'auto'
           }}>
             The Daily Taxonomystery
           </h1>
