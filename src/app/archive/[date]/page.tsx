@@ -424,7 +424,7 @@ export default function ArchiveGamePage({ params }: ArchiveGamePageProps) {
           color: 'var(--text-gray)',
           fontFamily: 'var(--font-mono)'
         }}>
-          {puzzle.date} • ARTICLE {currentArticleIndex + 1} OF {puzzle.articles.length}
+          ARTICLE {currentArticleIndex + 1} OF {puzzle.articles.length}
         </div>
         {isReplayMode && storedScore && (
           <div style={{ 
@@ -433,7 +433,7 @@ export default function ArchiveGamePage({ params }: ArchiveGamePageProps) {
             fontSize: '0.9rem',
             marginTop: '0.5rem'
           }}>
-            🔄 REPLAY EDITION - Previous score: {storedScore.score}/{storedScore.totalQuestions}
+            REPLAY EDITION - Previous score: {storedScore.score}/{storedScore.totalQuestions}
           </div>
         )}
         {!isReplayMode && storedScore && !storedScore.isCompleted && (
@@ -444,7 +444,7 @@ export default function ArchiveGamePage({ params }: ArchiveGamePageProps) {
             marginTop: '0.5rem',
             fontWeight: 'bold'
           }}>
-            ▶️ CONTINUING EDITION - {storedScore.answers.filter(a => a.guess && a.guess.trim() !== '').length}/{storedScore.totalQuestions} answered
+             CONTINUING EDITION - {storedScore.answers.filter(a => a.guess && a.guess.trim() !== '').length}/{storedScore.totalQuestions} answered
           </div>
         )}
       </header>
