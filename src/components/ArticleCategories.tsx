@@ -20,18 +20,24 @@ export default function ArticleCategories({ categories }: ArticleCategoriesProps
         What Wikipedia article belongs to these categories?
       </h3>
       <div style={{ 
-        columns: categories.length > 6 ? '2' : '1',
-        columnGap: '2rem'
+        display: 'flex',
+        flexWrap: 'wrap',
+        gap: '0.75rem',
+        justifyContent: 'center'
       }}>
         {categories.map((category, idx) => (
           <div key={idx} style={{ 
-            marginBottom: '0.75rem',
-            breakInside: 'avoid',
-            fontSize: '1.1rem',
-            borderBottom: '1px dotted var(--border-gray)',
-            paddingBottom: '0.25rem'
+            display: 'inline-block',
+            backgroundColor: '#f8f8f8',
+            border: '1px solid #888',
+            borderRadius: '0.25rem',
+            padding: '0.75rem 1.25rem',
+            fontSize: '1.2rem',
+            fontWeight: '500',
+            textAlign: 'center',
+            boxShadow: '1px 1px 2px rgba(0,0,0,0.1)'
           }}>
-            <strong>• {category}</strong>
+            {category}
           </div>
         ))}
       </div>
