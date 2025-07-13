@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import { useState } from 'react'
 import type { ArticleState } from '@/lib/game/types'
 import { formatDateForDisplay } from '@/lib/game/api'
 
@@ -21,25 +21,72 @@ export default function GameCompletion({
   isReplayMode = false,
   onPlayAgain
 }: GameCompletionProps) {
-  const shareText = isArchive 
-    ? `I scored ${score}/${totalArticles} on the ${formatDateForDisplay(puzzleDate)} Taxonomy Mystery archive edition!`
-    : `I scored ${score}/${totalArticles} on today's Taxonomystery puzzle!`
+  const [buttonText, setButtonText] = useState('📋 Copy Results')
+
+  const createShareText = () => {
+    // Create emoji grid showing right/wrong answers
+    const emojiGrid = articleStates.map(state => state.wasCorrect ? '🟢' : '🔴').join('')
+    
+    // Create dynamic archive URL based on current host
+    const currentUrl = typeof window !== 'undefined' ? window.location.origin : ''
+    const archiveUrl = `${currentUrl}/archive/${puzzleDate}`
+    
+    // Build the share text
+    const dateText = isArchive ? formatDateForDisplay(puzzleDate) : 'Today'
+    const header = `📰 The Daily Taxonomystery - ${dateText}`
+    const scoreText = `Score: ${score}/${totalArticles}`
+    const gridText = emojiGrid
+    const linkText = `🔗 ${archiveUrl}`
+    
+    return `${header}\n${scoreText}\n${gridText}\n\n${linkText}`
+  }
+
+  const handleShare = async () => {
+    const shareText = createShareText()
+    
+    // Try to copy to clipboard first
+    try {
+      await navigator.clipboard.writeText(shareText)
+      setButtonText('✅ Copied!')
+      
+      // Reset button text after 2 seconds
+      setTimeout(() => {
+        setButtonText('📋 Copy Results')
+      }, 2000)
+    } catch {
+      console.log('Clipboard failed, trying native share')
+      
+      // Fallback to native share if available
+      if (navigator.share) {
+        try {
+          await navigator.share({ 
+            title: 'The Daily Taxonomystery', 
+            text: shareText 
+          })
+        } catch {
+          console.log('Native share cancelled or failed')
+        }
+      }
+    }
+  }
 
   return (
     <section className="newspaper-section">
       <div className="newspaper-header" style={{ marginBottom: '2rem' }}>
-        <h2 style={{ 
-          fontSize: '2.2rem',
-          margin: '0 0 1rem 0',
-          textTransform: 'uppercase',
-          letterSpacing: '0.02em'
-        }}>
-          {isArchive ? 'Archive Edition Complete!' : 'Edition Complete!'}
-        </h2>
+        <div style={{ position: 'relative' }}>
+          <h2 style={{ 
+            fontSize: '2.2rem',
+            margin: '0 0 1rem 0',
+            textTransform: 'uppercase',
+            letterSpacing: '0.02em'
+          }}>
+            {isArchive ? 'Archive Edition Complete!' : 'Edition Complete!'}
+          </h2>
+        </div>
+        
         <div style={{ 
           fontSize: '1.4rem',
-          fontWeight: 'bold',
-          color: 'var(--gold-highlight)'
+          fontWeight: 'bold'
         }}>
           Final Score: {score} out of {totalArticles} correct
         </div>
@@ -71,7 +118,21 @@ export default function GameCompletion({
               flexWrap: 'wrap',
               gap: '0.5rem'
             }}>
-              <strong style={{ fontSize: '1.2rem' }}>{index + 1}. {state.article.title}</strong>
+              <strong style={{ fontSize: '1.2rem' }}>
+                {index + 1}. 
+                <a 
+                  href={`https://en.wikipedia.org/wiki/${encodeURIComponent(state.article.title.replace(/ /g, '_'))}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    color: 'var(--newspaper-blue)',
+                    textDecoration: 'underline',
+                    marginLeft: '0.25rem'
+                  }}
+                >
+                  {state.article.title}
+                </a>
+              </strong>
               <span style={{ fontSize: '1.5rem' }}>
                 {state.wasCorrect ? '✓' : '✗'}
               </span>
@@ -108,10 +169,7 @@ export default function GameCompletion({
         marginTop: '2rem'
       }}>
         <button 
-          onClick={() => navigator.share?.({ 
-            title: 'The Daily Taxonomystery', 
-            text: shareText 
-          })}
+          onClick={handleShare}
           className="button"
           style={{
             fontSize: '1rem',
@@ -123,7 +181,7 @@ export default function GameCompletion({
             borderColor: 'var(--ink-black)'
           }}
         >
-          📰 Share Results
+          {buttonText}
         </button>
         
         {isReplayMode && onPlayAgain && (
@@ -139,17 +197,6 @@ export default function GameCompletion({
           >
             🔄 Play Again
           </button>
-        )}
-        
-        {isArchive && (
-          <Link href="/archive" className="button" style={{
-            fontSize: '1rem',
-            fontWeight: 'bold',
-            textTransform: 'uppercase',
-            letterSpacing: '0.05em'
-          }}>
-            ← Return to Archive
-          </Link>
         )}
       </div>
     </section>

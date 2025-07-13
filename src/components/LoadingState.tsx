@@ -1,5 +1,7 @@
 import { getTodayDate } from '@/lib/game/api'
 
+import NewspaperTitle from '@/components/NewspaperTitle'
+
 interface LoadingStateProps {
   isArchive?: boolean
   date?: string
@@ -20,13 +22,9 @@ export default function LoadingState({ isArchive = false, date }: LoadingStatePr
       <header className="newspaper-header" style={{ marginBottom: '2rem' }}>
         <h1 style={{ 
           fontSize: 'clamp(1.8rem, 6vw, 2.5rem)',
-          margin: '0 0 0.5rem 0',
-          textTransform: 'uppercase',
-          letterSpacing: '-0.01em',
-          wordBreak: 'break-word',
-          hyphens: 'auto'
+          margin: '0 0 0.5rem 0'
         }}>
-          The Daily Taxonomystery
+          <NewspaperTitle />
         </h1>
         <div style={{ 
           fontSize: '1.1rem',

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import SubtleNavLink from '@/components/SubtleNavLink'
+import NewspaperTitle from '@/components/NewspaperTitle'
 import { getAllStoredScores, getUserStats, hasAttemptedPuzzle, hasPartialAttempt, hasCompletedPuzzle, type StoredScore } from '../../../lib/localStorage'
 import ScoreBadge from '../../components/ScoreBadge'
 
@@ -164,13 +165,9 @@ export default function ArchivePage() {
         <div style={{ position: 'relative', textAlign: 'center' }}>
           <h1 style={{ 
             fontSize: 'clamp(2rem, 6vw, 2.8rem)',
-            margin: '0',
-            textTransform: 'uppercase',
-            letterSpacing: '-0.01em',
-            wordBreak: 'break-word',
-            hyphens: 'auto'
+            margin: '0'
           }}>
-            The Daily Taxonomystery
+            <NewspaperTitle />
           </h1>
           <SubtleNavLink href="/game">
             ← Today
@@ -357,18 +354,6 @@ export default function ArchivePage() {
                     />
                   </div>
                   
-                  <div style={{ 
-                    fontSize: '0.9rem', 
-                    color: 'var(--text-gray)',
-                    marginBottom: '1rem'
-                  }}>
-                    <p style={{ margin: '0.25rem 0' }}>
-                      <strong>Classification Count:</strong> {puzzle.article_count}
-                    </p>
-                    <p style={{ margin: '0.25rem 0' }}>
-                      <strong>Publication Date:</strong> {puzzle.date}
-                    </p>
-                  </div>
                   
                   <div style={{ 
                     marginTop: '1rem', 
