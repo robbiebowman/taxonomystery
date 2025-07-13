@@ -128,11 +128,6 @@ export default function GameComponent({ puzzleDate, isArchive = false }: GameCom
         } : undefined}
       />
 
-      <GameProgress 
-        articleStates={articleStates}
-        currentArticleIndex={currentArticleIndex}
-      />
-
       {!gameCompleted && currentArticle && (
         <>
           {/* Current Article */}
@@ -192,6 +187,11 @@ export default function GameComponent({ puzzleDate, isArchive = false }: GameCom
               </button>
             </section>
           )}
+
+          <GameProgress 
+            articleStates={articleStates}
+            currentArticleIndex={currentArticleIndex}
+          />
         </>
       )}
 

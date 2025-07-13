@@ -40,6 +40,7 @@ const GuessInput = forwardRef<HTMLInputElement, GuessInputProps>(({
           onChange={(e) => onChange(e.target.value)}
           placeholder="Enter the Wikipedia article name..."
           disabled={disabled}
+          autoComplete="off"
           style={{
             width: '100%',
             maxWidth: '500px',
