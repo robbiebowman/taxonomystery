@@ -9,7 +9,6 @@ import GameProgress from '@/components/GameProgress'
 import ArticleCategories from '@/components/ArticleCategories'
 import ArticleResult from '@/components/ArticleResult'
 import ArticleDetails from '@/components/ArticleDetails'
-import GuessInput from '@/components/GuessInput'
 import GameCompletion from '@/components/GameCompletion'
 import LoadingState from '@/components/LoadingState'
 
