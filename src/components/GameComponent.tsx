@@ -36,7 +36,6 @@ export default function GameComponent({ puzzleDate, isArchive = false }: GameCom
     articleStates,
     gameCompleted,
     isReplayMode,
-    storedScore,
     guessInputRef,
     calculateScore,
     handleNextArticle,
@@ -115,15 +114,6 @@ export default function GameComponent({ puzzleDate, isArchive = false }: GameCom
         showArchiveLink={!isArchive}
         showBackToArchive={isArchive}
         subtitle={isArchive ? "archive" : undefined}
-        replayInfo={isReplayMode && storedScore ? {
-          isReplayMode: true,
-          score: storedScore.score,
-          totalQuestions: storedScore.totalQuestions
-        } : undefined}
-        resumeInfo={!isReplayMode && storedScore && !storedScore.isCompleted ? {
-          answeredCount: storedScore.answers.filter(a => a.guess && a.guess.trim() !== '').length,
-          totalQuestions: storedScore.totalQuestions
-        } : undefined}
       />
 
       {!gameCompleted && currentArticle && (
