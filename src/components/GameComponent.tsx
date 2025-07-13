@@ -133,7 +133,101 @@ export default function GameComponent({ puzzleDate, isArchive = false }: GameCom
           {/* Current Article */}
           <section className="newspaper-section">
             {!currentArticle.isRevealed ? (
-              <ArticleCategories categories={currentArticle.article.categories} />
+              <div style={{ 
+                padding: 'clamp(1rem, 4vw, 2rem)'
+              }}>
+                <h3 style={{ 
+                  textAlign: 'center',
+                  fontSize: '1.4rem',
+                  marginBottom: '1.5rem',
+                  fontStyle: 'italic',
+                  color: 'var(--text-gray)'
+                }}>
+                  Identify the article:
+                </h3>
+                <div style={{ 
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  gap: '0.75rem',
+                  justifyContent: 'center',
+                  marginBottom: '2rem'
+                }}>
+                  {currentArticle.article.categories.map((category, idx) => (
+                    <div key={idx} style={{ 
+                      display: 'inline-block',
+                      backgroundColor: '#f8f8f8',
+                      border: '1px solid #888',
+                      borderRadius: '0.25rem',
+                      padding: '0.75rem 1.25rem',
+                      fontSize: '1.2rem',
+                      fontWeight: '500',
+                      textAlign: 'center',
+                      boxShadow: '1px 1px 2px rgba(0,0,0,0.1)'
+                    }}>
+                      {category}
+                    </div>
+                  ))}
+                </div>
+                
+                {/* Guess Input */}
+                <form onSubmit={(e) => {
+                  e.preventDefault()
+                  if (!currentGuess.trim() || gameCompleted) return
+                  handleSubmitGuess()
+                }} style={{ textAlign: 'center' }}>
+                  <label htmlFor="guess" style={{ 
+                    display: 'block',
+                    fontSize: '1.2rem',
+                    fontWeight: 'bold',
+                    marginBottom: '1rem',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em'
+                  }}>
+                    Your Identification:
+                  </label>
+                  <input
+                    ref={guessInputRef}
+                    id="guess"
+                    type="text"
+                    value={currentGuess}
+                    onChange={(e) => setCurrentGuess(e.target.value)}
+                    placeholder="Enter the Wikipedia article name..."
+                    disabled={gameCompleted}
+                    autoComplete="off"
+                    style={{
+                      width: '100%',
+                      maxWidth: '500px',
+                      marginBottom: '1.5rem',
+                      fontSize: '1.1rem',
+                      textAlign: 'center'
+                    }}
+                  />
+                  <div>
+                    <button 
+                      type="submit" 
+                      disabled={!currentGuess.trim() || gameCompleted}
+                      className="button"
+                      style={{
+                        fontSize: '1.1rem',
+                        fontWeight: 'bold',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.05em',
+                        minWidth: '200px'
+                      }}
+                    >
+                      Submit Answer
+                    </button>
+                  </div>
+                </form>
+                <p style={{ 
+                  textAlign: 'center',
+                  fontStyle: 'italic',
+                  color: 'var(--text-gray)',
+                  marginTop: '1rem'
+                }}>
+                  <small>Try the exact article name or a close variant!</small>
+                </p>
+              </div>
             ) : (
               <>
                 {/* Article snippet and image */}
@@ -148,36 +242,26 @@ export default function GameComponent({ puzzleDate, isArchive = false }: GameCom
                   wasCorrect={currentArticle.wasCorrect}
                   userGuess={currentArticle.userGuess}
                 />
+                
+                {/* Next Article Button */}
+                <div style={{ textAlign: 'center', marginTop: '2rem' }}>
+                  <button 
+                    onClick={handleNextArticle} 
+                    className="button"
+                    style={{ 
+                      fontSize: '1.2rem',
+                      fontWeight: 'bold',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.05em',
+                      minWidth: '250px'
+                    }}
+                  >
+                    {currentArticleIndex < puzzle.articles.length - 1 ? 'Next Article →' : 'Complete Edition'}
+                  </button>
+                </div>
               </>
             )}
           </section>
-
-          {!currentArticle.isRevealed ? (
-            <GuessInput
-              ref={guessInputRef}
-              value={currentGuess}
-              onChange={setCurrentGuess}
-              onSubmit={handleSubmitGuess}
-              disabled={gameCompleted}
-            />
-          ) : (
-            /* Next Article Button */
-            <section className="newspaper-section" style={{ textAlign: 'center' }}>
-              <button 
-                onClick={handleNextArticle} 
-                className="button"
-                style={{ 
-                  fontSize: '1.2rem',
-                  fontWeight: 'bold',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.05em',
-                  minWidth: '250px'
-                }}
-              >
-                {currentArticleIndex < puzzle.articles.length - 1 ? 'Next Article →' : 'Complete Edition'}
-              </button>
-            </section>
-          )}
 
           <GameProgress 
             articleStates={articleStates}
