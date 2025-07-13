@@ -121,7 +121,7 @@ export default function ArchiveGamePage({ params }: ArchiveGamePageProps) {
         currentArticleIndex={currentArticleIndex}
         totalArticles={puzzle.articles.length}
         showBackToArchive={true}
-        subtitle={`ARCHIVE EDITION: ${formatDateForDisplay(puzzle.date).toUpperCase()}`}
+        subtitle="archive"
         replayInfo={isReplayMode && storedScore ? {
           isReplayMode: true,
           score: storedScore.score,

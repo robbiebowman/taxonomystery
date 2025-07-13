@@ -28,85 +28,86 @@ export default function NewspaperHeader({
   resumeInfo,
   subtitle
 }: NewspaperHeaderProps) {
+  // Format date more compactly (e.g., "Jul 8, 2025" instead of full format)
+  const formatCompactDate = (dateStr: string) => {
+    try {
+      const [year, month, day] = dateStr.split('-').map(Number)
+      const date = new Date(year, month - 1, day)
+      return date.toLocaleDateString('en-US', { 
+        month: 'short', 
+        day: 'numeric',
+        year: 'numeric'
+      })
+    } catch {
+      return dateStr
+    }
+  }
+
+  // Create a single status line combining article progress and game state
+  const getStatusLine = () => {
+    const articleInfo = currentArticleIndex !== undefined && totalArticles 
+      ? `Article ${currentArticleIndex + 1}/${totalArticles}`
+      : 'Loading...'
+
+    
+    return articleInfo
+  }
+
   return (
-    <header className="newspaper-header" style={{ marginBottom: '2rem' }}>
+    <header className="newspaper-header" style={{ marginBottom: '1.5rem' }}>
       {showBackToArchive && (
         <Link href="/archive" className="button" style={{ 
           fontSize: '0.9rem',
           marginBottom: '1rem',
           display: 'inline-block'
         }}>
-          ← Return to Archive
+          ← Archive
         </Link>
-      )}
-      <h1 style={{ 
-        fontSize: 'clamp(1.8rem, 6vw, 2.5rem)',
-        margin: '0 0 0.5rem 0',
-        textTransform: 'uppercase',
-        letterSpacing: '-0.01em',
-        wordBreak: 'break-word',
-        hyphens: 'auto'
-      }}>
-        The Daily Taxonomystery
-      </h1>
-      
-      {subtitle && (
-        <div style={{
-          fontSize: '1.2rem',
-          fontStyle: 'italic',
-          color: 'var(--text-gray)',
-          margin: '0 0 1rem 0'
-        }}>
-          {subtitle}
-        </div>
       )}
       
       <div style={{ 
         display: 'flex', 
         justifyContent: 'space-between', 
-        alignItems: 'center',
+        alignItems: 'flex-start',
         flexWrap: 'wrap',
         gap: '1rem'
       }}>
-        <div>
-          <div style={{ 
-            fontSize: '1.1rem',
-            fontWeight: 'bold',
-            color: 'var(--text-gray)',
-            fontFamily: 'var(--font-mono)'
+        <div style={{ flex: 1, minWidth: '200px' }}>
+          <h1 style={{ 
+            fontSize: 'clamp(1.5rem, 5vw, 2rem)',
+            margin: '0 0 0.25rem 0',
+            textTransform: 'uppercase',
+            letterSpacing: '-0.01em',
+            wordBreak: 'break-word',
+            hyphens: 'auto',
+            lineHeight: 1.1
           }}>
-            {currentArticleIndex !== undefined && totalArticles ? 
-              `${date} • ARTICLE ${currentArticleIndex + 1} OF ${totalArticles}` :
-              `${date} • PREPARING TODAY'S EDITION`
-            }
+            The Daily Taxonomystery
+          </h1>
+          
+          <div style={{ 
+            fontSize: '0.95rem',
+            color: 'var(--text-gray)',
+            fontFamily: 'var(--font-mono)',
+            fontWeight: 'bold'
+          }}>
+            {subtitle ? (
+              <>
+                <span style={{ fontStyle: 'italic' }}>Archive:</span> {formatCompactDate(date)} • {getStatusLine()}
+              </>
+            ) : (
+              <>
+                {formatCompactDate(date)} • {getStatusLine()}
+              </>
+            )}
           </div>
-          
-          {replayInfo?.isReplayMode && (
-            <div style={{ 
-              color: 'var(--text-gray)', 
-              fontStyle: 'italic',
-              fontSize: '0.9rem',
-              marginTop: '0.5rem'
-            }}>
-              REPLAY EDITION - Previous score: {replayInfo.score}/{replayInfo.totalQuestions}
-            </div>
-          )}
-          
-          {resumeInfo && (
-            <div style={{ 
-              color: 'var(--accent-red)', 
-              fontStyle: 'italic',
-              fontSize: '0.9rem',
-              marginTop: '0.5rem',
-              fontWeight: 'bold'
-            }}>
-              CONTINUING EDITION - {resumeInfo.answeredCount}/{resumeInfo.totalQuestions} answered
-            </div>
-          )}
         </div>
         
         {showArchiveLink && (
-          <Link href="/archive" className="button" style={{ fontSize: '0.9rem' }}>
+          <Link href="/archive" className="button" style={{ 
+            fontSize: '0.9rem',
+            alignSelf: 'flex-start'
+          }}>
             📚 Archive
           </Link>
         )}

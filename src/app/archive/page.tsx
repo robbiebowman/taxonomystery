@@ -402,8 +402,8 @@ export default function ArchivePage() {
                     textTransform: 'uppercase',
                     letterSpacing: '0.05em'
                   }}>
-                    {isCompleted ? '🔄 Replay Edition' : 
-                     isPartial ? '▶️ Resume Edition' : 
+                    {isCompleted ? 'Replay Edition' : 
+                     isPartial ? 'Resume Edition' : 
                      'Read Edition →'}
                   </div>
                 </article>
