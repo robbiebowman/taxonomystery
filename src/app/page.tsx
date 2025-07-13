@@ -57,7 +57,7 @@ export default function Home() {
             maxWidth: '600px',
             margin: '0 auto 2rem auto'
           }}>
-            Test your knowledge with today&apos;s challenge. Can you identify what these Wikipedia articles have in common? Each puzzle features carefully selected articles with shared categories.
+            Test your knowledge with today&apos;s challenge. Given a set of Wikipedia categories, can you identify which article they belong to? Each puzzle features 10 carefully selected articles for you to guess.
           </p>
 
           <div style={{ 
@@ -93,7 +93,7 @@ export default function Home() {
                 color: 'var(--text-gray)'
               }}
             >
-              📚 Archive
+              ← Archive
             </Link>
           </div>
         </div>

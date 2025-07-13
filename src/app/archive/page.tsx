@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import SubtleNavLink from '@/components/SubtleNavLink'
 import { getAllStoredScores, getUserStats, hasAttemptedPuzzle, hasPartialAttempt, hasCompletedPuzzle, type StoredScore } from '../../../lib/localStorage'
 import ScoreBadge from '../../components/ScoreBadge'
 
@@ -171,31 +172,9 @@ export default function ArchivePage() {
           }}>
             The Daily Taxonomystery
           </h1>
-          <Link 
-            href="/game" 
-            className="button" 
-            style={{ 
-              fontSize: '0.7rem',
-              padding: '0.4rem 0.8rem',
-              position: 'absolute',
-              right: '0',
-              top: '50%',
-              transform: 'translateY(-50%)',
-              opacity: '0.6',
-              background: 'var(--newsprint-gray)',
-              color: 'var(--text-gray)',
-              borderColor: 'var(--border-gray)',
-              transition: 'opacity 0.2s ease'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.opacity = '1'
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.opacity = '0.6'
-            }}
-          >
+          <SubtleNavLink href="/game">
             ← Today
-          </Link>
+          </SubtleNavLink>
         </div>
       </header>
 

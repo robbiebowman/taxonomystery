@@ -217,14 +217,6 @@ export default function GameComponent({ puzzleDate, isArchive = false }: GameCom
                     </button>
                   </div>
                 </form>
-                <p style={{ 
-                  textAlign: 'center',
-                  fontStyle: 'italic',
-                  color: 'var(--text-gray)',
-                  marginTop: '1rem'
-                }}>
-                  <small>Try the exact article name or a close variant!</small>
-                </p>
               </div>
             ) : (
               <>

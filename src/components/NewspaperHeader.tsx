@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import SubtleNavLink from '@/components/SubtleNavLink'
 
 interface NewspaperHeaderProps {
   date: string
@@ -49,21 +49,19 @@ export default function NewspaperHeader({
       ? `Article ${currentArticleIndex + 1}/${totalArticles}`
       : 'Loading...'
 
+    if (replayInfo?.isReplayMode) {
+      return `${articleInfo} • Replay Mode (${replayInfo.score}/${replayInfo.totalQuestions})`
+    }
+    
+    if (resumeInfo && resumeInfo.answeredCount > 0) {
+      return `${articleInfo} • Resuming (${resumeInfo.answeredCount}/${resumeInfo.totalQuestions} answered)`
+    }
+    
     return articleInfo
   }
 
   return (
     <header className="newspaper-header" style={{ marginBottom: '1.5rem' }}>
-      {showBackToArchive && (
-        <Link href="/archive" className="button" style={{ 
-          fontSize: '0.9rem',
-          marginBottom: '1rem',
-          display: 'inline-block'
-        }}>
-          ← Archive
-        </Link>
-      )}
-      
       <div style={{ 
         display: 'flex', 
         justifyContent: 'space-between', 
@@ -72,17 +70,26 @@ export default function NewspaperHeader({
         gap: '1rem'
       }}>
         <div style={{ flex: 1, minWidth: '200px' }}>
-          <h1 style={{ 
-            fontSize: 'clamp(1.5rem, 5vw, 2rem)',
-            margin: '0 0 0.25rem 0',
-            textTransform: 'uppercase',
-            letterSpacing: '-0.01em',
-            wordBreak: 'break-word',
-            hyphens: 'auto',
-            lineHeight: 1.1
-          }}>
-            The Daily Taxonomystery
-          </h1>
+          <div style={{ position: 'relative' }}>
+            <h1 style={{ 
+              fontSize: 'clamp(1.5rem, 5vw, 2rem)',
+              margin: '0 0 0.25rem 0',
+              textTransform: 'uppercase',
+              letterSpacing: '-0.01em',
+              wordBreak: 'break-word',
+              hyphens: 'auto',
+              lineHeight: 1.1
+            }}>
+              The Daily Taxonomystery
+            </h1>
+            
+            {/* Archive link positioned next to title */}
+            {(showBackToArchive || showArchiveLink) && (
+              <SubtleNavLink href="/archive">
+                ← Archive
+              </SubtleNavLink>
+            )}
+          </div>
           
           <div style={{ 
             fontSize: '0.95rem',
@@ -101,15 +108,6 @@ export default function NewspaperHeader({
             )}
           </div>
         </div>
-        
-        {showArchiveLink && (
-          <Link href="/archive" className="button" style={{ 
-            fontSize: '0.9rem',
-            alignSelf: 'flex-start'
-          }}>
-            📚 Archive
-          </Link>
-        )}
       </div>
     </header>
   )
