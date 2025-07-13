@@ -29,6 +29,7 @@ export default function ArticleDetails({ title, snippet, imageUrl }: ArticleDeta
             flexShrink: 0,
             maxWidth: 'clamp(120px, 30vw, 200px)'
           }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img 
               src={imageUrl} 
               alt={title}

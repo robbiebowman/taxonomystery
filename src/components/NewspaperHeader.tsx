@@ -49,6 +49,13 @@ export default function NewspaperHeader({
       ? `Article ${currentArticleIndex + 1}/${totalArticles}`
       : 'Loading...'
 
+    if (replayInfo?.isReplayMode) {
+      return `${articleInfo} • Replay Mode (${replayInfo.score}/${replayInfo.totalQuestions})`
+    }
+    
+    if (resumeInfo && resumeInfo.answeredCount > 0) {
+      return `${articleInfo} • Resuming (${resumeInfo.answeredCount}/${resumeInfo.totalQuestions} answered)`
+    }
     
     return articleInfo
   }
