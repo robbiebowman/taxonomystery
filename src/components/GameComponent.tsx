@@ -132,32 +132,23 @@ export default function GameComponent({ puzzleDate, isArchive = false }: GameCom
         <>
           {/* Current Article */}
           <section className="newspaper-section">
-            <h2 style={{ 
-              textAlign: 'center',
-              fontSize: '1.8rem',
-              marginBottom: '1.5rem',
-              textTransform: 'uppercase',
-              letterSpacing: '0.02em'
-            }}>
-              Featured Article Classification
-            </h2>
-            
             {!currentArticle.isRevealed ? (
               <ArticleCategories categories={currentArticle.article.categories} />
             ) : (
-              <ArticleResult 
-                wasCorrect={currentArticle.wasCorrect}
-                userGuess={currentArticle.userGuess}
-              />
-            )}
-
-            {/* Article snippet and image */}
-            {currentArticle.isRevealed && (
-              <ArticleDetails 
-                title={currentArticle.article.title}
-                snippet={currentArticle.article.snippet}
-                imageUrl={currentArticle.article.image_url}
-              />
+              <>
+                {/* Article snippet and image */}
+                <ArticleDetails 
+                  title={currentArticle.article.title}
+                  snippet={currentArticle.article.snippet}
+                  imageUrl={currentArticle.article.image_url}
+                />
+                
+                {/* Result after article details */}
+                <ArticleResult 
+                  wasCorrect={currentArticle.wasCorrect}
+                  userGuess={currentArticle.userGuess}
+                />
+              </>
             )}
           </section>
 

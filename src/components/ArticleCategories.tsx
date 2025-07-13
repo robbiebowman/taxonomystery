@@ -6,9 +6,8 @@ export default function ArticleCategories({ categories }: ArticleCategoriesProps
   return (
     <div style={{ 
       padding: 'clamp(1rem, 4vw, 2rem)', 
-      border: '3px solid var(--ink-black)', 
-      backgroundColor: 'var(--paper-white)',
-      borderStyle: 'double'
+      border: '1px solid #ccc', 
+      backgroundColor: 'var(--paper-white)'
     }}>
       <h3 style={{ 
         textAlign: 'center',
@@ -17,7 +16,7 @@ export default function ArticleCategories({ categories }: ArticleCategoriesProps
         fontStyle: 'italic',
         color: 'var(--text-gray)'
       }}>
-        What Wikipedia article belongs to these categories?
+        Identify the article:
       </h3>
       <div style={{ 
         display: 'flex',
