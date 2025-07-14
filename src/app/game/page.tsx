@@ -1,3 +1,5 @@
+'use client'
+
 import { getTodayDate } from '@/lib/game/api'
 import GameComponent from '@/components/GameComponent'
 
