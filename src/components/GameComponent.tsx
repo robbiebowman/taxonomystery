@@ -263,22 +263,7 @@ export default function GameComponent({ puzzleDate, isArchive = false }: GameCom
         />
       )}
 
-      {/* Debug Info (remove later) */}
-      <details>
-        <summary>Debug Info (Dev Only)</summary>
-        <h4>All Categories in Puzzle:</h4>
-        <ul>
-          {Array.from(new Set(puzzle.articles.flatMap(a => a.categories))).map(cat => (
-            <li key={cat}>{cat}</li>
-          ))}
-        </ul>
-        <h4>All Aliases:</h4>
-        <ul>
-          {Array.from(new Set(puzzle.articles.flatMap(a => a.aliases))).map(alias => (
-            <li key={alias}>{alias}</li>
-          ))}
-        </ul>
-      </details>
+      
     </div>
   )
 }
