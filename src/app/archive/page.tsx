@@ -197,9 +197,9 @@ export default function ArchivePage() {
             className="button"
             style={{
               fontSize: '0.85rem',
-              background: filter === 'all' ? 'var(--ink-black)' : 'var(--paper-white)',
-              color: filter === 'all' ? 'var(--paper-white)' : 'var(--ink-black)',
-              borderColor: 'var(--ink-black)',
+              background: filter === 'all' ? 'var(--action-bg)' : 'var(--paper-white)',
+              color: filter === 'all' ? 'var(--action-fg)' : 'var(--ink-black)',
+              borderColor: filter === 'all' ? 'var(--action-bg)' : 'var(--ink-black)',
               textTransform: 'uppercase',
               letterSpacing: '0.05em'
             }}
@@ -211,9 +211,9 @@ export default function ArchivePage() {
             className="button"
             style={{
               fontSize: '0.85rem',
-              background: filter === 'completed' ? 'var(--ink-black)' : 'var(--paper-white)',
-              color: filter === 'completed' ? 'var(--paper-white)' : 'var(--ink-black)',
-              borderColor: 'var(--ink-black)',
+              background: filter === 'completed' ? 'var(--action-bg)' : 'var(--paper-white)',
+              color: filter === 'completed' ? 'var(--action-fg)' : 'var(--ink-black)',
+              borderColor: filter === 'completed' ? 'var(--action-bg)' : 'var(--ink-black)',
               textTransform: 'uppercase',
               letterSpacing: '0.05em'
             }}
@@ -225,9 +225,9 @@ export default function ArchivePage() {
             className="button"
             style={{
               fontSize: '0.85rem',
-              background: filter === 'partial' ? 'var(--ink-black)' : 'var(--paper-white)',
-              color: filter === 'partial' ? 'var(--paper-white)' : 'var(--ink-black)',
-              borderColor: 'var(--ink-black)',
+              background: filter === 'partial' ? 'var(--action-bg)' : 'var(--paper-white)',
+              color: filter === 'partial' ? 'var(--action-fg)' : 'var(--ink-black)',
+              borderColor: filter === 'partial' ? 'var(--action-bg)' : 'var(--ink-black)',
               textTransform: 'uppercase',
               letterSpacing: '0.05em'
             }}
@@ -239,9 +239,9 @@ export default function ArchivePage() {
             className="button"
             style={{
               fontSize: '0.85rem',
-              background: filter === 'not-attempted' ? 'var(--ink-black)' : 'var(--paper-white)',
-              color: filter === 'not-attempted' ? 'var(--paper-white)' : 'var(--ink-black)',
-              borderColor: 'var(--ink-black)',
+              background: filter === 'not-attempted' ? 'var(--action-bg)' : 'var(--paper-white)',
+              color: filter === 'not-attempted' ? 'var(--action-fg)' : 'var(--ink-black)',
+              borderColor: filter === 'not-attempted' ? 'var(--action-bg)' : 'var(--ink-black)',
               textTransform: 'uppercase',
               letterSpacing: '0.05em'
             }}
@@ -358,8 +358,8 @@ export default function ArchivePage() {
                   <div style={{ 
                     marginTop: '1rem', 
                     padding: '0.75rem',
-                    backgroundColor: 'var(--ink-black)',
-                    color: 'var(--paper-white)',
+                    backgroundColor: 'var(--action-bg)',
+                    color: 'var(--action-fg)',
                     textAlign: 'center',
                     fontSize: '0.9rem',
                     fontWeight: 'bold',

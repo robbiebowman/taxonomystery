@@ -6,7 +6,7 @@ export default function ArticleCategories({ categories }: ArticleCategoriesProps
   return (
     <div style={{ 
       padding: 'clamp(1rem, 4vw, 2rem)', 
-      border: '1px solid #ccc', 
+      border: '1px solid var(--border-gray)', 
       backgroundColor: 'var(--paper-white)'
     }}>
       <h3 style={{ 
@@ -27,13 +27,14 @@ export default function ArticleCategories({ categories }: ArticleCategoriesProps
         {categories.map((category, idx) => (
           <div key={idx} style={{ 
             display: 'inline-block',
-            backgroundColor: '#f8f8f8',
-            border: '1px solid #888',
+            backgroundColor: 'var(--newsprint-gray)',
+            border: '1px solid var(--border-gray)',
             borderRadius: '0.25rem',
             padding: '0.75rem 1.25rem',
             fontSize: '1.2rem',
             fontWeight: '500',
             textAlign: 'center',
+            color: 'var(--foreground)',
             boxShadow: '1px 1px 2px rgba(0,0,0,0.1)'
           }}>
             {category}

@@ -176,9 +176,9 @@ export default function GameCompletion({
             fontWeight: 'bold',
             textTransform: 'uppercase',
             letterSpacing: '0.05em',
-            background: 'var(--ink-black)',
-            color: 'var(--paper-white)',
-            borderColor: 'var(--ink-black)'
+            background: 'var(--action-bg)',
+            color: 'var(--action-fg)',
+            borderColor: 'var(--action-bg)'
           }}
         >
           {buttonText}

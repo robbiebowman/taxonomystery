@@ -13,6 +13,10 @@
   --accent-red: #cc0000;
   --newspaper-blue: #1a365d;
   --gold-highlight: #b8860b;
+
+  /* Action surfaces (e.g., active filters, CTAs) */
+  --action-bg: var(--ink-black);
+  --action-fg: var(--paper-white);
   
   /* Greyish pastel colors for readability */
   --pastel-green: #f0f4f0;
@@ -25,6 +29,35 @@
   --pastel-blue-border: #d4d9dd;
 }
 
+/* Dark theme overrides */
+[data-theme="dark"] {
+  --background: #121416; /* not pure black */
+  --foreground: #e6e6e6;
+  --paper-white: #1b1f23;
+  --newsprint-gray: #161a1e;
+  --ink-black: #f3f3f3; /* headings/ink become light */
+  --text-gray: #c8c8c8;
+  --light-gray: #2a2f34;
+  --border-gray: #2f363d;
+  --accent-red: #ff5a5f;
+  --newspaper-blue: #8fb1ff;
+  --gold-highlight: #d7a645;
+
+  /* Dark action surfaces */
+  --action-bg: #0f1215;
+  --action-fg: #e6e6e6;
+
+  /* Dark-adapted pastels */
+  --pastel-green: #101814;
+  --pastel-green-border: #24362c;
+  --pastel-red: #191215;
+  --pastel-red-border: #3a252a;
+  --pastel-yellow: #18160f;
+  --pastel-yellow-border: #3a3424;
+  --pastel-blue: #11161c;
+  --pastel-blue-border: #263343;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -33,11 +66,12 @@
   --font-mono: "Courier New", Courier, monospace;
 }
 
-/* Remove dark mode for newspaper theme */
+/* System preference fallback if no explicit data-theme is set
+   (applies only when data-theme is not present) */
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #fafafa;
-    --foreground: #1a1a1a;
+  :root:not([data-theme]) {
+    --background: #121416;
+    --foreground: #e6e6e6;
   }
 }
 

@@ -1,4 +1,5 @@
 import SubtleNavLink from '@/components/SubtleNavLink'
+import ThemeToggle from '@/components/ThemeToggle'
 import NewspaperTitle from '@/components/NewspaperTitle'
 
 interface NewspaperHeaderProps {
@@ -84,6 +85,9 @@ export default function NewspaperHeader({
               </>
             )}
           </div>
+        </div>
+        <div style={{ minWidth: '120px', display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-start' }}>
+          <ThemeToggle />
         </div>
       </div>
     </header>
