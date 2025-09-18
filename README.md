@@ -34,3 +34,26 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Adding New Wikipedia Articles
+
+We keep the playable pool in `articles/gpt-generated.txt`. When you want to propose more titles:
+
+1. Open up ChatGPT/Claude. Upload `articles/gpt-articles.txt`
+2. Ask GPT to extend the list using the following prompt:
+
+```
+Take a look at my list of interesting/fun wikipedia articles. Can you suggest an addition 100 articles? There should be a mix of subjects and a mix of obscurity levels. Don't be afraid to add the occasional low brow/funny topics.
+```
+
+3. Append the titles to `articles/gpt-generated.txt` (one title per line).
+4. Seed the new records into production Supabase:
+
+```
+npm run seed:articles:gpt
+```
+
+   This command runs `scripts/seed-articles-search.ts`, resolves each title against Wikipedia, and inserts anything that isn’t already in the `articles` table.
+5. Check the terminal output for any “Could not resolve” warnings and either adjust those titles manually or drop them before the next run.
+
+Tip: after seeding, spot-check a couple of entries in Supabase to confirm titles and URLs look right.

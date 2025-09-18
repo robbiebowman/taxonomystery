@@ -13,6 +13,7 @@
     "test:db:start": "npx supabase start",
     "test:db:stop": "npx supabase stop",
     "seed:articles": "node scripts/seed-articles.js",
+    "seed:articles:gpt": "tsx --env-file=.env.local scripts/seed-articles-search.ts",
     "test:puzzle": "tsx --env-file=.env.local scripts/test-puzzle-generation.ts",
     "test:api": "node scripts/test-api-endpoints.js"
   },
