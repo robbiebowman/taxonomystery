@@ -8,4 +8,5 @@ module.exports = {
   },
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   modulePathIgnorePatterns: ['<rootDir>/dist/'],
+  maxWorkers: 1,
 };
