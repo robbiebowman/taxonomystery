@@ -103,7 +103,7 @@ export default function GameComponent({ puzzleDate, isArchive = false }: GameCom
     <div style={{ 
       maxWidth: '1000px', 
       margin: '0 auto', 
-      padding: 'clamp(1rem, 4vw, 2rem)',
+      padding: 'clamp(0.75rem, 3vw, 1.75rem)',
       width: '100%',
       boxSizing: 'border-box'
     }}>
@@ -122,12 +122,12 @@ export default function GameComponent({ puzzleDate, isArchive = false }: GameCom
           <section className="newspaper-section">
             {!currentArticle.isRevealed ? (
               <div style={{ 
-                padding: 'clamp(1rem, 4vw, 2rem)'
+                padding: 'clamp(0.75rem, 3vw, 1.5rem)'
               }}>
                 <h3 style={{ 
                   textAlign: 'center',
-                  fontSize: '1.4rem',
-                  marginBottom: '1.5rem',
+                  fontSize: '1.35rem',
+                  marginBottom: '1rem',
                   fontStyle: 'italic',
                   color: 'var(--text-gray)'
                 }}>
@@ -136,9 +136,9 @@ export default function GameComponent({ puzzleDate, isArchive = false }: GameCom
                 <div style={{ 
                   display: 'flex',
                   flexWrap: 'wrap',
-                  gap: '0.75rem',
+                  gap: '0.5rem',
                   justifyContent: 'center',
-                  marginBottom: '2rem'
+                  marginBottom: '1.25rem'
                 }}>
                   {currentArticle.article.categories.map((category, idx) => (
                     <div key={idx} style={{ 
@@ -146,8 +146,8 @@ export default function GameComponent({ puzzleDate, isArchive = false }: GameCom
                       backgroundColor: 'var(--newsprint-gray)',
                       border: '1px solid var(--border-gray)',
                       borderRadius: '0.25rem',
-                      padding: '0.75rem 1.25rem',
-                      fontSize: '1.2rem',
+                      padding: '0.5rem 1rem',
+                      fontSize: '1.1rem',
                       fontWeight: '500',
                       textAlign: 'center',
                       color: 'var(--foreground)',
@@ -168,7 +168,7 @@ export default function GameComponent({ puzzleDate, isArchive = false }: GameCom
                     display: 'block',
                     fontSize: '1.2rem',
                     fontWeight: 'bold',
-                    marginBottom: '1rem',
+                    marginBottom: '0.75rem',
                     textTransform: 'uppercase',
                     letterSpacing: '0.05em'
                   }}>
@@ -186,7 +186,7 @@ export default function GameComponent({ puzzleDate, isArchive = false }: GameCom
                     style={{
                       width: '100%',
                       maxWidth: '500px',
-                      marginBottom: '1.5rem',
+                      marginBottom: '1rem',
                       fontSize: '1.1rem',
                       textAlign: 'center'
                     }}

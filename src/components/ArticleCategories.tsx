@@ -5,14 +5,14 @@ interface ArticleCategoriesProps {
 export default function ArticleCategories({ categories }: ArticleCategoriesProps) {
   return (
     <div style={{ 
-      padding: 'clamp(1rem, 4vw, 2rem)', 
+      padding: 'clamp(0.75rem, 3vw, 1.5rem)', 
       border: '1px solid var(--border-gray)', 
       backgroundColor: 'var(--paper-white)'
     }}>
       <h3 style={{ 
         textAlign: 'center',
-        fontSize: '1.4rem',
-        marginBottom: '1.5rem',
+        fontSize: '1.35rem',
+        marginBottom: '1rem',
         fontStyle: 'italic',
         color: 'var(--text-gray)'
       }}>
@@ -21,7 +21,7 @@ export default function ArticleCategories({ categories }: ArticleCategoriesProps
       <div style={{ 
         display: 'flex',
         flexWrap: 'wrap',
-        gap: '0.75rem',
+        gap: '0.5rem',
         justifyContent: 'center'
       }}>
         {categories.map((category, idx) => (
@@ -30,8 +30,8 @@ export default function ArticleCategories({ categories }: ArticleCategoriesProps
             backgroundColor: 'var(--newsprint-gray)',
             border: '1px solid var(--border-gray)',
             borderRadius: '0.25rem',
-            padding: '0.75rem 1.25rem',
-            fontSize: '1.2rem',
+            padding: '0.5rem 1rem',
+            fontSize: '1.1rem',
             fontWeight: '500',
             textAlign: 'center',
             color: 'var(--foreground)',
