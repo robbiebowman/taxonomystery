@@ -33,6 +33,7 @@ export default function ArticleDetails({ title, snippet, imageUrl }: ArticleDeta
             <img 
               src={imageUrl} 
               alt={title}
+              className="color-image"
               style={{ 
                 width: '100%',
                 height: 'auto',

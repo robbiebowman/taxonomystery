@@ -3,12 +3,10 @@ import Link from "next/link";
 export default function Home() {
   return (
     <div style={{ 
-      minHeight: '100vh', 
       display: 'flex', 
       flexDirection: 'column', 
-      justifyContent: 'center', 
       alignItems: 'center',
-      padding: '2rem',
+      padding: '3rem 2rem 2rem',
       background: 'var(--background)'
     }}>
       <main style={{ 
@@ -98,16 +96,6 @@ export default function Home() {
           </div>
         </div>
 
-        <div style={{
-          fontSize: '0.9rem',
-          color: 'var(--text-gray)',
-          fontStyle: 'italic',
-          textAlign: 'center',
-          padding: '1rem 0',
-          borderTop: '1px solid var(--border-gray)'
-        }}>
-          &quot;All the news that&apos;s fit to categorize&quot;
-        </div>
       </main>
     </div>
   );

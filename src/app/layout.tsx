@@ -24,7 +24,19 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased">
-        {children}
+        <div className="page-shell">
+          {children}
+        </div>
+        <footer className="cmyk-footer" aria-hidden="true">
+          <div className="cmyk-footer-inner">
+            <div className="cmyk-blocks">
+              <span className="cmyk-block cyan" />
+              <span className="cmyk-block magenta" />
+              <span className="cmyk-block yellow" />
+              <span className="cmyk-block black" />
+            </div>
+          </div>
+        </footer>
       </body>
     </html>
   );
