@@ -18,18 +18,29 @@ interface GameComponentProps {
 
 export default function GameComponent({ puzzleDate, isArchive = false }: GameComponentProps) {
   const [error, setError] = useState<string | null>(null)
-  const categoryAccents = [
-    'var(--accent-red)',
-    'var(--newspaper-blue)',
-    'var(--gold-highlight)',
-    'var(--cmyk-cyan)'
-  ]
-  const categoryTints = [
-    'var(--pastel-yellow)',
-    'var(--pastel-blue)',
-    'var(--newsprint-gray)',
-    'var(--pastel-green)'
-  ]
+  const getCategoryAccent = (index: number, total: number) => {
+    if (total <= 1) {
+      return 'var(--cmyk-cyan)'
+    }
+    const colors = [
+      'var(--cmyk-cyan)',
+      'var(--cmyk-magenta)',
+      'var(--cmyk-yellow)',
+      'var(--cmyk-black)'
+    ]
+    const maxIndex = total - 1
+    const progress = index / maxIndex
+    const segmentSize = 1 / (colors.length - 1)
+    const segmentIndex = Math.min(
+      colors.length - 2,
+      Math.floor(progress / segmentSize)
+    )
+    const segmentProgress = (progress - segmentIndex * segmentSize) / segmentSize
+    const fromColor = colors[segmentIndex]
+    const toColor = colors[segmentIndex + 1]
+    const percent = Math.round(segmentProgress * 100)
+    return `color-mix(in srgb, ${fromColor} ${100 - percent}%, ${toColor} ${percent}%)`
+  }
   
   const onError = useCallback((errorMessage: string) => {
     if (isArchive) {
@@ -156,9 +167,9 @@ export default function GameComponent({ puzzleDate, isArchive = false }: GameCom
                   {currentArticle.article.categories.map((category, idx) => (
                     <div key={idx} style={{ 
                       display: 'inline-block',
-                      backgroundColor: categoryTints[idx % categoryTints.length],
+                      backgroundColor: 'var(--newsprint-gray)',
                       border: '1px solid var(--border-gray)',
-                      borderTop: `3px solid ${categoryAccents[idx % categoryAccents.length]}`,
+                      borderTop: `3px solid ${getCategoryAccent(idx, currentArticle.article.categories.length)}`,
                       borderRadius: '0.25rem',
                       padding: '0.5rem 1rem',
                       fontSize: '1.1rem',
