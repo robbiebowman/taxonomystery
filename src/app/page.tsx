@@ -3,12 +3,10 @@ import Link from "next/link";
 export default function Home() {
   return (
     <div style={{ 
-      minHeight: '100vh', 
       display: 'flex', 
       flexDirection: 'column', 
-      justifyContent: 'center', 
       alignItems: 'center',
-      padding: '2rem',
+      padding: '3rem 2rem 2rem',
       background: 'var(--background)'
     }}>
       <main style={{ 
