@@ -7,18 +7,22 @@ export default function ArticleResult({ wasCorrect, userGuess }: ArticleResultPr
   return (
     <div style={{ 
       padding: 'clamp(1rem, 3vw, 1.5rem)', 
-      backgroundColor: wasCorrect ? 'var(--pastel-green)' : 'var(--pastel-red)', 
+      backgroundColor: wasCorrect ? 'var(--pastel-green)' : 'var(--pastel-red)',
+      backgroundImage: wasCorrect
+        ? 'linear-gradient(140deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0) 60%)'
+        : 'none',
       border: `3px solid ${wasCorrect ? 'var(--pastel-green-border)' : 'var(--pastel-red-border)'}`,
       textAlign: 'center',
       borderLeft: `6px solid ${wasCorrect ? 'var(--newspaper-blue)' : 'var(--accent-red)'}`,
-      position: 'relative'
+      position: 'relative',
+      boxShadow: wasCorrect ? '0 0.6rem 1.6rem rgba(34, 139, 84, 0.18)' : 'none'
     }}>
       {wasCorrect ? (
         <div>
           <h3 style={{ 
             fontSize: 'clamp(1rem, 4vw, 1.5rem)',
             margin: '0 0 1rem 0',
-            color: 'var(--ink-black)',
+            color: 'var(--newspaper-blue)',
             textTransform: 'uppercase',
             letterSpacing: 'clamp(0.02em, 0.5vw, 0.1em)',
             wordBreak: 'break-word',
