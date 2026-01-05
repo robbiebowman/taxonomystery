@@ -108,8 +108,19 @@ export default function GameCompletion({
             marginBottom: '1.5rem', 
             padding: '1.5rem', 
             border: `2px solid ${state.wasCorrect ? 'var(--pastel-green-border)' : 'var(--pastel-red-border)'}`,
-            backgroundColor: state.wasCorrect ? 'var(--pastel-green)' : 'var(--pastel-red)'
+            backgroundColor: state.wasCorrect ? 'var(--pastel-green)' : 'var(--pastel-red)',
+            position: 'relative',
+            overflow: 'hidden'
           }}>
+            <div style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '4px',
+              background: state.wasCorrect ? 'var(--newspaper-blue)' : 'var(--accent-red)',
+              opacity: 0.6
+            }} />
             <div style={{ 
               display: 'flex', 
               justifyContent: 'space-between', 
@@ -133,7 +144,10 @@ export default function GameCompletion({
                   {state.article.title}
                 </a>
               </strong>
-              <span style={{ fontSize: '1.5rem' }}>
+              <span style={{ 
+                fontSize: '1.5rem',
+                color: state.wasCorrect ? 'var(--newspaper-blue)' : 'var(--accent-red)'
+              }}>
                 {state.wasCorrect ? '✓' : '✗'}
               </span>
             </div>
@@ -146,7 +160,7 @@ export default function GameCompletion({
               <div style={{ 
                 marginTop: '1rem',
                 padding: '1rem',
-                backgroundColor: 'var(--paper-white)',
+                backgroundColor: 'var(--pastel-yellow)',
                 border: '1px solid var(--border-gray)'
               }}>
                 <div style={{ marginBottom: '0.5rem' }}>
