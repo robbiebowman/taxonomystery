@@ -90,6 +90,12 @@ export default function GameCompletion({
         }}>
           Final Score: {score} out of {totalArticles} correct
         </div>
+        <div className="cmyk-bars" aria-hidden="true">
+          <span className="cmyk-bar cyan" />
+          <span className="cmyk-bar magenta" />
+          <span className="cmyk-bar yellow" />
+          <span className="cmyk-bar black" />
+        </div>
       </div>
       
       {/* Show all results */}
