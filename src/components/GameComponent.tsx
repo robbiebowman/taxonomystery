@@ -18,6 +18,18 @@ interface GameComponentProps {
 
 export default function GameComponent({ puzzleDate, isArchive = false }: GameComponentProps) {
   const [error, setError] = useState<string | null>(null)
+  const categoryAccents = [
+    'var(--accent-red)',
+    'var(--newspaper-blue)',
+    'var(--gold-highlight)',
+    'var(--cmyk-cyan)'
+  ]
+  const categoryTints = [
+    'var(--pastel-yellow)',
+    'var(--pastel-blue)',
+    'var(--newsprint-gray)',
+    'var(--pastel-green)'
+  ]
   
   const onError = useCallback((errorMessage: string) => {
     if (isArchive) {
@@ -129,7 +141,8 @@ export default function GameComponent({ puzzleDate, isArchive = false }: GameCom
                   fontSize: '1.35rem',
                   marginBottom: '1rem',
                   fontStyle: 'italic',
-                  color: 'var(--text-gray)'
+                  color: 'var(--newspaper-blue)',
+                  opacity: 0.85
                 }}>
                   Identify the article:
                 </h3>
@@ -143,8 +156,9 @@ export default function GameComponent({ puzzleDate, isArchive = false }: GameCom
                   {currentArticle.article.categories.map((category, idx) => (
                     <div key={idx} style={{ 
                       display: 'inline-block',
-                      backgroundColor: 'var(--newsprint-gray)',
+                      backgroundColor: categoryTints[idx % categoryTints.length],
                       border: '1px solid var(--border-gray)',
+                      borderTop: `3px solid ${categoryAccents[idx % categoryAccents.length]}`,
                       borderRadius: '0.25rem',
                       padding: '0.5rem 1rem',
                       fontSize: '1.1rem',

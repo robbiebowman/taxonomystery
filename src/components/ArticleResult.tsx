@@ -9,7 +9,8 @@ export default function ArticleResult({ wasCorrect, userGuess }: ArticleResultPr
       padding: 'clamp(1rem, 3vw, 1.5rem)', 
       backgroundColor: wasCorrect ? 'var(--pastel-green)' : 'var(--pastel-red)', 
       border: `3px solid ${wasCorrect ? 'var(--pastel-green-border)' : 'var(--pastel-red-border)'}`,
-      textAlign: 'center'
+      textAlign: 'center',
+      borderLeft: `6px solid ${wasCorrect ? 'var(--newspaper-blue)' : 'var(--accent-red)'}`
     }}>
       {wasCorrect ? (
         <div>
@@ -54,6 +55,18 @@ export default function ArticleResult({ wasCorrect, userGuess }: ArticleResultPr
           </p>
         </div>
       )}
+      <div
+        style={{
+          marginTop: '0.75rem',
+          fontSize: '1.2rem',
+          fontWeight: 'bold',
+          color: wasCorrect ? 'var(--newspaper-blue)' : 'var(--accent-red)',
+          textTransform: 'uppercase',
+          letterSpacing: '0.08em'
+        }}
+      >
+        {wasCorrect ? 'Verified' : 'Correction Issued'}
+      </div>
     </div>
   )
 }
