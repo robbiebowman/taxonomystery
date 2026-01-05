@@ -10,7 +10,8 @@ export default function ArticleResult({ wasCorrect, userGuess }: ArticleResultPr
       backgroundColor: wasCorrect ? 'var(--pastel-green)' : 'var(--pastel-red)', 
       border: `3px solid ${wasCorrect ? 'var(--pastel-green-border)' : 'var(--pastel-red-border)'}`,
       textAlign: 'center',
-      borderLeft: `6px solid ${wasCorrect ? 'var(--newspaper-blue)' : 'var(--accent-red)'}`
+      borderLeft: `6px solid ${wasCorrect ? 'var(--newspaper-blue)' : 'var(--accent-red)'}`,
+      position: 'relative'
     }}>
       {wasCorrect ? (
         <div>
@@ -57,12 +58,15 @@ export default function ArticleResult({ wasCorrect, userGuess }: ArticleResultPr
       )}
       <div
         style={{
-          marginTop: '0.75rem',
-          fontSize: '1.2rem',
-          fontWeight: 'bold',
+          position: 'absolute',
+          right: '0.75rem',
+          bottom: '0.65rem',
+          fontSize: '0.7rem',
+          fontWeight: 600,
           color: wasCorrect ? 'var(--newspaper-blue)' : 'var(--accent-red)',
           textTransform: 'uppercase',
-          letterSpacing: '0.08em'
+          letterSpacing: '0.12em',
+          opacity: 0.6
         }}
       >
         {wasCorrect ? 'Verified' : 'Correction Issued'}
