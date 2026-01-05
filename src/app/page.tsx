@@ -98,16 +98,6 @@ export default function Home() {
           </div>
         </div>
 
-        <div style={{
-          fontSize: '0.9rem',
-          color: 'var(--text-gray)',
-          fontStyle: 'italic',
-          textAlign: 'center',
-          padding: '1rem 0',
-          borderTop: '1px solid var(--border-gray)'
-        }}>
-          &quot;All the news that&apos;s fit to categorize&quot;
-        </div>
       </main>
     </div>
   );
