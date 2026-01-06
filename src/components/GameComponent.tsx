@@ -236,17 +236,17 @@ export default function GameComponent({ puzzleDate, isArchive = false }: GameCom
               </div>
             ) : (
               <>
+                {/* Result headline */}
+                <ArticleResult 
+                  wasCorrect={currentArticle.wasCorrect}
+                  userGuess={currentArticle.userGuess}
+                />
+
                 {/* Article snippet and image */}
                 <ArticleDetails 
                   title={currentArticle.article.title}
                   snippet={currentArticle.article.snippet}
                   imageUrl={currentArticle.article.image_url}
-                />
-                
-                {/* Result after article details */}
-                <ArticleResult 
-                  wasCorrect={currentArticle.wasCorrect}
-                  userGuess={currentArticle.userGuess}
                 />
                 
                 {/* Next Article Button */}
