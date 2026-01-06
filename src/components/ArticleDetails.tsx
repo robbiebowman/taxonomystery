@@ -56,16 +56,16 @@ export default function ArticleDetails({ title, snippet, imageUrl }: ArticleDeta
             <div>
               <h4 style={{ 
                 marginTop: 0, 
-                marginBottom: '1rem', 
+                marginBottom: '0.5rem', 
                 color: 'var(--ink-black)', 
-                fontSize: 'clamp(1rem, 4vw, 1.4rem)', 
+                fontSize: 'clamp(0.95rem, 3vw, 1.1rem)', 
                 fontWeight: 'bold',
                 textTransform: 'uppercase',
-                letterSpacing: 'clamp(0.01em, 0.5vw, 0.02em)',
+                letterSpacing: '0.08em',
                 wordBreak: 'break-word',
                 hyphens: 'auto'
               }}>
-                {title}
+                Article Summary: {title}
               </h4>
               <p style={{ 
                 lineHeight: '1.6', 
