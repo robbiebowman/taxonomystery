@@ -256,3 +256,28 @@ img:hover {
 .color-image:hover {
   filter: grayscale(0%);
 }
+
+.result-glow {
+  box-shadow:
+    0 0 0 2px rgba(52, 168, 83, 0.25),
+    0 0 18px rgba(52, 168, 83, 0.35);
+  animation: resultGlow 2.6s ease-in-out infinite;
+}
+
+@keyframes resultGlow {
+  0% {
+    box-shadow:
+      0 0 0 2px rgba(52, 168, 83, 0.2),
+      0 0 12px rgba(52, 168, 83, 0.25);
+  }
+  50% {
+    box-shadow:
+      0 0 0 2px rgba(52, 168, 83, 0.35),
+      0 0 22px rgba(52, 168, 83, 0.55);
+  }
+  100% {
+    box-shadow:
+      0 0 0 2px rgba(52, 168, 83, 0.2),
+      0 0 12px rgba(52, 168, 83, 0.25);
+  }
+}

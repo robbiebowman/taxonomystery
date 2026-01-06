@@ -142,7 +142,7 @@ export default function GameComponent({ puzzleDate, isArchive = false }: GameCom
       {!gameCompleted && currentArticle && (
         <>
           {/* Current Article */}
-          <section className="newspaper-section">
+          <section className={`newspaper-section${currentArticle.isRevealed ? ' result-glow' : ''}`}>
             {!currentArticle.isRevealed ? (
               <div style={{ 
                 padding: 'clamp(0.75rem, 3vw, 1.5rem)'

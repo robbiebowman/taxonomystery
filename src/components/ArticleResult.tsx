@@ -19,17 +19,16 @@ export default function ArticleResult({ wasCorrect, userGuess }: ArticleResultPr
     }}>
       <div style={{ textAlign: 'left' }}>
         <h2 style={{ 
-          fontSize: 'clamp(1.4rem, 4.5vw, 2.4rem)',
+          fontSize: 'clamp(1.6rem, 4.8vw, 2.6rem)',
           margin: '0 0 0.35rem 0',
           color: 'var(--ink-black)',
           fontFamily: 'var(--font-serif)',
           fontWeight: 800,
-          lineHeight: 1,
+          lineHeight: 0.95,
           textTransform: 'uppercase',
-          letterSpacing: 'clamp(0.02em, 0.5vw, 0.09em)',
-          whiteSpace: 'nowrap',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
+          letterSpacing: 'clamp(0.02em, 0.45vw, 0.08em)',
+          textAlign: 'justify',
+          textAlignLast: 'justify',
           wordBreak: 'break-word',
           hyphens: 'auto'
         }}>
