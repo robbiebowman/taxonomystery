@@ -17,15 +17,15 @@ export default function ArticleResult({ wasCorrect, userGuess }: ArticleResultPr
     }}>
       <style>{`
         @keyframes spinSlow {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
+          from { transform: translate(-50%, -50%) rotate(0deg); }
+          to { transform: translate(-50%, -50%) rotate(360deg); }
         }
         .sunburst {
           position: absolute;
           top: 50%;
           left: 50%;
-          width: 200%;
-          height: 200%;
+          width: 200vmax;
+          height: 200vmax;
           background: repeating-conic-gradient(
             from 0deg,
             var(--gold-highlight) 0deg 15deg,
@@ -33,9 +33,6 @@ export default function ArticleResult({ wasCorrect, userGuess }: ArticleResultPr
           );
           opacity: 0.15;
           animation: spinSlow 20s linear infinite;
-          transform-origin: center;
-          margin-top: -100%;
-          margin-left: -100%;
           pointer-events: none;
           z-index: 0;
         }
