@@ -27,11 +27,11 @@ export default function ArticleResult({ wasCorrect, userGuess }: ArticleResultPr
           height: 200vmax;
           background: repeating-conic-gradient(
             from 0deg,
-            var(--gold-highlight) 0deg 15deg,
-            transparent 15deg 30deg
+            #90EE90 0deg 15deg,
+            #98FB98 15deg 30deg
           );
           opacity: 0.15;
-          animation: spinSlow 20s linear infinite;
+          animation: spinSlow 60s linear infinite;
           pointer-events: none;
           z-index: -1;
         }
