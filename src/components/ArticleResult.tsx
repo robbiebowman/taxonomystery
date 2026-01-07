@@ -27,8 +27,8 @@ export default function ArticleResult({ wasCorrect, userGuess }: ArticleResultPr
           height: 200vmax;
           background: repeating-conic-gradient(
             from 0deg,
-            #F5FFF5 0deg 15deg,
-            #FAFFFA 15deg 30deg
+            #dcfce7 0deg 15deg,
+            #f0fdf4 15deg 30deg
           );
           opacity: 0.15;
           animation: spinSlow 60s linear infinite;
