@@ -65,12 +65,6 @@ export default function ArticleResult({ wasCorrect, userGuess }: ArticleResultPr
 
   const variation = getVariation(userGuess, wasCorrect)
 
-  // Replace placeholder with the actual guess/title
-  // Note: For success, userGuess is effectively the title
-  const bodyText = variation.text.replace(/<(title|guess)>/g, (match) => {
-    return `<strong>${userGuess}</strong>`
-  })
-
   // We need to render the HTML string with strong tags
   const renderBody = () => {
     // Split by the bold part to avoid using dangerouslySetInnerHTML
