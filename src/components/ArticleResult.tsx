@@ -12,8 +12,7 @@ export default function ArticleResult({ wasCorrect, userGuess }: ArticleResultPr
       textAlign: 'left',
       position: 'relative',
       marginTop: '1.5rem',
-      boxShadow: '0 4px 6px rgba(0,0,0,0.05)',
-      overflow: 'hidden' // Ensure sunburst doesn't spill out
+      boxShadow: '0 4px 6px rgba(0,0,0,0.05)'
     }}>
       <style>{`
         @keyframes spinSlow {
@@ -21,7 +20,7 @@ export default function ArticleResult({ wasCorrect, userGuess }: ArticleResultPr
           to { transform: translate(-50%, -50%) rotate(360deg); }
         }
         .sunburst {
-          position: absolute;
+          position: fixed;
           top: 50%;
           left: 50%;
           width: 200vmax;
@@ -34,7 +33,7 @@ export default function ArticleResult({ wasCorrect, userGuess }: ArticleResultPr
           opacity: 0.15;
           animation: spinSlow 20s linear infinite;
           pointer-events: none;
-          z-index: 0;
+          z-index: -1;
         }
       `}</style>
 
