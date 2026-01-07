@@ -27,10 +27,10 @@ export default function ArticleResult({ wasCorrect, userGuess }: ArticleResultPr
           height: 200vmax;
           background: repeating-conic-gradient(
             from 0deg,
-            #dcfce7 0deg 15deg,
-            #f0fdf4 15deg 30deg
+            #bbf7d0 0deg 15deg,
+            #dcfce7 15deg 30deg
           );
-          opacity: 0.15;
+          opacity: 0.4;
           animation: spinSlow 60s linear infinite;
           pointer-events: none;
           z-index: -1;
