@@ -3,7 +3,89 @@ interface ArticleResultProps {
   userGuess: string
 }
 
+const SUCCESS_VARIATIONS = [
+  { headline: "MYSTERY SOLVED!", location: "Wikipedia City", text: "In a stunning display of knowledge, the mystery article has been identified as <title>. Experts confirm the finding is accurate." },
+  { headline: "VICTORY DECLARED!", location: "New York", text: "Celebrations erupted in the streets as the identity of <title> was finally revealed. \"We knew they could do it,\" said one bystander." },
+  { headline: "PUZZLE CRACKED!", location: "London", text: "After hours of intense speculation, the answer <title> has been found. The Taxonomy Association has issued a formal commendation." },
+  { headline: "IDENTIFIED!", location: "Geneva", text: "Sources confirm that the subject in question is indeed <title>. The case is now considered closed." },
+  { headline: "BREAKING NEWS", location: "Tokyo", text: "Flash: The unknown entity has been unmasked as <title>. Details are pouring in from all corners of the globe." },
+  { headline: "IT'S A MATCH!", location: "Paris", text: "Art critics and historians alike agree: it is undoubtedly <title>. Champagne corks are popping at the academy." },
+  { headline: "TRUTH REVEALED", location: "Berlin", text: "The fog has lifted. We can now report with 100% certainty that we are looking at <title>." },
+  { headline: "OFFICIAL REPORT", location: "Washington D.C.", text: "The Bureau of Wikipedia Investigation has released a statement confirming <title> as the answer." },
+  { headline: "STOP THE PRESSES!", location: "Chicago", text: "Editors scrambled to update the front page after the sudden identification of <title>. \"A historic day,\" says the Editor-in-Chief." },
+  { headline: "GENIUS CONFIRMED", location: "Oxford", text: "Professors were left stunned by the rapid deduction that led to <title>. An honorary degree is being discussed." },
+  { headline: "EUREKA!", location: "Athens", text: "Like Archimedes before them, the solver shouted the truth: it is <title>." },
+  { headline: "TARGET ACQUIRED", location: "Langley", text: "Intelligence assets have positively identified the target as <title>. Mission accomplished." },
+  { headline: "DISCOVERY MADE", location: "Cairo", text: "Archaeologists have brushed away the dust to reveal the pristine name of <title>." },
+  { headline: "CODE BROKEN", location: "Bletchley Park", text: "The enigma has been deciphered. The hidden message spells out one thing: <title>." },
+  { headline: "THE VERDICT IS IN", location: "The Hague", text: "The jury has returned after a short deliberation. The identity is confirmed as <title>." },
+  { headline: "GRAND PRIZE WINNER", location: "Las Vegas", text: "The lights are flashing and bells are ringing! The jackpot answer is <title>." },
+  { headline: "STUNNING REVELATION", location: "Hollywood", text: "In a twist ending that no one saw coming, the protagonist was revealed to be <title> all along." },
+  { headline: "SCIENTIFIC BREAKTHROUGH", location: "CERN", text: "Colliding data points have resulted in the stable observation of <title>." },
+  { headline: "LEGEND CONFIRMED", location: "Atlantis", text: "Long thought to be a myth, the existence of <title> has been proven beyond a shadow of a doubt." },
+  { headline: "PERFECT SCORE", location: "Olympia", text: "Judges have awarded a solid 10.0 for the identification of <title>. A flawless performance." },
+]
+
+const FAILURE_VARIATIONS = [
+  { headline: "IDENTITY MISTAKEN", location: "Wikipedia City", text: "Reports that the article was <guess> have been proven false. The search for the truth continues." },
+  { headline: "CORRECTION ISSUED", location: "New York", text: "The Times regrets the error. The subject is definitely not <guess>, despite earlier rumors." },
+  { headline: "FALSE LEAD", location: "London", text: "Investigators followed the trail to <guess>, but it turned out to be a dead end. Back to the drawing board." },
+  { headline: "RUMOR DEBUNKED", location: "Paris", text: "Gossip columns suggested <guess>, but official sources have laughed off the suggestion." },
+  { headline: "CLOSE, BUT NO CIGAR", location: "Havana", text: "\"It looked like <guess> from a distance,\" admitted one witness, \"but up close, it's clearly something else.\"" },
+  { headline: "CASE REMAINS OPEN", location: "Chicago", text: "Police have ruled out <guess> as a suspect. The real identity remains at large." },
+  { headline: "THEORY DISPROVED", location: "Cambridge", text: "The hypothesis that X equals <guess> has failed peer review. Further experimentation is required." },
+  { headline: "SEARCH CONTINUES", location: "Cape Town", text: "Rescue teams found no trace of the answer at <guess>. The expedition pushes onward." },
+  { headline: "FAKE NEWS", location: "The Internet", text: "Viral posts claiming the answer is <guess> have been flagged for misinformation." },
+  { headline: "ERROR 404", location: "Silicon Valley", text: "The requested answer <guess> was not found. Please check your spelling and try again." },
+  { headline: "SWING AND A MISS", location: "Boston", text: "The batter stepped up, swung for <guess>, and struck out. Better luck next inning." },
+  { headline: "MISTAKEN IDENTITY", location: "Rome", text: "It was a case of doppelgangers. <guess> looks similar, but is not the one we seek." },
+  { headline: "HOAX EXPOSED", location: "Roswell", text: "The photos of <guess> turned out to be weather balloons. The truth is still out there." },
+  { headline: "NOT QUITE", location: "Toronto", text: "Polite observers noted that while <guess> is a lovely answer, it is unfortunately incorrect." },
+  { headline: "OBJECTION OVERRULED", location: "Sydney", text: "The defense's claim of <guess> was thrown out of court for lack of evidence." },
+  { headline: "UNVERIFIED CLAIM", location: "Zurich", text: "Banks refuse to cash the check for <guess>. Insufficient funds of truth." },
+  { headline: "WILD GOOSE CHASE", location: "Dublin", text: "We ran all over town looking for <guess>, but came back empty-handed." },
+  { headline: "EXPERIMENTAL FAILURE", location: "Houston", text: "\"Houston, we have a problem.\" The trajectory for <guess> was off by a few degrees." },
+  { headline: "MYTH BUSTED", location: "San Francisco", text: "We tested the <guess> myth, and the results are conclusive: Busted." },
+  { headline: "TRY AGAIN", location: "Tokyo", text: "The arcade machine flashes \"GAME OVER\" on <guess>. Insert coin to continue." },
+]
+
 export default function ArticleResult({ wasCorrect, userGuess }: ArticleResultProps) {
+  // Deterministic selection based on the guess string
+  const getVariation = (guess: string, isCorrect: boolean) => {
+    const list = isCorrect ? SUCCESS_VARIATIONS : FAILURE_VARIATIONS
+    // Simple hash function to get a stable index from the string
+    let hash = 0
+    for (let i = 0; i < guess.length; i++) {
+      hash = ((hash << 5) - hash) + guess.charCodeAt(i)
+      hash |= 0 // Convert to 32bit integer
+    }
+    const index = Math.abs(hash) % list.length
+    return list[index]
+  }
+
+  const variation = getVariation(userGuess, wasCorrect)
+
+  // Replace placeholder with the actual guess/title
+  // Note: For success, userGuess is effectively the title
+  const bodyText = variation.text.replace(/<(title|guess)>/g, (match) => {
+    return `<strong>${userGuess}</strong>`
+  })
+
+  // We need to render the HTML string with strong tags
+  const renderBody = () => {
+    // Split by the bold part to avoid using dangerouslySetInnerHTML
+    const parts = variation.text.split(/<(?:title|guess)>/)
+    if (parts.length === 1) return <>{parts[0]}</>
+
+    return (
+      <>
+        {parts[0]}
+        <strong>{userGuess}</strong>
+        {parts[1]}
+      </>
+    )
+  }
+
   return (
     <div className="article-result" style={{
       padding: 'clamp(1rem, 3vw, 1.5rem)', 
@@ -64,7 +146,7 @@ export default function ArticleResult({ wasCorrect, userGuess }: ArticleResultPr
           borderBottom: 'none',
           paddingBottom: 0
         }}>
-          {wasCorrect ? 'MYSTERY SOLVED!' : 'IDENTITY MISTAKEN'}
+          {variation.headline}
         </h3>
         <span style={{
           fontSize: '0.9rem',
@@ -89,16 +171,8 @@ export default function ArticleResult({ wasCorrect, userGuess }: ArticleResultPr
               fontFamily: '"Times New Roman", Times, "Liberation Serif", serif',
               margin: 0
             }}>
-              <strong style={{ textTransform: 'uppercase', fontSize: '0.9rem', color: 'var(--text-gray)' }}>WIKIPEDIA CITY — </strong>
-              {wasCorrect ? (
-                <>
-                  In a stunning display of knowledge, the mystery article has been identified as <strong>{userGuess}</strong>. Experts confirm the finding is accurate.
-                </>
-              ) : (
-                <>
-                  Reports that the article was <strong>{userGuess}</strong> have been proven false. The search for the truth continues as investigators review the evidence.
-                </>
-              )}
+              <strong style={{ textTransform: 'uppercase', fontSize: '0.9rem', color: 'var(--text-gray)' }}>{variation.location} — </strong>
+              {renderBody()}
             </p>
         </div>
 
