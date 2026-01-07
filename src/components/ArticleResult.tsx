@@ -12,8 +12,37 @@ export default function ArticleResult({ wasCorrect, userGuess }: ArticleResultPr
       textAlign: 'left',
       position: 'relative',
       marginTop: '1.5rem',
-      boxShadow: '0 4px 6px rgba(0,0,0,0.05)'
+      boxShadow: '0 4px 6px rgba(0,0,0,0.05)',
+      overflow: 'hidden' // Ensure sunburst doesn't spill out
     }}>
+      <style>{`
+        @keyframes spinSlow {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        .sunburst {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 200%;
+          height: 200%;
+          background: repeating-conic-gradient(
+            from 0deg,
+            var(--gold-highlight) 0deg 15deg,
+            transparent 15deg 30deg
+          );
+          opacity: 0.15;
+          animation: spinSlow 20s linear infinite;
+          transform-origin: center;
+          margin-top: -100%;
+          margin-left: -100%;
+          pointer-events: none;
+          z-index: 0;
+        }
+      `}</style>
+
+      {wasCorrect && <div className="sunburst" aria-hidden="true" />}
+
       {/* Newspaper Header Style for the Result */}
       <div style={{
         borderBottom: `2px solid ${wasCorrect ? 'var(--newspaper-blue)' : 'var(--accent-red)'}`,
@@ -23,7 +52,9 @@ export default function ArticleResult({ wasCorrect, userGuess }: ArticleResultPr
         alignItems: 'baseline',
         justifyContent: 'space-between',
         flexWrap: 'wrap',
-        gap: '0.5rem'
+        gap: '0.5rem',
+        position: 'relative',
+        zIndex: 1
       }}>
         <h3 style={{
           margin: 0,
@@ -52,7 +83,7 @@ export default function ArticleResult({ wasCorrect, userGuess }: ArticleResultPr
         </span>
       </div>
 
-      <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'flex-start', flexWrap: 'wrap', position: 'relative', zIndex: 1 }}>
         <div style={{ flex: 1, minWidth: '200px' }}>
              {/* Dateline */}
             <p style={{
@@ -89,7 +120,9 @@ export default function ArticleResult({ wasCorrect, userGuess }: ArticleResultPr
           letterSpacing: '0.1em',
           opacity: 0.8,
           alignSelf: 'center',
-          mixBlendMode: 'multiply'
+          mixBlendMode: 'multiply',
+          backgroundColor: wasCorrect ? 'rgba(255,255,255,0.8)' : 'transparent', // Ensure legibility over sunburst
+          boxShadow: wasCorrect ? '0 0 10px rgba(255,255,255,0.5)' : 'none'
         }}>
           {wasCorrect ? 'VERIFIED' : 'REJECTED'}
         </div>

@@ -164,26 +164,23 @@ export default function GameComponent({ puzzleDate, isArchive = false }: GameCom
                   justifyContent: 'center',
                   marginBottom: '1.25rem'
                 }}>
-                  {currentArticle.article.categories.map((category, idx) => {
-                    const accentColor = getCategoryAccent(idx, currentArticle.article.categories.length)
-                    return (
-                      <div key={idx} style={{
-                        display: 'inline-block',
-                        backgroundColor: `color-mix(in srgb, ${accentColor} 8%, var(--paper-white))`,
-                        border: '1px solid var(--border-gray)',
-                        borderTop: `3px solid ${accentColor}`,
-                        borderRadius: '0.25rem',
-                        padding: '0.5rem 1rem',
-                        fontSize: '1.1rem',
-                        fontWeight: '500',
-                        textAlign: 'center',
-                        color: 'var(--foreground)',
-                        boxShadow: '1px 1px 2px rgba(0,0,0,0.1)'
-                      }}>
-                        {category}
-                      </div>
-                    )
-                  })}
+                  {currentArticle.article.categories.map((category, idx) => (
+                    <div key={idx} style={{
+                      display: 'inline-block',
+                      backgroundColor: 'var(--newsprint-gray)',
+                      border: '1px solid var(--border-gray)',
+                      borderTop: `3px solid ${getCategoryAccent(idx, currentArticle.article.categories.length)}`,
+                      borderRadius: '0.25rem',
+                      padding: '0.5rem 1rem',
+                      fontSize: '1.1rem',
+                      fontWeight: '500',
+                      textAlign: 'center',
+                      color: 'var(--foreground)',
+                      boxShadow: '1px 1px 2px rgba(0,0,0,0.1)'
+                    }}>
+                      {category}
+                    </div>
+                  ))}
                 </div>
                 
                 {/* Guess Input */}
@@ -229,10 +226,7 @@ export default function GameComponent({ puzzleDate, isArchive = false }: GameCom
                         fontWeight: 'bold',
                         textTransform: 'uppercase',
                         letterSpacing: '0.05em',
-                        minWidth: '200px',
-                        backgroundColor: 'var(--newspaper-blue)',
-                        color: '#ffffff',
-                        borderColor: 'var(--newspaper-blue)'
+                        minWidth: '200px'
                       }}
                     >
                       Submit Answer
@@ -267,10 +261,7 @@ export default function GameComponent({ puzzleDate, isArchive = false }: GameCom
                       fontWeight: 'bold',
                       textTransform: 'uppercase',
                       letterSpacing: '0.05em',
-                      minWidth: '250px',
-                      backgroundColor: 'var(--newspaper-blue)',
-                      color: '#ffffff',
-                      borderColor: 'var(--newspaper-blue)'
+                      minWidth: '250px'
                     }}
                   >
                     {currentArticleIndex < puzzle.articles.length - 1 ? 'Next Article →' : 'Complete Edition'}
