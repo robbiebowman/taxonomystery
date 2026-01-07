@@ -43,7 +43,11 @@ export default function NewspaperHeader({
   }
 
   return (
-    <header className="newspaper-header" style={{ marginBottom: '1.5rem' }}>
+    <header className="newspaper-header" style={{
+      marginBottom: '1.5rem',
+      borderTop: '5px solid var(--newspaper-blue)',
+      paddingTop: '1rem'
+    }}>
       <div style={{ 
         display: 'flex', 
         justifyContent: 'space-between', 
@@ -56,7 +60,8 @@ export default function NewspaperHeader({
             <h1 style={{ 
               fontSize: 'clamp(1.5rem, 5vw, 2rem)',
               margin: '0 0 0.25rem 0',
-              lineHeight: 1.1
+              lineHeight: 1.1,
+              color: 'var(--newspaper-blue)'
             }}>
               <NewspaperTitle />
             </h1>
