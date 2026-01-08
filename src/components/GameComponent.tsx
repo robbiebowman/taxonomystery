@@ -165,7 +165,7 @@ export default function GameComponent({ puzzleDate, isArchive = false }: GameCom
                   marginBottom: '1.25rem'
                 }}>
                   {currentArticle.article.categories.map((category, idx) => (
-                    <div key={idx} style={{ 
+                    <div key={idx} style={{
                       display: 'inline-block',
                       backgroundColor: 'var(--newsprint-gray)',
                       border: '1px solid var(--border-gray)',
@@ -236,17 +236,19 @@ export default function GameComponent({ puzzleDate, isArchive = false }: GameCom
               </div>
             ) : (
               <>
+                {/* Result shown first */}
+                <ArticleResult
+                  wasCorrect={currentArticle.wasCorrect}
+                  userGuess={currentArticle.userGuess}
+                />
+
+                <div style={{ marginBottom: '2rem' }} />
+
                 {/* Article snippet and image */}
                 <ArticleDetails 
                   title={currentArticle.article.title}
                   snippet={currentArticle.article.snippet}
                   imageUrl={currentArticle.article.image_url}
-                />
-                
-                {/* Result after article details */}
-                <ArticleResult 
-                  wasCorrect={currentArticle.wasCorrect}
-                  userGuess={currentArticle.userGuess}
                 />
                 
                 {/* Next Article Button */}
