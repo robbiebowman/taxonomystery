@@ -68,7 +68,13 @@ export class PuzzleGenerator {
       const batchSize = Math.max(count - validArticles.length, 5);
       console.log(`  📖 Selecting batch of ${batchSize} articles (attempt ${attempts})...`);
       
-      const selectedArticles = await this.articleSelector.selectUnusedArticles(batchSize);
+      // Calculate excluded IDs (already selected + rejected)
+      const excludedIds = [
+        ...validArticles.map(a => a.article_id),
+        ...rejectedArticleIds
+      ];
+
+      const selectedArticles = await this.articleSelector.selectUnusedArticles(batchSize, excludedIds);
       if (selectedArticles.length === 0) {
         throw new Error('No more unused articles available');
       }
