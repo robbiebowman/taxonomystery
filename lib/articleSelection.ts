@@ -10,9 +10,15 @@ import { Article } from './db/types';
 export class ArticleSelector {
   private articlesRepo = new ArticlesRepository();
 
-  async selectUnusedArticles(count: number = 10): Promise<Article[]> {
+  async selectUnusedArticles(count: number = 10, excludeIds: number[] = []): Promise<Article[]> {
     // Get all unused articles
-    const unusedArticles = await this.getUnusedArticles();
+    let unusedArticles = await this.getUnusedArticles();
+
+    // Filter out excluded articles
+    if (excludeIds.length > 0) {
+      const excludeSet = new Set(excludeIds);
+      unusedArticles = unusedArticles.filter(article => !excludeSet.has(article.id));
+    }
     
     // Check if we have enough unused articles
     if (unusedArticles.length < count) {
